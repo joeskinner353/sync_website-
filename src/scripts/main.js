@@ -1,5 +1,7 @@
 // main.js
 
+import { loadVisibleComposers, createComposerElement } from './composers.js';
+
 // Initialize smooth scrolling for image containers
 function initSmoothScroll() {
     const containers = document.querySelectorAll('.scrollable-container');
@@ -82,11 +84,36 @@ function initCarousels() {
     });
 }
 
+// Initialize composers carousel
+async function initComposersCarousel() {
+    const writersTrack = document.querySelector('.WritersImages .carousel-track');
+    if (!writersTrack) return;
+
+    // Clear existing static content
+    writersTrack.innerHTML = '';
+
+    // Load composers from Supabase
+    const composers = await loadVisibleComposers();
+    
+    // Add composers to carousel
+    composers.forEach(composer => {
+        const composerElement = createComposerElement(composer);
+        writersTrack.appendChild(composerElement);
+    });
+
+    // Clone composers for infinite scroll
+    composers.forEach(composer => {
+        const composerElement = createComposerElement(composer);
+        writersTrack.appendChild(composerElement.cloneNode(true));
+    });
+}
+
 // Function to initialize the application
-function init() {
+async function init() {
     console.log("Application initialized");
-    // Add event listeners or other initialization code here
     initSmoothScroll();
+    await initComposersCarousel();
+    initCarousels(); // Initialize carousels after dynamic content is loaded
 }
 
 // Function to handle button clicks
@@ -105,6 +132,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Call the init function to start the application
 document.addEventListener('DOMContentLoaded', init);
-
-// Initialize carousel animations when DOM is loaded
-document.addEventListener('DOMContentLoaded', initCarousels);
