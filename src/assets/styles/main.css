@@ -127,13 +127,35 @@ footer {
     height: 100%;
     cursor: pointer;
     text-decoration: none;
+    position: relative;
 }
 
 .carousel-track img {
     height: 166px;
     width: auto;
     object-fit: contain;
-    pointer-events: none; /* This ensures clicks go to the link instead of the image */
+    pointer-events: none;
+}
+
+.composer-name-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: 'CircularXX', Arial, sans-serif;
+    font-size: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.carousel-link:hover .composer-name-overlay {
+    opacity: 1;
 }
 
 /* Add a subtle hover effect on the links */

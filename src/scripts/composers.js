@@ -24,6 +24,11 @@ export function createComposerElement(composer) {
     img.src = composer.primary_photo_url
     img.alt = composer.name
 
+    const nameOverlay = document.createElement('div')
+    nameOverlay.className = 'composer-name-overlay'
+    nameOverlay.textContent = composer.name
+
     composerLink.appendChild(img)
+    composerLink.appendChild(nameOverlay)
     return composerLink
 }
