@@ -46,26 +46,34 @@ function initCarousels() {
         const track = carousel.querySelector('.carousel-track');
         const links = track.querySelectorAll('.carousel-link');
         
-        // Clone links (which contain the images) for infinite scroll effect
-        links.forEach(link => {
-            const clone = link.cloneNode(true);
-            track.appendChild(clone);
-        });
+        // Clone enough items to ensure smooth scrolling
+        const itemsToClone = 3; // Clone more items for smoother transition
+        for (let i = 0; i < itemsToClone; i++) {
+            links.forEach(link => {
+                const clone = link.cloneNode(true);
+                track.appendChild(clone);
+            });
+        }
 
         let currentPosition = 0;
-        const scrollSpeed = 1;
+        const scrollSpeed = 0.5; // Reduced speed for smoother animation
         let animationId;
+        let isPaused = false;
 
         function animate() {
-            currentPosition -= scrollSpeed;
-            
-            // Reset position when we've scrolled through the original set
-            const totalWidth = Array.from(links).reduce((sum, link) => sum + link.offsetWidth, 0);
-            if (-currentPosition >= totalWidth) {
-                currentPosition = 0;
+            if (!isPaused) {
+                currentPosition -= scrollSpeed;
+                
+                // Get width of one complete set of items
+                const itemSetWidth = Array.from(links).reduce((sum, link) => sum + link.offsetWidth, 0);
+                
+                // Reset position smoothly when we've scrolled through one complete set
+                if (-currentPosition >= itemSetWidth) {
+                    currentPosition += itemSetWidth;
+                }
+                
+                track.style.transform = `translateX(${currentPosition}px)`;
             }
-            
-            track.style.transform = `translateX(${currentPosition}px)`;
             animationId = requestAnimationFrame(animate);
         }
 
@@ -74,12 +82,17 @@ function initCarousels() {
 
         // Pause on hover
         carousel.addEventListener('mouseenter', () => {
-            cancelAnimationFrame(animationId);
+            isPaused = true;
         });
 
         // Resume on mouse leave
         carousel.addEventListener('mouseleave', () => {
-            animate();
+            isPaused = false;
+        });
+
+        // Handle visibility change
+        document.addEventListener('visibilitychange', () => {
+            isPaused = document.hidden;
         });
     });
 }
