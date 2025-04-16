@@ -1,0 +1,189 @@
+/* Main CSS styles for the web application */
+
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: 'CircularXX';
+    src: url('../fonts/CircularXXSub-Black.woff') format('woff');
+    font-weight: 900;
+}
+
+body {
+    background-color: black;
+    font-family: 'CircularXX', Arial, sans-serif;
+    color: white;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+header {
+    background: #35424a;
+    color: #ffffff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+nav {
+    margin: 20px 0;
+}
+
+nav a {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 10px 15px;
+}
+
+nav a:hover {
+    background: #e8491d;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+}
+
+footer {
+    text-align: center;
+    padding: 20px 0;
+    background: #35424a;
+    color: #ffffff;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+.Desktop1 {
+    width: 1440px;
+    height: 1583px;
+    position: relative;
+    background: black;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.ConcordCIconRed1 {
+    width: 190px;
+    height: 190px;
+    left: 0;
+    top: 0;
+    position: absolute;
+}
+
+.ConcordMusicPublishing {
+    left: 814px;
+    top: 0;
+    position: absolute;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: white;
+    font-size: 50px;
+    font-family: 'CircularXX', Arial, sans-serif;
+    font-weight: 900;
+}
+
+.section-title {
+    position: absolute;
+    text-align: right;
+    color: white;
+    font-size: 40px;
+    font-family: 'CircularXX', Arial, sans-serif;
+    font-weight: 900;
+    right: 0; /* Change from left: 0 to right: 0 */
+    padding-right: 20px; /* Add some padding from the right edge */
+}
+
+.scrollable-container {
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    background: black;
+    gap: 0;
+    padding: 0;
+}
+
+.carousel-track {
+    display: flex;
+    gap: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    transition: transform 0.5s ease-out;
+}
+
+.carousel-link {
+    display: block;
+    height: 100%;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.carousel-track img {
+    height: 166px;
+    width: auto;
+    object-fit: contain;
+    pointer-events: none; /* This ensures clicks go to the link instead of the image */
+}
+
+/* Add a subtle hover effect on the links */
+.carousel-link:hover {
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+/* Remove existing hover effect since we're auto-scrolling */
+.scrollable-container img:hover {
+    transform: none;
+}
+
+/* Specific positioning for each section */
+.Catalogs {
+    top: 232px;
+}
+
+.CatalogImages {
+    top: 322px;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 206px;
+}
+
+.Writers {
+    top: 570px;
+    right: auto; /* Override the right alignment from section-title */
+    left: 0; /* Position on the left */
+    padding-right: 0; /* Remove right padding */
+    text-align: left; /* Align text to the left */
+}
+
+.WritersImages {
+    top: 660px;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 206px;
+}
+
+.Ftv {
+    top: 908px;
+}
+
+.FtvImages {
+    top: 998px;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 206px;
+}

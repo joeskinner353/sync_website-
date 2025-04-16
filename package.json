@@ -1,0 +1,25 @@
+{
+  "name": "figma-web-project",
+  "version": "1.0.0",
+  "description": "A web project generated from Figma designs.",
+  "main": "src/scripts/main.js",
+  "scripts": {
+    "start": "live-server src",
+    "build": "echo 'Build script not defined'",
+    "test": "echo 'No tests defined'"
+  },
+  "keywords": [
+    "figma",
+    "web",
+    "project"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.1"
+  }
+}
