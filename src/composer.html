@@ -70,7 +70,7 @@
 
         .ComposerVideos {
             width: 1200px;
-            height: 360px;
+            height: 320px;
             left: 100px;
             top: 980px;
             position: absolute;
@@ -88,20 +88,14 @@
 
         .video-container {
             flex: 0 0 auto;
-            width: 480px;
-            height: 270px;
-            position: relative;
+            width: 280px;
+            height: 157px;
             transition: all 0.3s ease;
+            cursor: pointer;
         }
 
-        .video-container.fullscreen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 9999;
-            background: black;
+        .video-container:hover {
+            transform: scale(1.05);
         }
 
         .video-container iframe {
@@ -110,9 +104,10 @@
             border-radius: 8px;
         }
 
-        .video-container:not(.fullscreen):hover {
-            transform: scale(1.05);
-            cursor: pointer;
+        /* Hide fullscreen button in inactive videos */
+        .video-container:not(.active) iframe::-webkit-media-controls-fullscreen-button,
+        .video-container:not(.active) iframe::-webkit-media-controls {
+            display: none !important;
         }
 
         .featured-video {
@@ -140,6 +135,7 @@
             align-items: flex-start;
             gap: 54px;
             display: inline-flex;
+            padding-bottom: 60px;  /* Adding padding below the header */
         }
 
         .ComposerName {

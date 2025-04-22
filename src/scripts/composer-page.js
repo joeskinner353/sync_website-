@@ -35,21 +35,6 @@ function getVimeoEmbedUrl(url) {
     }
 }
 
-function handleFullscreenChange() {
-    if (!document.fullscreenElement) {
-        const fullscreenVideo = document.querySelector('.video-container.fullscreen');
-        if (fullscreenVideo) {
-            fullscreenVideo.classList.remove('fullscreen');
-        }
-    }
-}
-
-function handleKeyboardEvents(e) {
-    if ((e.key === 'Escape' || e.key === 'Backspace') && document.querySelector('.video-container.fullscreen')) {
-        document.exitFullscreen().catch(err => console.log(err));
-    }
-}
-
 // Initialize smooth scrolling for video thumbnails
 function initVideoScroll() {
     const videoThumbnails = document.querySelector('.video-thumbnails');
@@ -104,6 +89,17 @@ function handleVideoClick(url, composer) {
             </iframe>
         `;
     }
+}
+
+// Handle fullscreen for active video
+function setupVideoFullscreen() {
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' || e.key === 'Backspace') {
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            }
+        }
+    });
 }
 
 async function loadComposerData() {
@@ -173,12 +169,11 @@ async function loadComposerData() {
             videoTrack.innerHTML = videoUrls.map((url, index) => {
                 const embedUrl = getVimeoEmbedUrl(url);
                 return `
-                    <div class="video-container" data-video-url="${url}">
+                    <div class="video-container ${index === 0 ? 'active' : ''}" data-video-url="${url}">
                         <iframe 
                             src="${embedUrl}" 
                             frameborder="0" 
-                            allow="autoplay; fullscreen; picture-in-picture" 
-                            allowfullscreen
+                            allow="autoplay; fullscreen-request; picture-in-picture" 
                             loading="lazy"
                             referrerpolicy="no-referrer"
                             title="${composer.name}'s Video ${index + 1}">
@@ -188,35 +183,33 @@ async function loadComposerData() {
             }).join('');
 
             // Add click handlers to video containers
-            videoTrack.addEventListener('click', async (e) => {
+            videoTrack.addEventListener('click', (e) => {
                 const container = e.target.closest('.video-container');
-                if (!container) return;
-                
-                // Toggle fullscreen
-                if (container.classList.contains('fullscreen')) {
-                    document.exitFullscreen().catch(err => console.log(err));
-                } else {
-                    // Remove fullscreen from any other video first
-                    const currentFullscreen = document.querySelector('.video-container.fullscreen');
-                    if (currentFullscreen) {
-                        currentFullscreen.classList.remove('fullscreen');
+                if (!container || container.classList.contains('active')) {
+                    // If clicking an already active video, make it fullscreen
+                    if (container && container.classList.contains('active')) {
+                        const iframe = container.querySelector('iframe');
+                        if (iframe) {
+                            // Use Vimeo's postMessage API to trigger fullscreen
+                            iframe.contentWindow.postMessage('{"method":"setFullscreen"}', '*');
+                        }
                     }
-                    
-                    container.classList.add('fullscreen');
-                    try {
-                        await container.requestFullscreen();
-                    } catch (err) {
-                        console.log('Fullscreen request failed:', err);
-                    }
+                    return;
                 }
+                
+                // Remove active class from current active video
+                const currentActive = videoTrack.querySelector('.active');
+                if (currentActive) {
+                    currentActive.classList.remove('active');
+                }
+                
+                // Add active class to clicked video
+                container.classList.add('active');
             });
 
             videosSection.innerHTML = '';
             videosSection.appendChild(videoTrack);
-
-            // Add event listeners for fullscreen and keyboard events
-            document.addEventListener('fullscreenchange', handleFullscreenChange);
-            document.addEventListener('keydown', handleKeyboardEvents);
+            setupVideoFullscreen();
         }
     }
 
