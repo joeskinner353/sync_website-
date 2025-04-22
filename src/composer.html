@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Composer Profile | Concord Music Publishing</title>
     <link rel="stylesheet" href="assets/styles/main.css">
+    <link rel="icon" type="image/x-icon" href="assets/images/concord-C-icon-red.png">
     <style>
         body {
             margin: 0;
@@ -55,20 +56,78 @@
             left: 100px;
             top: 1400px;
             position: absolute;
-            background: #D9D9D9;
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ComposerDisco iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
 
         .ComposerVideos {
             width: 1200px;
-            height: 320px;
+            height: 360px;
             left: 100px;
             top: 980px;
             position: absolute;
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .video-track {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
             gap: 20px;
+            padding: 20px;
+            height: 100%;
+        }
+
+        .video-container {
+            flex: 0 0 auto;
+            width: 480px;
+            height: 270px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .video-container.fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
+            background: black;
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
+
+        .video-container:not(.fullscreen):hover {
+            transform: scale(1.05);
+            cursor: pointer;
+        }
+
+        .featured-video {
+            flex: 0 0 auto;
+            width: 640px;
+            height: 360px;
+        }
+
+        .video-thumbnails {
+            flex: 1;
+            overflow-x: auto;
+            overflow-y: hidden;
+            position: relative;
+            padding: 20px 0;
+            -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
         }
 
         .ComposerHeader {
