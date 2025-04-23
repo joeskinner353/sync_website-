@@ -14,7 +14,9 @@ The application is a web-based platform for Concord Music Publishing that showca
     - Rodgers & Hammerstein (disco.ac)
     - Pulse (pulsesync.disco.ac)
     - Pusher (disco.ac)
-  - Writers section (composers from database)
+  - Writers section (composers from database) with dual view modes:
+    - Carousel view (default) - horizontally scrolling composer cards
+    - Grid view - responsive grid layout of composer cards
   - FTV content section
   - Header with Concord logo
 
@@ -28,6 +30,12 @@ The application is a web-based platform for Concord Music Publishing that showca
     - Click-to-play functionality
     - Fullscreen video support with keyboard controls (Escape/Backspace)
   - Spotify playlist integration
+
+- **Composer Grid Page (composer_grid.html)**
+  - Full grid view of all composers
+  - Responsive layout with consistent spacing
+  - Direct links to individual composer pages
+  - Optimized for large collections
 
 ### 2. Key Features
 
@@ -46,6 +54,14 @@ Two types of scrolling mechanisms are implemented:
    - Content cloning for seamless loops
    - Hover pause functionality
    - Page visibility handling
+
+#### View Toggle System
+- Toggle between carousel view and grid view for writers section
+- Carousel view (default): Horizontally scrolling, animated content
+- Grid view: Responsive grid layout with consistent spacing
+- View state resets to carousel when returning from other pages
+- Animation-based transitions between view modes
+- Toggle button UI with active state indicators
 
 #### Video Player Features
 - Horizontal scrolling video gallery
@@ -73,6 +89,7 @@ Uses Supabase with the following schema for composers:
 - disco_playlist (Spotify embed code)
 - is_visible flag
 - display_order
+- site_version (for multi-version support)
 
 ### 4. Technical Implementation
 
@@ -82,6 +99,15 @@ Uses Supabase with the following schema for composers:
 - Order-based display
 - Dynamic image and video loading
 - External catalog platform integration
+- Cached composer data to prevent redundant database fetches
+
+#### View Management
+- Dynamic view switching without page reload
+- Responsive grid layout with CSS Grid
+- Lazy loading of grid images with Intersection Observer API
+- Animation delay for staggered grid item appearance
+- Session-based view state management
+- Cross-page view state handling
 
 #### Performance Optimizations
 - Lazy loading of composer data
@@ -90,11 +116,15 @@ Uses Supabase with the following schema for composers:
 - Minimal element cloning for infinite scroll
 - Optimized video embedding parameters
 - Secure external linking with noopener/noreferrer
+- Document fragments for batch DOM updates
+- Session caching of composer data
+- Optimized image loading in grid view
 
 #### Testing
 - Jest-based testing suite
 - Supabase connectivity tests
 - Data structure validation
+- Carousel animation testing
 
 #### Styling
 - Custom CircularXX font
@@ -102,6 +132,8 @@ Uses Supabase with the following schema for composers:
 - Black background theme
 - Smooth animations and transitions
 - Consistent spacing and layout
+- Grid-specific styling for composer display
+- Toggle button styling with active states
 
 ### 5. Error Handling
 - Database connection validation
@@ -109,48 +141,60 @@ Uses Supabase with the following schema for composers:
 - Graceful content fallbacks
 - Video embed error handling
 - External link security measures
+- Element existence checks before DOM operations
+- Detailed error logging for debugging
 
 ## File Structure
 
 ```
 src/
 ├── composer.html          # Individual composer page template
-├── index.html            # Main landing page
+├── composer_grid.html     # Full grid view of all composers
+├── index.html             # Main landing page with toggle view feature
 ├── assets/
 │   ├── data/
 │   │   └── catalog-links.md  # Catalog platform URLs
 │   ├── images/          # Static images and logos
 │   ├── fonts/           # Custom font files
-│   └── styles/          # CSS stylesheets
+│   └── styles/
+│       ├── main.css     # Main stylesheet
+│       └── grid.css     # Grid-specific styles
 ├── components/          # Reusable UI components
 └── scripts/
     ├── composer-page.js # Composer page logic
+    ├── composer-grid.js # Grid view logic
     ├── composers.js     # Composer data handling
-    ├── main.js         # Core application logic
-    ├── supabase.js     # Database connectivity
-    └── __tests__/      # Test files
+    ├── main.js          # Core application logic with view toggle
+    ├── site-version.js  # Version handling for multi-version support
+    ├── supabase.js      # Database connectivity
+    └── tests/           # Test files
+        ├── carousel-test-runner.html
+        └── carousel-tests.js
 ```
 
 ## Best Practices
 
 1. **Performance**
-   - Efficient DOM manipulation
-   - Optimized animations
-   - Resource lazy loading
+   - Efficient DOM manipulation with document fragments
+   - Optimized animations with requestAnimationFrame
+   - Resource lazy loading with Intersection Observer
    - Optimized video embedding
+   - Caching strategies for database queries
 
 2. **Maintainability**
    - Modular JavaScript structure
    - Clear separation of concerns
    - Comprehensive error handling
    - Documentation of external links
+   - Consistent view state management
 
 3. **User Experience**
-   - Smooth animations
-   - Responsive design
-   - Intuitive navigation
+   - Smooth animations and transitions between views
+   - Responsive design with grid and carousel options
+   - Intuitive navigation with visual toggle indicators
    - Interactive video controls
    - Direct catalog access
+   - Consistent view state when navigating between pages
 
 4. **Security**
    - Secure external linking
