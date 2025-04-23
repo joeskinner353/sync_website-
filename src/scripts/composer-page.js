@@ -1,4 +1,5 @@
 import { supabase } from './supabase.js';
+import { getCurrentVersion } from './site-version.js';
 
 // Convert Vimeo URL to embed URL and thumbnail URL
 function getVimeoUrls(url) {
@@ -111,37 +112,72 @@ async function loadComposerData() {
         console.error('No composer slug provided');
         return;
     }
+    
+    // Get current site version
+    const currentVersion = getCurrentVersion();
+    console.log(`Loading composer for site version: ${currentVersion}`);
 
-    // Fetch composer data from Supabase
+    // Fetch composer data from Supabase with site version filtering
     const { data: composer, error } = await supabase
         .from('composers')
         .select('*')
         .eq('slug', slug)
         .eq('is_visible', true)
+        .contains('site_version', [currentVersion])
         .single();
 
     if (error || !composer) {
         console.error('Error loading composer:', error);
+        // If composer not found for current version, try without version filter
+        // as a fallback (useful for transitioning between versions)
+        const { data: fallbackComposer, error: fallbackError } = await supabase
+            .from('composers')
+            .select('*')
+            .eq('slug', slug)
+            .eq('is_visible', true)
+            .single();
+            
+        if (fallbackError || !fallbackComposer) {
+            console.error('Composer not found even with fallback:', fallbackError);
+            document.body.innerHTML = '<div style="text-align: center; padding: 50px;"><h1>Composer not found</h1><p>The composer you are looking for is not available in the current site version.</p></div>';
+            return;
+        }
+        
+        console.log('Using fallback composer data (not filtered by version)');
+        populateComposerData(fallbackComposer);
         return;
     }
 
+    populateComposerData(composer);
+}
+
+// Function to populate composer data in the UI
+function populateComposerData(composer) {
     // Update page content
     document.querySelector('.ComposerName').textContent = composer.name;
     document.querySelector('.ComposerBio').textContent = composer.bio;
 
     // Update social links
-    const spotifyIcon = document.querySelector('[data-platform="Spotify"]');
-    const instagramIcon = document.querySelector('[data-platform="Instagram"]');
-    const tiktokIcon = document.querySelector('[data-platform="TikTok"]');
+    const spotifyIcon = document.querySelector('a[href] svg path[fill="#1ED760"]')?.closest('a');
+    const instagramIcon = document.querySelector('a[href] svg g[clip-path]')?.closest('a');
+    const tiktokIcon = document.querySelector('a[href] svg path[fill="#FF004F"]')?.closest('a');
 
     if (spotifyIcon && composer.spotify_url) {
-        spotifyIcon.parentElement.href = composer.spotify_url;
+        spotifyIcon.href = composer.spotify_url;
+    } else if (spotifyIcon) {
+        spotifyIcon.style.display = 'none';
     }
+    
     if (instagramIcon && composer.instagram_url) {
-        instagramIcon.parentElement.href = composer.instagram_url;
+        instagramIcon.href = composer.instagram_url;
+    } else if (instagramIcon) {
+        instagramIcon.style.display = 'none';
     }
+    
     if (tiktokIcon && composer.tiktok_url) {
-        tiktokIcon.parentElement.href = composer.tiktok_url;
+        tiktokIcon.href = composer.tiktok_url;
+    } else if (tiktokIcon) {
+        tiktokIcon.style.display = 'none';
     }
 
     // Update composer image
@@ -210,6 +246,8 @@ async function loadComposerData() {
             videosSection.innerHTML = '';
             videosSection.appendChild(videoTrack);
             setupVideoFullscreen();
+        } else {
+            videosSection.style.display = 'none';
         }
     }
 

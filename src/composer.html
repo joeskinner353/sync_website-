@@ -165,9 +165,38 @@
         .social-link {
             text-decoration: none;
         }
+
+        .navigation {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-link {
+            color: black;
+            text-decoration: none;
+            font-family: CircularXX TT;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 8px 16px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
     </style>
 </head>
 <body>
+    <div class="navigation">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="composer_grid.html" class="nav-link">All Composers</a>
+    </div>
+
     <div data-layer="composer_template_v2" class="ComposerTemplateV2">
         <div data-layer="composer_header" class="ComposerHeader">
             <div data-layer="[composer name]" class="ComposerName"></div>

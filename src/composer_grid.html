@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Composer Grid | Concord Music Publishing</title>
+    <link rel="stylesheet" href="assets/styles/main.css">
+    <link rel="stylesheet" href="assets/styles/grid.css">
+    <link rel="icon" type="image/x-icon" href="assets/images/concord-C-icon-red.png">
+</head>
+<body>
+    <div class="grid-container">
+        <header class="header">
+            <div class="logo-container">
+                <img class="logo" src="assets/images/concord-C-icon-red.png" alt="Concord C Icon">
+                <div class="title">concord music publishing</div>
+            </div>
+            <nav class="navigation">
+                <a href="index.html" class="nav-link">Home</a>
+            </nav>
+        </header>
+        
+        <div class="filter-controls">
+            <button class="filter-button active" data-filter="all">All</button>
+            <button class="filter-button" data-filter="artist">Artists</button>
+            <button class="filter-button" data-filter="producer">Producers</button>
+            <button class="filter-button" data-filter="songwriter">Songwriters</button>
+        </div>
+        
+        <div class="composer-grid">
+            <!-- Grid items will be dynamically inserted here -->
+            <div class="loading">Loading composers...</div>
+        </div>
+    </div>
+    
+    <script type="module" src="scripts/composer-grid.js"></script>
+</body>
+</html>

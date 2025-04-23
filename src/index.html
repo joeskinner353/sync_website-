@@ -5,11 +5,114 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Concord Music Publishing</title>
     <link rel="stylesheet" href="assets/styles/main.css">
+    <style>
+        .nav-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-link {
+            color: black;
+            text-decoration: none;
+            font-family: 'CircularXX TT', sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            transition: opacity 0.2s ease;
+        }
+        
+        .nav-link:hover {
+            opacity: 0.8;
+        }
+        
+        /* View toggle styling */
+        .view-toggle {
+            display: flex;
+            gap: 10px;
+            position: absolute;
+            right: 20px;
+            top: 290px; /* Position it near the "writers" section */
+        }
+        
+        .toggle-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .toggle-button:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+        
+        .toggle-button.active {
+            background: black;
+            color: white;
+        }
+        
+        .toggle-button svg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        /* Writers grid styling */
+        .writers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 30px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: none; /* Hidden by default */
+        }
+        
+        .writers-grid .grid-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            aspect-ratio: 1/1;
+        }
+        
+        .writers-grid img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .writers-grid .grid-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .writers-grid .composer-name-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px;
+            font-family: 'CircularXX TT', sans-serif;
+        }
+    </style>
 </head>
 <body>
     <div data-layer="Desktop - 1" class="Desktop1">
         <img data-layer="concord-C-icon-red 1" class="ConcordCIconRed1" src="assets/images/concord-C-icon-red.png" alt="Concord C Icon">
         <div data-layer="concord music publishing" class="ConcordMusicPublishing">concord music publishing</div>
+        
+        <!-- Navigation Links -->
+        <div class="nav-container">
+            <a href="composer_grid.html" class="nav-link">View All Composers</a>
+        </div>
         
         <div data-layer="catalogs" class="Catalogs section-title">catalogs</div>
         <div data-layer="catalog_images" class="CatalogImages scrollable-container">
@@ -38,10 +141,35 @@
         </div>
 
         <div data-layer="writers" class="Writers section-title">writers</div>
+        
+        <!-- View toggle buttons -->
+        <div class="view-toggle">
+            <button class="toggle-button carousel-view active" aria-label="Carousel View">
+                <svg viewBox="0 0 24 24" width="24" height="24">
+                    <rect x="2" y="4" width="20" height="2" fill="currentColor"/>
+                    <rect x="2" y="11" width="20" height="2" fill="currentColor"/>
+                    <rect x="2" y="18" width="20" height="2" fill="currentColor"/>
+                </svg>
+            </button>
+            <button class="toggle-button grid-view" aria-label="Grid View">
+                <svg viewBox="0 0 24 24" width="24" height="24">
+                    <rect x="3" y="3" width="7" height="7" fill="currentColor"/>
+                    <rect x="14" y="3" width="7" height="7" fill="currentColor"/>
+                    <rect x="3" y="14" width="7" height="7" fill="currentColor"/>
+                    <rect x="14" y="14" width="7" height="7" fill="currentColor"/>
+                </svg>
+            </button>
+        </div>
+        
         <div data-layer="writers_images" class="WritersImages scrollable-container">
             <div class="carousel-track">
                 <!-- Dynamic composer content will be loaded here -->
             </div>
+        </div>
+        
+        <!-- Writers Grid View (hidden by default) -->
+        <div class="writers-grid">
+            <!-- Grid items will be dynamically inserted here -->
         </div>
 
         <div data-layer="ftv" class="Ftv section-title">ftv</div>
