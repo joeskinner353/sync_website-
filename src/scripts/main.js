@@ -49,7 +49,10 @@ function initCarousels() {
     
     carousels.forEach(carousel => {
         const track = carousel.querySelector('.carousel-track');
+        if (!track) return; // Skip if track doesn't exist
+        
         const links = track.querySelectorAll('.carousel-link');
+        if (links.length === 0) return; // Skip if no links exist yet
         
         // Clone enough items to ensure smooth scrolling
         const itemsToClone = 3; // Clone more items for smoother transition
@@ -64,17 +67,27 @@ function initCarousels() {
         const scrollSpeed = 0.5; // Reduced speed for smoother animation
         let animationId;
         let isPaused = false;
+        
+        // Calculate itemSetWidth only once initially
+        const originalLinks = Array.from(links);
+        const itemSetWidth = originalLinks.reduce((sum, link) => sum + link.offsetWidth, 0);
+        
+        // Skip animation if itemSetWidth is 0 (no visible items)
+        if (itemSetWidth === 0) return;
 
         function animate() {
             if (!isPaused) {
                 currentPosition -= scrollSpeed;
                 
-                // Get width of one complete set of items
-                const itemSetWidth = Array.from(links).reduce((sum, link) => sum + link.offsetWidth, 0);
-                
-                // Reset position smoothly when we've scrolled through one complete set
-                if (-currentPosition >= itemSetWidth) {
-                    currentPosition += itemSetWidth;
+                // FIX: Use Math.floor to handle fractional pixel values and ensure precise reset
+                if (Math.abs(currentPosition) >= itemSetWidth) {
+                    // Reset to exact itemSetWidth multiple to prevent drift
+                    currentPosition = currentPosition % itemSetWidth;
+                    
+                    // If we ended up with a negative remainder, adjust to maintain proper position
+                    if (currentPosition < 0) {
+                        currentPosition += itemSetWidth;
+                    }
                 }
                 
                 track.style.transform = `translateX(${currentPosition}px)`;
@@ -105,7 +118,10 @@ function initCarousels() {
 // Initialize composers carousel
 async function initComposersCarousel() {
     const writersTrack = document.querySelector('.WritersImages .carousel-track');
-    if (!writersTrack) return;
+    if (!writersTrack) {
+        console.error('Writers track element not found');
+        return;
+    }
 
     // Performance: Track loading time
     const startTime = performance.now();
@@ -113,56 +129,63 @@ async function initComposersCarousel() {
     // Clear existing static content
     writersTrack.innerHTML = '';
 
-    // Get current site version and load composers from Supabase
-    const currentVersion = getCurrentVersion();
-    console.log(`Loading composers for site version: ${currentVersion}`);
-    
-    // Use cache if available
-    let composers;
-    const cacheKey = `composers_${currentVersion}`;
-    
-    if (composerCache.has(cacheKey)) {
-        composers = composerCache.get(cacheKey);
-        console.log('Using cached composer data for carousel');
-    } else {
-        composers = await loadVisibleComposers(currentVersion);
-        composerCache.set(cacheKey, composers);
-        console.log('Fetched fresh composer data for carousel');
-    }
-    
-    // Performance: Use document fragment for batch DOM updates
-    const fragment = document.createDocumentFragment();
-    
-    // Add composers to carousel
-    composers.forEach(composer => {
-        const composerElement = createComposerElement(composer);
-        fragment.appendChild(composerElement);
-    });
+    try {
+        // Get current site version and load composers from Supabase
+        const currentVersion = getCurrentVersion();
+        console.log(`Loading composers for site version: ${currentVersion}`);
+        
+        // Use cache if available
+        let composers;
+        const cacheKey = `composers_${currentVersion}`;
+        
+        if (composerCache.has(cacheKey)) {
+            composers = composerCache.get(cacheKey);
+            console.log('Using cached composer data for carousel');
+        } else {
+            composers = await loadVisibleComposers(currentVersion);
+            composerCache.set(cacheKey, composers);
+            console.log('Fetched fresh composer data for carousel:', composers);
+        }
+        
+        if (!composers || composers.length === 0) {
+            console.warn('No composers returned from database');
+            return;
+        }
+        
+        // Performance: Use document fragment for batch DOM updates
+        const fragment = document.createDocumentFragment();
+        
+        // Add composers to carousel
+        composers.forEach(composer => {
+            const composerElement = createComposerElement(composer);
+            fragment.appendChild(composerElement);
+        });
 
-    // Performance: Second fragment for clone elements
-    const cloneFragment = document.createDocumentFragment();
-    
-    // Clone composers for infinite scroll
-    composers.forEach(composer => {
-        const composerElement = createComposerElement(composer);
-        cloneFragment.appendChild(composerElement.cloneNode(true));
-    });
-    
-    // Batch DOM updates
-    writersTrack.appendChild(fragment);
-    writersTrack.appendChild(cloneFragment);
-    
-    // Performance: Log loading time
-    const loadTime = performance.now() - startTime;
-    console.log(`Loaded composers carousel in ${loadTime.toFixed(2)}ms`);
-    
-    // If there's a saved preference for grid view, switch to it
-    const savedView = localStorage.getItem('preferredView');
-    if (savedView === 'grid') {
-        showGridView(composers);
+        // Performance: Second fragment for clone elements
+        const cloneFragment = document.createDocumentFragment();
+        
+        // Clone composers for infinite scroll
+        composers.forEach(composer => {
+            const composerElement = createComposerElement(composer);
+            cloneFragment.appendChild(composerElement.cloneNode(true));
+        });
+        
+        // Batch DOM updates
+        writersTrack.appendChild(fragment);
+        writersTrack.appendChild(cloneFragment);
+        
+        // Performance: Log loading time
+        const loadTime = performance.now() - startTime;
+        console.log(`Loaded composers carousel in ${loadTime.toFixed(2)}ms with ${composers.length} composers`);
+        
+        // MODIFIED: Always ensure carousel view is visible on page load/return
+        showCarouselView();
+        
+        return composers; // Return composers for grid view
+    } catch (err) {
+        console.error('Error in initComposersCarousel:', err);
+        return [];
     }
-    
-    return composers; // Return composers for grid view
 }
 
 // Initialize FTV carousel
@@ -233,8 +256,17 @@ function initViewToggle(composers) {
     if (!carouselViewBtn || !gridViewBtn) return;
     
     // Performance: Use passive event listeners for better scroll performance
-    carouselViewBtn.addEventListener('click', showCarouselView, { passive: true });
-    gridViewBtn.addEventListener('click', () => showGridView(composers), { passive: true });
+    carouselViewBtn.addEventListener('click', () => {
+        showCarouselView();
+        // Save preference only when user explicitly clicks the button
+        localStorage.setItem('preferredView', 'carousel');
+    }, { passive: true });
+    
+    gridViewBtn.addEventListener('click', () => {
+        showGridView(composers);
+        // Save preference only when user explicitly clicks the button
+        localStorage.setItem('preferredView', 'grid');
+    }, { passive: true });
 }
 
 // Show carousel view
@@ -256,9 +288,6 @@ function showCarouselView() {
         writersCarousel.style.display = 'block';
         writersGrid.style.display = 'none';
     });
-    
-    // Save preference
-    localStorage.setItem('preferredView', 'carousel');
 }
 
 // Show grid view
@@ -280,9 +309,6 @@ function showGridView(composers) {
         writersCarousel.style.display = 'none';
         writersGrid.style.display = 'grid';
     });
-    
-    // Save preference
-    localStorage.setItem('preferredView', 'grid');
     
     // Populate grid if empty
     if (writersGrid.children.length === 0) {
@@ -379,8 +405,12 @@ async function init() {
         
         initSmoothScroll();
         
-        // Load composers and initialize carousels
-        const composers = await initComposersCarousel().catch(err => console.error('Composers carousel error:', err));
+        // Load composers and initialize carousels in the correct order
+        const composers = await initComposersCarousel().catch(err => {
+            console.error('Composers carousel error:', err);
+            return [];
+        });
+        
         await initFTVCarousel().catch(err => console.error('FTV carousel error:', err));
         
         // Initialize carousels after dynamic content is loaded
@@ -432,4 +462,13 @@ document.addEventListener('visibilitychange', () => {
             }
         }
     });
+});
+
+// Add event listener for page visibility to reset view preference on page navigation
+window.addEventListener('pageshow', (event) => {
+    // If navigating back to this page
+    if (event.persisted) {
+        console.log('Page was loaded from cache, resetting to carousel view');
+        showCarouselView();
+    }
 });

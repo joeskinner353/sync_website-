@@ -28,12 +28,24 @@
         }
         
         /* View toggle styling */
+        .view-toggle-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 0 20px;
+        }
+        
+        .writers-title {
+            font-size: 32px;
+            font-family: 'CircularXX TT', sans-serif;
+            font-weight: 700;
+            margin: 0;
+        }
+        
         .view-toggle {
             display: flex;
             gap: 10px;
-            position: absolute;
-            right: 20px;
-            top: 290px; /* Position it near the "writers" section */
         }
         
         .toggle-button {
@@ -140,30 +152,31 @@
             </div>
         </div>
 
-        <div data-layer="writers" class="Writers section-title">writers</div>
-        
-        <!-- View toggle buttons -->
-        <div class="view-toggle">
-            <button class="toggle-button carousel-view active" aria-label="Carousel View">
-                <svg viewBox="0 0 24 24" width="24" height="24">
-                    <rect x="2" y="4" width="20" height="2" fill="currentColor"/>
-                    <rect x="2" y="11" width="20" height="2" fill="currentColor"/>
-                    <rect x="2" y="18" width="20" height="2" fill="currentColor"/>
-                </svg>
-            </button>
-            <button class="toggle-button grid-view" aria-label="Grid View">
-                <svg viewBox="0 0 24 24" width="24" height="24">
-                    <rect x="3" y="3" width="7" height="7" fill="currentColor"/>
-                    <rect x="14" y="3" width="7" height="7" fill="currentColor"/>
-                    <rect x="3" y="14" width="7" height="7" fill="currentColor"/>
-                    <rect x="14" y="14" width="7" height="7" fill="currentColor"/>
-                </svg>
-            </button>
+        <!-- Writers section with title and view toggle -->
+        <div class="view-toggle-container">
+            <div data-layer="writers" class="writers-title">writers</div>
+            <div class="view-toggle">
+                <button class="toggle-button carousel-view active" aria-label="Carousel View">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <rect x="2" y="4" width="20" height="2" fill="currentColor"/>
+                        <rect x="2" y="11" width="20" height="2" fill="currentColor"/>
+                        <rect x="2" y="18" width="20" height="2" fill="currentColor"/>
+                    </svg>
+                </button>
+                <a href="composer_grid.html" class="toggle-button grid-view" aria-label="Grid View">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <rect x="3" y="3" width="7" height="7" fill="currentColor"/>
+                        <rect x="14" y="3" width="7" height="7" fill="currentColor"/>
+                        <rect x="3" y="14" width="7" height="7" fill="currentColor"/>
+                        <rect x="14" y="14" width="7" height="7" fill="currentColor"/>
+                    </svg>
+                </a>
+            </div>
         </div>
         
         <div data-layer="writers_images" class="WritersImages scrollable-container">
             <div class="carousel-track">
-                <!-- Dynamic composer content will be loaded here -->
+                <!-- Composer images will be loaded dynamically -->
             </div>
         </div>
         

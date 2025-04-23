@@ -187,6 +187,19 @@ footer {
     height: 206px;
 }
 
+/* Fix for the view-toggle-container positioning */
+.view-toggle-container {
+    position: absolute;
+    top: 570px;
+    left: 0;
+    width: 100%;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
 .Writers {
     top: 570px;
     right: auto; /* Override the right alignment from section-title */

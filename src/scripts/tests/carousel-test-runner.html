@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carousel Tests - Concord Music Publishing</title>
+    <link rel="stylesheet" href="../../assets/styles/main.css">
+    <style>
+        body {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            color: white;
+        }
+        
+        .test-controls {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+        
+        .test-section {
+            margin-bottom: 30px;
+        }
+        
+        .test-button {
+            background: #F4A461;
+            color: black;
+            border: none;
+            padding: 10px 15px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            font-family: 'CircularXX', Arial, sans-serif;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .test-button:hover {
+            background: #f8b678;
+        }
+        
+        .test-result {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        
+        h1, h2 {
+            font-family: 'CircularXX', Arial, sans-serif;
+        }
+        
+        .test-carousel {
+            margin: 30px 0;
+            position: relative;
+            height: 206px;
+        }
+        
+        .monitor-section {
+            display: flex;
+            margin-bottom: 20px;
+            gap: 20px;
+        }
+        
+        .monitor-box {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        
+        .position-value {
+            font-weight: bold;
+            color: #F4A461;
+        }
+        
+        /* Fix test carousel styling to match main site */
+        .test-carousel .carousel-track {
+            position: absolute;
+        }
+        
+        .test-carousel .carousel-link img {
+            height: 166px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Carousel Test Suite</h1>
+    <p>Use this page to diagnose carousel position and animation issues</p>
+    
+    <div class="test-controls">
+        <h2>Test Controls</h2>
+        <button id="runAllTests" class="test-button">Run All Tests</button>
+        <button id="testPosition" class="test-button">Test Position Reset</button>
+        <button id="testAnimation" class="test-button">Test Animation</button>
+        <button id="testCloning" class="test-button">Test Item Cloning</button>
+        <button id="testManual" class="test-button">Test Manual Scrolling</button>
+        <button id="resetCarousel" class="test-button">Reset Carousel</button>
+        
+        <div class="monitor-section">
+            <div class="monitor-box">
+                Current Position: <span id="positionMonitor" class="position-value">0px</span>
+            </div>
+            <div class="monitor-box">
+                Animation State: <span id="animationState" class="position-value">Running</span>
+            </div>
+            <div class="monitor-box">
+                Reset Threshold: <span id="resetThreshold" class="position-value">Not calculated</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Carousel Test Instance</h2>
+        <p>This is a test instance of the carousel for visual diagnosis:</p>
+        
+        <div class="test-carousel scrollable-container WritersImages">
+            <div class="carousel-track">
+                <!-- Placeholder items that will be replaced by our test data -->
+                <a href="#" class="carousel-link">
+                    <img src="../../assets/images/fania.png" alt="Test 1">
+                    <div class="composer-name-overlay">Test Item 1</div>
+                </a>
+                <a href="#" class="carousel-link">
+                    <img src="../../assets/images/pulse.png" alt="Test 2">
+                    <div class="composer-name-overlay">Test Item 2</div>
+                </a>
+                <a href="#" class="carousel-link">
+                    <img src="../../assets/images/pusher.png" alt="Test 3">
+                    <div class="composer-name-overlay">Test Item 3</div>
+                </a>
+                <a href="#" class="carousel-link">
+                    <img src="../../assets/images/RnH.png" alt="Test 4">
+                    <div class="composer-name-overlay">Test Item 4</div>
+                </a>
+            </div>
+        </div>
+        
+        <div class="test-controls">
+            <h3>Manual Controls</h3>
+            <button id="moveLeft" class="test-button">Move Left (-100px)</button>
+            <button id="moveRight" class="test-button">Move Right (+100px)</button>
+            <button id="triggerReset" class="test-button">Trigger Position Reset</button>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test Results</h2>
+        <div id="testResults" class="test-result">Test results will appear here...</div>
+    </div>
+    
+    <script type="module">
+        import { runAllTests, testCarouselPosition, testCarouselAnimation, testCarouselCloning, testManualScrolling } from './carousel-tests.js';
+        
+        // Setup test carousel with test data
+        const testCarouselItems = [
+            { name: 'Test Item 1', image: '../../assets/images/fania.png' },
+            { name: 'Test Item 2', image: '../../assets/images/pulse.png' },
+            { name: 'Test Item 3', image: '../../assets/images/pusher.png' },
+            { name: 'Test Item 4', image: '../../assets/images/RnH.png' },
+            { name: 'Test Item 5', image: '../../assets/images/boosey_logo.png' }
+        ];
+        
+        function setupTestCarousel() {
+            const track = document.querySelector('.test-carousel .carousel-track');
+            if (!track) return;
+            
+            // Clear existing items
+            track.innerHTML = '';
+            
+            // Add test items
+            testCarouselItems.forEach(item => {
+                const link = document.createElement('a');
+                link.href = '#';
+                link.className = 'carousel-link';
+                
+                const img = document.createElement('img');
+                img.src = item.image;
+                img.alt = item.name;
+                
+                const overlay = document.createElement('div');
+                overlay.className = 'composer-name-overlay';
+                overlay.textContent = item.name;
+                
+                link.appendChild(img);
+                link.appendChild(overlay);
+                track.appendChild(link);
+            });
+            
+            // Clone items for infinite scroll (same as in main.js)
+            const links = Array.from(track.querySelectorAll('.carousel-link'));
+            const itemsToClone = 3;
+            
+            for (let i = 0; i < itemsToClone; i++) {
+                links.forEach(link => {
+                    const clone = link.cloneNode(true);
+                    track.appendChild(clone);
+                });
+            }
+            
+            // Initialize the animation
+            initializeAnimation();
+        }
+        
+        // Current position state for our test carousel
+        let currentPosition = 0;
+        let scrollSpeed = 0.5;
+        let animationId;
+        let isPaused = false;
+        
+        // Initialize animation for the test carousel
+        function initializeAnimation() {
+            const track = document.querySelector('.test-carousel .carousel-track');
+            
+            function animate() {
+                if (!isPaused) {
+                    currentPosition -= scrollSpeed;
+                    
+                    // Calculate reset threshold (same as in main.js)
+                    const links = Array.from(track.querySelectorAll('.carousel-link')).slice(0, testCarouselItems.length);
+                    const itemSetWidth = links.reduce((sum, link) => sum + link.offsetWidth, 0);
+                    
+                    // Update monitor
+                    document.getElementById('resetThreshold').textContent = `${itemSetWidth}px`;
+                    
+                    // Reset position smoothly when we've scrolled through one complete set
+                    if (-currentPosition >= itemSetWidth) {
+                        currentPosition += itemSetWidth;
+                        logToResults('Position reset triggered: ' + currentPosition);
+                    }
+                    
+                    // Apply transform
+                    track.style.transform = `translateX(${currentPosition}px)`;
+                    
+                    // Update position monitor
+                    document.getElementById('positionMonitor').textContent = `${Math.round(currentPosition)}px`;
+                }
+                animationId = requestAnimationFrame(animate);
+            }
+            
+            // Start animation
+            animate();
+            
+            // Setup pause/resume events
+            const carousel = document.querySelector('.test-carousel');
+            
+            carousel.addEventListener('mouseenter', () => {
+                isPaused = true;
+                document.getElementById('animationState').textContent = 'Paused (hover)';
+            });
+            
+            carousel.addEventListener('mouseleave', () => {
+                isPaused = false;
+                document.getElementById('animationState').textContent = 'Running';
+            });
+            
+            document.addEventListener('visibilitychange', () => {
+                isPaused = document.hidden;
+                document.getElementById('animationState').textContent = 
+                    document.hidden ? 'Paused (hidden)' : 'Running';
+            });
+        }
+        
+        // Log output to the results div
+        function logToResults(message) {
+            const results = document.getElementById('testResults');
+            results.textContent += message + '\n';
+            results.scrollTop = results.scrollHeight;
+        }
+        
+        // Clear results
+        function clearResults() {
+            document.getElementById('testResults').textContent = '';
+        }
+        
+        // Custom console.log override for the tests
+        const originalConsoleLog = console.log;
+        console.log = function(...args) {
+            originalConsoleLog.apply(console, args);
+            logToResults(args.join(' '));
+        };
+        
+        // Button event handlers
+        document.getElementById('runAllTests').addEventListener('click', () => {
+            clearResults();
+            logToResults('Running all tests...');
+            runAllTests();
+        });
+        
+        document.getElementById('testPosition').addEventListener('click', () => {
+            clearResults();
+            logToResults('Testing position reset...');
+            testCarouselPosition();
+        });
+        
+        document.getElementById('testAnimation').addEventListener('click', () => {
+            clearResults();
+            logToResults('Testing animation...');
+            testCarouselAnimation();
+        });
+        
+        document.getElementById('testCloning').addEventListener('click', () => {
+            clearResults();
+            logToResults('Testing item cloning...');
+            testCarouselCloning();
+        });
+        
+        document.getElementById('testManual').addEventListener('click', () => {
+            clearResults();
+            logToResults('Testing manual scrolling...');
+            testManualScrolling();
+        });
+        
+        document.getElementById('resetCarousel').addEventListener('click', () => {
+            clearResults();
+            logToResults('Resetting carousel...');
+            setupTestCarousel();
+        });
+        
+        document.getElementById('moveLeft').addEventListener('click', () => {
+            const track = document.querySelector('.test-carousel .carousel-track');
+            currentPosition -= 100;
+            track.style.transform = `translateX(${currentPosition}px)`;
+            document.getElementById('positionMonitor').textContent = `${Math.round(currentPosition)}px`;
+            logToResults(`Moved left to ${currentPosition}px`);
+        });
+        
+        document.getElementById('moveRight').addEventListener('click', () => {
+            const track = document.querySelector('.test-carousel .carousel-track');
+            currentPosition += 100;
+            track.style.transform = `translateX(${currentPosition}px)`;
+            document.getElementById('positionMonitor').textContent = `${Math.round(currentPosition)}px`;
+            logToResults(`Moved right to ${currentPosition}px`);
+        });
+        
+        document.getElementById('triggerReset').addEventListener('click', () => {
+            const track = document.querySelector('.test-carousel .carousel-track');
+            const links = Array.from(track.querySelectorAll('.carousel-link')).slice(0, testCarouselItems.length);
+            const itemSetWidth = links.reduce((sum, link) => sum + link.offsetWidth, 0);
+            
+            currentPosition += itemSetWidth;
+            track.style.transform = `translateX(${currentPosition}px)`;
+            document.getElementById('positionMonitor').textContent = `${Math.round(currentPosition)}px`;
+            logToResults(`Manually reset position to ${currentPosition}px using itemSetWidth: ${itemSetWidth}px`);
+        });
+        
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            setupTestCarousel();
+            logToResults('Test environment initialized');
+        });
+    </script>
+</body>
+</html>
