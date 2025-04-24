@@ -199,13 +199,24 @@ function populateComposerData(composer) {
         ].filter(url => url);
 
         if (videoUrls.length > 0) {
-            const videoTrack = document.createElement('div');
-            videoTrack.className = 'video-track';
+            const videoSlider = videosSection.querySelector('.video-slider');
+            const videoTrack = videosSection.querySelector('.video-track');
+            const videoIndicator = videosSection.querySelector('.video-indicator');
             
-            videoTrack.innerHTML = videoUrls.map((url, index) => {
-                const embedUrl = getVimeoEmbedUrl(url);
-                return `
-                    <div class="video-container ${index === 0 ? 'active' : ''}" data-video-url="${url}">
+            if (videoTrack) {
+                // Clear existing content
+                videoTrack.innerHTML = '';
+                
+                // Add videos to track
+                videoUrls.forEach((url, index) => {
+                    const embedUrl = getVimeoEmbedUrl(url);
+                    
+                    const videoContainer = document.createElement('div');
+                    videoContainer.className = 'video-container';
+                    videoContainer.dataset.videoUrl = url;
+                    videoContainer.dataset.index = index;
+                    
+                    videoContainer.innerHTML = `
                         <iframe 
                             src="${embedUrl}" 
                             frameborder="0" 
@@ -214,38 +225,94 @@ function populateComposerData(composer) {
                             referrerpolicy="no-referrer"
                             title="${composer.name}'s Video ${index + 1}">
                         </iframe>
-                    </div>
-                `;
-            }).join('');
-
-            // Add click handlers to video containers
-            videoTrack.addEventListener('click', (e) => {
-                const container = e.target.closest('.video-container');
-                if (!container || container.classList.contains('active')) {
-                    // If clicking an already active video, make it fullscreen
-                    if (container && container.classList.contains('active')) {
-                        const iframe = container.querySelector('iframe');
-                        if (iframe) {
-                            // Use Vimeo's postMessage API to trigger fullscreen
-                            iframe.contentWindow.postMessage('{"method":"setFullscreen"}', '*');
+                    `;
+                    
+                    videoTrack.appendChild(videoContainer);
+                    
+                    // Add indicator dot for this video
+                    const dot = document.createElement('div');
+                    dot.className = `video-dot ${index === 0 ? 'active' : ''}`;
+                    dot.dataset.index = index;
+                    if (videoIndicator) {
+                        videoIndicator.appendChild(dot);
+                    }
+                });
+                
+                // Set up video navigation
+                let currentIndex = 0;
+                updateVideoPosition();
+                
+                // Function to update video position
+                function updateVideoPosition() {
+                    if (!videoTrack) return;
+                    const offset = -currentIndex * 100;
+                    videoTrack.style.transform = `translateX(${offset}%)`;
+                    
+                    // Update indicator dots
+                    const dots = videoIndicator.querySelectorAll('.video-dot');
+                    dots.forEach((dot, i) => {
+                        if (i === currentIndex) {
+                            dot.classList.add('active');
+                        } else {
+                            dot.classList.remove('active');
+                        }
+                    });
+                }
+                
+                // Add click handlers for navigation buttons
+                const prevBtn = videosSection.querySelector('.video-nav-btn.prev');
+                const nextBtn = videosSection.querySelector('.video-nav-btn.next');
+                
+                if (prevBtn) {
+                    prevBtn.addEventListener('click', () => {
+                        currentIndex = (currentIndex - 1 + videoUrls.length) % videoUrls.length;
+                        updateVideoPosition();
+                    });
+                }
+                
+                if (nextBtn) {
+                    nextBtn.addEventListener('click', () => {
+                        currentIndex = (currentIndex + 1) % videoUrls.length;
+                        updateVideoPosition();
+                    });
+                }
+                
+                // Add click handlers for indicator dots
+                if (videoIndicator) {
+                    videoIndicator.addEventListener('click', (e) => {
+                        const dot = e.target.closest('.video-dot');
+                        if (dot) {
+                            currentIndex = parseInt(dot.dataset.index);
+                            updateVideoPosition();
+                        }
+                    });
+                }
+                
+                // Set up keyboard navigation
+                document.addEventListener('keydown', (e) => {
+                    // Only handle arrow keys if video section is in viewport
+                    const rect = videosSection.getBoundingClientRect();
+                    const isInView = (
+                        rect.top >= 0 &&
+                        rect.left >= 0 &&
+                        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+                    );
+                    
+                    if (isInView) {
+                        if (e.key === 'ArrowLeft') {
+                            currentIndex = (currentIndex - 1 + videoUrls.length) % videoUrls.length;
+                            updateVideoPosition();
+                        } else if (e.key === 'ArrowRight') {
+                            currentIndex = (currentIndex + 1) % videoUrls.length;
+                            updateVideoPosition();
                         }
                     }
-                    return;
-                }
+                });
                 
-                // Remove active class from current active video
-                const currentActive = videoTrack.querySelector('.active');
-                if (currentActive) {
-                    currentActive.classList.remove('active');
-                }
-                
-                // Add active class to clicked video
-                container.classList.add('active');
-            });
-
-            videosSection.innerHTML = '';
-            videosSection.appendChild(videoTrack);
-            setupVideoFullscreen();
+                // Handle fullscreen
+                setupVideoFullscreen();
+            }
         } else {
             videosSection.style.display = 'none';
         }
