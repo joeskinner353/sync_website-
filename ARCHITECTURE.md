@@ -23,13 +23,17 @@ The application is a web-based platform for Concord Music Publishing that showca
 - **Composer Pages (composer.html)**
   - Individual pages for each composer
   - Profile photo
-  - Biography
-  - Social media links (Spotify, Instagram, TikTok)
-  - Interactive video gallery:
-    - Horizontally scrollable video section
-    - Click-to-play functionality
+  - Biography with customizable typography
+  - Social media links (Spotify, Instagram, TikTok) with standardized SVG icons
+  - **New in V3**: Single video carousel with navigation arrows:
+    - One-video-at-a-time display format
+    - Left/right navigation buttons for video switching
+    - Indicator dots showing current position
+    - Keyboard arrow key navigation
     - Fullscreen video support with keyboard controls (Escape/Backspace)
-  - Spotify playlist integration
+  - Spotify playlist integration with centered alignment
+  - **New in V3**: Improved spacing and layout with consistent margins
+  - **New in V3**: Cleaner container styling with transparent backgrounds
 
 - **Composer Grid Page (composer_grid.html)**
   - Full grid view of all composers
@@ -63,12 +67,16 @@ Two types of scrolling mechanisms are implemented:
 - Animation-based transitions between view modes
 - Toggle button UI with active state indicators
 
-#### Video Player Features
-- Horizontal scrolling video gallery
+#### Video Player Features (Updated in V3)
+- Single-video display with navigation controls
+- Previous/next video navigation with arrow buttons
+- Visual indicators for current video position
+- Keyboard navigation support (left/right arrows)
 - Vimeo integration with optimized embed parameters
 - Fullscreen support with keyboard controls
-- Responsive video sizing
+- Responsive video sizing with consistent dimensions
 - Dynamic video loading from composer data
+- Smooth transitions between videos
 
 ### 3. Database Integration
 
@@ -120,20 +128,25 @@ Uses Supabase with the following schema for composers:
 - Session caching of composer data
 - Optimized image loading in grid view
 
+#### Styling (Updated for V3)
+- Custom CircularXX font
+- Responsive design
+- Warm background theme (#F4A461)
+- Consistent spacing with optimized margins:
+  - 25px bottom margin for composer bio
+  - 0px top margin for composer videos
+  - 25px top margin for Spotify playlist
+- Improved visual hierarchy with refined typography
+- Standardized social media icon implementation
+- Navigation controls with hover effects
+- Transparent containers for cleaner visual presentation
+- Video player with subtle background and rounded corners
+
 #### Testing
 - Jest-based testing suite
 - Supabase connectivity tests
 - Data structure validation
 - Carousel animation testing
-
-#### Styling
-- Custom CircularXX font
-- Responsive design
-- Black background theme
-- Smooth animations and transitions
-- Consistent spacing and layout
-- Grid-specific styling for composer display
-- Toggle button styling with active states
 
 ### 5. Error Handling
 - Database connection validation
