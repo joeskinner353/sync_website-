@@ -7,34 +7,44 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 export const supabase = createClient(supabaseUrl, supabaseKey)
 
 export async function loadFTVImages() {
-    // Define the known FTV images from the bucket, including the new image
-    const ftvImages = [
-        { name: 'unforgotten', filename: 'unforgotten.jpeg' },
-        { name: 'night manager', filename: 'night_manager.jpg' },
-        { name: 'catastrophe', filename: 'catastrophe.jpg' },
-        { name: 'taskmaster', filename: 'taskmaster.jpg' }  // Changed from top_boy.jpg
-    ];
-
     try {
-        // Get public URLs for each image
-        const images = ftvImages.map(img => {
-            const { data: { publicUrl } } = supabase
+        console.log('Creating public URLs for FTV images with correct formats...');
+        
+        // Define the known images, including Mr Loverman with underscore in filename
+        const knownImages = [
+            { filename: 'catastrophe.jpg', name: 'Catastrophe' },
+            { filename: 'night_manager.jpg', name: 'Night Manager' }, 
+            { filename: 'taskmaster.jpg', name: 'Taskmaster' },
+            { filename: 'unforgotten.jpeg', name: 'Unforgotten' },
+            // Updated to use underscore in filename
+            { filename: 'mr_loverman.jpg', name: 'Mr Loverman' }
+        ];
+        
+        // Generate URLs for all images
+        const images = knownImages.map(img => {
+            // For all images, generate the URL using the standard method
+            const { data } = supabase
                 .storage
                 .from('site-assets')
                 .getPublicUrl(`ftv/${img.filename}`);
-
-            console.log(`Generated public URL for ${img.name}:`, publicUrl);
-
+            
+            console.log(`Generated URL for ${img.name}:`, data.publicUrl);
+            
             return {
-                url: publicUrl,
+                url: data.publicUrl,
                 name: img.name
             };
         });
-
-        console.log('Final processed images:', images);
+        
+        console.log('Final processed FTV images:', images);
         return images;
     } catch (err) {
-        console.error('Unexpected error in loadFTVImages:', err);
-        return [];
+        console.error('Error in loadFTVImages:', err);
+        
+        // Return default FTV image as fallback
+        return [{
+            url: 'assets/images/ftv.png',
+            name: 'FTV'
+        }];
     }
 }
