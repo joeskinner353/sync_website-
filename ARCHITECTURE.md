@@ -109,6 +109,27 @@ Uses Supabase with the following schema for composers:
 - External catalog platform integration
 - Cached composer data to prevent redundant database fetches
 
+#### PDF Generation
+- One-click composer profile PDF export
+- Implementation using html2canvas and jsPDF libraries
+- PDF download with composer-specific filename
+- Custom PDF layout matching brand design:
+  - Concord logo with hyperlink to company website
+  - Composer name and biography
+  - Social media links as interactive, clickable icons
+  - Composer photo placement
+  - Branded theming with consistent styling
+- Interactive elements in PDF:
+  - Clickable social media icons (Spotify, Instagram, TikTok)
+  - Clickable Concord logo linking to music publishing homepage
+- Technical approach:
+  - DOM-to-canvas rendering for visual elements
+  - Custom link annotation placement for interactive elements
+  - PDF metadata and copyright information
+  - A4 format with precise element positioning
+  - Load state management with visual feedback during generation
+  - Error handling for failed PDF creation
+
 #### View Management
 - Dynamic view switching without page reload
 - Responsive grid layout with CSS Grid
