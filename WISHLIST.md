@@ -4,18 +4,11 @@ This document tracks desired improvements and new features for future developmen
 
 ## User Experience Improvements
 
-### Navigation Enhancements
-- [ ] **Add home button to composer template**
-  - Add a clearly visible home button/link on all composer pages
-  - Ensure consistent positioning across screen sizes
-
-
 ### Social Media Integration
 - [ ] **Change social links to open in new tab**
   - Update all social media links to use `target="_blank"` attribute
   - Add `rel="noopener noreferrer"` for security
   - Ensure this applies to Spotify, Instagram, and TikTok links
-
 
 ## New Features
 
