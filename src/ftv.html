@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Film & TV | Concord Music Publishing</title>
+    <link rel="stylesheet" href="assets/styles/main.css">
+    <link rel="icon" type="image/x-icon" href="assets/images/concord-C-icon-red.png">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'CircularXX TT', sans-serif;
+        }
+        
+        .FtvSmaller2 {
+            width: 1200px;
+            height: 674px;
+            position: relative;
+            background: black;
+            overflow: hidden;
+        }
+        
+        .Frame4 {
+            width: 1145px;
+            left: 27px;
+            top: 90px;
+            position: absolute;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 50px;
+            display: inline-flex;
+        }
+        
+        .FtvH1 {
+            width: 1000px;
+            height: 65px;
+            position: relative;
+        }
+        
+        .FtvH1 div {
+            width: 1000px;
+            height: 36px;
+            left: 0px;
+            top: 4px;
+            position: absolute;
+            text-align: center;
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
+            color: white;
+            font-size: 30px;
+            font-family: 'CircularXX TT', sans-serif;
+            font-weight: 900;
+            word-wrap: break-word;
+        }
+        
+        .FtvMain {
+            width: 826px;
+            height: 166px;
+            position: relative;
+        }
+        
+        .ProducerAcquiresExclusiveRightsFromComposerAsAConditionOfCommission {
+            width: 194px;
+            height: 104px;
+            left: 0px;
+            top: 31px;
+            position: absolute;
+            text-align: center;
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
+            color: white;
+            font-size: 20px;
+            font-family: 'CircularXX TT', sans-serif;
+            font-weight: 900;
+            word-wrap: break-word;
+        }
+        
+        .Image2 {
+            width: 66px;
+            height: 37.05px;
+            left: 234px;
+            top: 64.47px;
+            position: absolute;
+        }
+        
+        .ProducerSellsRightsToConcordProducerAppointsConcordToAdmin {
+            width: 186px;
+            height: 55px;
+            left: 340px;
+            top: 55.50px;
+            position: absolute;
+            text-align: center;
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
+            color: white;
+            font-size: 20px;
+            font-family: 'CircularXX TT', sans-serif;
+            font-weight: 900;
+            word-wrap: break-word;
+        }
+        
+        .Image3 {
+            width: 66px;
+            height: 37.05px;
+            left: 566px;
+            top: 64.47px;
+            position: absolute;
+        }
+        
+        .ConcordTracksRoyaltiesWorldwideViaCueSheetsAndIntSalesInfo {
+            width: 154px;
+            height: 34px;
+            left: 672px;
+            top: 66px;
+            position: absolute;
+            text-align: center;
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
+            color: white;
+            font-size: 20px;
+            font-family: 'CircularXX TT', sans-serif;
+            font-weight: 900;
+            word-wrap: break-word;
+        }
+        
+        .FtvH2 {
+            width: 1000px;
+            height: 88px;
+            position: relative;
+        }
+        
+        .FtvH2 div {
+            width: 1000px;
+            height: 88px;
+            left: 0px;
+            top: 0px;
+            position: absolute;
+            text-align: center;
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
+            color: white;
+            font-size: 30px;
+            font-family: 'CircularXX TT', sans-serif;
+            font-weight: 900;
+            word-wrap: break-word;
+        }
+        
+        .FtvContact {
+            align-self: stretch;
+            text-align: center;
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
+            color: white;
+            font-size: 20px;
+            font-family: 'CircularXX TT', sans-serif;
+            font-weight: 900;
+            word-wrap: break-word;
+            cursor: pointer;
+        }
+        
+        .ConcordLogo {
+            width: 110px;
+            height: 110px;
+            left: 0px;
+            top: 0px;
+            position: absolute;
+        }
+        
+        .ConcordCIconRed1 {
+            width: 90px;
+            height: 90px;
+            left: 10px;
+            top: 10px;
+            position: absolute;
+        }
+        
+        /* Navigation */
+        .navigation {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 20px;
+            z-index: 100;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-family: 'CircularXX TT', sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 8px 16px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Mobile responsiveness */
+        @media (max-width: 1200px) {
+            .FtvSmaller2 {
+                width: 100%;
+                height: auto;
+                min-height: 674px;
+            }
+            
+            .Frame4 {
+                width: 95%;
+                left: 2.5%;
+            }
+            
+            .FtvH1, .FtvH1 div, .FtvH2, .FtvH2 div {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .FtvH1 div, .FtvH2 div {
+                font-size: 24px;
+            }
+            
+            .Frame4 {
+                top: 110px;
+            }
+            
+            .FtvMain {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                height: auto;
+                gap: 20px;
+            }
+            
+            .ProducerAcquiresExclusiveRightsFromComposerAsAConditionOfCommission,
+            .ProducerSellsRightsToConcordProducerAppointsConcordToAdmin,
+            .ConcordTracksRoyaltiesWorldwideViaCueSheetsAndIntSalesInfo,
+            .Image2, .Image3 {
+                position: static;
+                margin: 10px auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navigation">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="composer_grid.html" class="nav-link">All Composers</a>
+    </div>
+    
+    <div data-layer="FTV_smaller2" class="FtvSmaller2">
+        <div data-layer="Frame 4" class="Frame4">
+            <div data-layer="ftv_h1" class="FtvH1">
+                <div data-layer="ftv_h1">Filmmakers can make money from their music content</div>
+            </div>
+            <div data-layer="ftv_main" class="FtvMain">
+                <div data-layer="Producer acquires exclusive rights from composer as a condition of commission." class="ProducerAcquiresExclusiveRightsFromComposerAsAConditionOfCommission">Producer acquires exclusive rights from composer as a condition of commission.</div>
+                <svg data-layer="image 2" class="Image2" width="67" height="38" viewBox="0 0 67 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M37.5 19L24 26.7942V11.2058L37.5 19Z" fill="white"/>
+                    <path d="M48.5 19L35 26.7942V11.2058L48.5 19Z" fill="white"/>
+                </svg>
+                <div data-layer="Producer sells rights to Concord / producer appoints Concord to admin." class="ProducerSellsRightsToConcordProducerAppointsConcordToAdmin">Producer sells rights to Concord / producer appoints Concord to admin.</div>
+                <svg data-layer="image 3" class="Image3" width="67" height="38" viewBox="0 0 67 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M37.5 19L24 26.7942V11.2058L37.5 19Z" fill="white"/>
+                    <path d="M48.5 19L35 26.7942V11.2058L48.5 19Z" fill="white"/>
+                </svg>
+                <div data-layer="Concord tracks royalties worldwide via cue sheets and Int Sales info." class="ConcordTracksRoyaltiesWorldwideViaCueSheetsAndIntSalesInfo">Concord tracks royalties worldwide via cue sheets and Int Sales info.</div>
+            </div>
+            <div data-layer="ftv_h2" class="FtvH2">
+                <div data-layer="ftv_h2">Music for Film & TV has long-term value as films/series are syndicated worldwide</div>
+            </div>
+            <div data-layer="ftv_contact" class="FtvContact" id="contact-button">Contact us for more info</div>
+        </div>
+        <div data-layer="concord-logo" class="ConcordLogo">
+            <img data-layer="concord-C-icon-red 1" class="ConcordCIconRed1" src="assets/images/concord-C-icon-red.png" alt="Concord C Icon" />
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('contact-button').addEventListener('click', function() {
+            window.location.href = 'mailto:londonbriefs@concord.com?subject=FTV%20Music%20Publishing%20Inquiry';
+        });
+    </script>
+</body>
+</html>
