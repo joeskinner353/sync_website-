@@ -17,7 +17,9 @@ The application is a web-based platform for Concord Music Publishing that showca
   - Writers section (composers from database) with dual view modes:
     - Carousel view (default) - horizontally scrolling composer cards
     - Grid view - responsive grid layout of composer cards
-  - FTV content section
+  - FTV content section with scrolling carousel of Film & TV content
+    - All items in carousel link directly to the FTV page
+    - Section title also acts as a clickable link to the FTV page
   - Header with Concord logo
 
 - **Composer Pages (composer.html)**
@@ -41,6 +43,22 @@ The application is a web-based platform for Concord Music Publishing that showca
   - Direct links to individual composer pages
   - Optimized for large collections
 
+- **Film & TV Page (ftv.html)**
+  - Dedicated page showcasing Concord's Film & TV offerings
+  - Fixed-width layout (1200px) with responsive behavior for smaller screens
+  - Clean black background with white typography for high contrast
+  - Visual flow diagram explaining the royalty generation process:
+    - Step 1: Producer acquiring rights from composer
+    - Step 2: Producer selling rights to Concord
+    - Step 3: Concord tracking royalties worldwide
+  - Two main headline sections:
+    - "Filmmakers can make money from their music content"
+    - "Music for Film & TV has long-term value as films/series are syndicated worldwide"
+  - "Contact us" call-to-action button linked to email functionality
+  - Concord logo positioned in the top-left corner
+  - Navigation links to Home and All Composers pages
+  - Mobile-optimized layout that transforms the flow diagram from horizontal to vertical on smaller screens
+
 ### 2. Key Features
 
 #### Carousel System
@@ -58,6 +76,17 @@ Two types of scrolling mechanisms are implemented:
    - Content cloning for seamless loops
    - Hover pause functionality
    - Page visibility handling
+
+#### FTV Integration Features
+- Dynamic loading of FTV content from Supabase storage
+- Automatic carousel creation with properly formatted image names
+- All FTV carousel images link directly to the ftv.html page
+- FTV section title linked to the FTV page for improved discoverability
+- Responsive design adapting to screen sizes
+- Email contact functionality from the dedicated FTV page
+- Visual process flow with SVG arrow indicators
+- Consistent branding with main site while maintaining a focused presentation
+- Fallback image handling if database content isn't available
 
 #### View Toggle System
 - Toggle between carousel view and grid view for writers section
@@ -185,6 +214,7 @@ src/
 ├── composer.html          # Individual composer page template
 ├── composer_grid.html     # Full grid view of all composers
 ├── index.html             # Main landing page with toggle view feature
+├── ftv.html               # Dedicated Film & TV page
 ├── assets/
 │   ├── data/
 │   │   └── catalog-links.md  # Catalog platform URLs

@@ -13,9 +13,11 @@ This document tracks desired improvements and new features for future developmen
 ## New Features
 
 ### Content Expansion
-- [ ] **Create new FTV page**
- - blank html file, css design to be added later
- - all images in ftv carousel should always link to this new page
+- [x] **Create new FTV page** _(Completed May 6, 2025)_
+  - Implemented dedicated FTV page with visual process flow
+  - All images in FTV carousel now link to the FTV page
+  - Added FTV section title link for improved navigation
+  - Mobile-responsive design with adaptive layout
 
 ### Media Playback
 - [ ] **Improve video playback**
@@ -35,4 +37,4 @@ This document tracks desired improvements and new features for future developmen
 
 ## Last Updated
 
-April 23, 2025
+May 6, 2025

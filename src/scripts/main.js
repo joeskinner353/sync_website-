@@ -206,15 +206,15 @@ async function initFTVCarousel() {
         
         if (!ftvImages || ftvImages.length === 0) {
             console.warn('No FTV images found');
-            // Add back the default image as fallback
-            ftvTrack.innerHTML = '<a href="#" class="carousel-link"><img src="assets/images/ftv.png" alt="FTV"></a>';
+            // Add back the default image as fallback with link to ftv.html
+            ftvTrack.innerHTML = '<a href="ftv.html" class="carousel-link"><img src="assets/images/ftv.png" alt="FTV"></a>';
             return;
         }
 
         // Add FTV images to carousel
         ftvImages.forEach(image => {
             const link = document.createElement('a');
-            link.href = '#';
+            link.href = "ftv.html"; // Link to ftv.html instead of "#"
             link.className = 'carousel-link';
             
             const img = document.createElement('img');
@@ -240,10 +240,10 @@ async function initFTVCarousel() {
         }
     } catch (err) {
         console.error('Error initializing FTV carousel:', err);
-        // Add back the default image as fallback
+        // Add back the default image as fallback with link to ftv.html
         const ftvTrack = document.querySelector('.FtvImages .carousel-track');
         if (ftvTrack) {
-            ftvTrack.innerHTML = '<a href="#" class="carousel-link"><img src="assets/images/ftv.png" alt="FTV"></a>';
+            ftvTrack.innerHTML = '<a href="ftv.html" class="carousel-link"><img src="assets/images/ftv.png" alt="FTV"></a>';
         }
     }
 }

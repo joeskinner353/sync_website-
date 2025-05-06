@@ -21,9 +21,13 @@ A responsive web platform for Concord Music Publishing that showcases music cata
   - Seamless navigation to external platforms
 
 - **FTV Content Showcase**:
-  - Horizontally scrolling FTV content sections
-  - Dynamic loading from database
-  - Interactive elements with smooth animations
+  - Dedicated Film & TV page explaining the royalty generation process
+  - Interactive process flow with visual steps and directional arrows
+  - Email contact functionality for inquiries
+  - Responsive layout adapting to various screen sizes
+  - Horizontally scrolling FTV content carousel on home page
+  - All carousel images and section title linked to FTV page
+  - Dynamic loading of content from Supabase
 
 ## Project Structure
 
@@ -33,6 +37,7 @@ sync_website/
 │   ├── composer_grid.html  # Full grid view of all composers
 │   ├── composer.html     # Individual composer page template
 │   ├── index.html        # Main landing page with toggle view
+│   ├── ftv.html          # Film & TV dedicated page
 │   ├── assets/           # Static resources
 │   │   ├── data/         # Configuration data
 │   │   ├── fonts/        # Custom CircularXX font files
