@@ -1,0 +1,8 @@
+[build]
+  publish = "dist"
+  command = "mkdir -p dist && npm run build"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

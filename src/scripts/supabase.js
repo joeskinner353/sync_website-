@@ -1,8 +1,15 @@
 // Import Supabase
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/+esm'
 
-const supabaseUrl = 'https://lycmyaohsycrdergwpmq.supabase.co'
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx5Y215YW9oc3ljcmRlcmd3cG1xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM2MTM2NjMsImV4cCI6MjA1OTE4OTY2M30.5j6yCAuQEkTCKfkFK7eETPn_2TOR9bpGUBuzsbdlRfY'
+// Get Supabase URL and API key from environment variables if available
+// Otherwise fall back to the hardcoded values for local development
+const supabaseUrl = typeof process !== 'undefined' && process.env.SUPABASE_URL 
+    ? process.env.SUPABASE_URL 
+    : 'https://lycmyaohsycrdergwpmq.supabase.co';
+
+const supabaseKey = typeof process !== 'undefined' && process.env.SUPABASE_KEY
+    ? process.env.SUPABASE_KEY
+    : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx5Y215YW9oc3ljcmRlcmd3cG1xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM2MTM2NjMsImV4cCI6MjA1OTE4OTY2M30.5j6yCAuQEkTCKfkFK7eETPn_2TOR9bpGUBuzsbdlRfY';
 
 export const supabase = createClient(supabaseUrl, supabaseKey)
 

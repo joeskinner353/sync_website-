@@ -6,7 +6,7 @@
   "main": "src/scripts/main.js",
   "scripts": {
     "start": "live-server src",
-    "build": "echo 'Build script not defined'",
+    "build": "cp -r src/* dist/",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch"
   },
