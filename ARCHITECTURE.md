@@ -21,6 +21,7 @@ The application is a web-based platform for Concord Music Publishing that showca
     - All items in carousel link directly to the FTV page
     - Section title also acts as a clickable link to the FTV page
   - Header with Concord logo
+  - Note: Top navigation links have been removed in the latest update
 
 - **Composer Pages (composer.html)**
   - Individual pages for each composer

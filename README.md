@@ -29,6 +29,11 @@ A responsive web platform for Concord Music Publishing that showcases music cata
   - All carousel images and section title linked to FTV page
   - Dynamic loading of content from Supabase
 
+- **Navigation**:
+  - Clean, minimal interface with no header navigation links
+  - Direct content access from each section
+  - Smart internal linking between related content
+
 ## Project Structure
 
 ```
