@@ -2,6 +2,10 @@
   publish = "dist"
   command = "mkdir -p dist && npm run build"
 
+[context.roster_only]
+  command = "mkdir -p dist && npm run build"
+  publish = "dist"
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
