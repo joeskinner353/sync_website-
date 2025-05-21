@@ -62,7 +62,7 @@ footer {
 
 .Desktop1 {
     width: 1440px;
-    height: 1583px;
+    height: 980px; /* Reduced height since we're removing sections */
     position: relative;
     background: black;
     overflow: hidden;
@@ -175,22 +175,12 @@ footer {
 }
 
 /* Specific positioning for each section */
-.Catalogs {
-    top: 232px;
-}
-
-.CatalogImages {
-    top: 322px;
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 206px;
-}
+/* Update this block to remove Catalogs and FTV sections */
 
 /* Fix for the view-toggle-container positioning */
 .view-toggle-container {
     position: absolute;
-    top: 570px;
+    top: 232px; /* Move up to where catalogs used to be */
     left: 0;
     width: 100%;
     padding: 0 20px;
@@ -200,8 +190,8 @@ footer {
     margin-bottom: 20px;
 }
 
-.Writers {
-    top: 570px;
+.Writers, .writers-title {
+    top: 232px; /* Move up to where catalogs used to be */
     right: auto; /* Override the right alignment from section-title */
     left: 0; /* Position on the left */
     padding-right: 0; /* Remove right padding */
@@ -209,40 +199,21 @@ footer {
 }
 
 .WritersImages {
-    top: 660px;
+    top: 322px; /* Move up to where catalogs used to be */
     position: absolute;
     left: 0;
     width: 100%;
     height: 206px;
 }
 
-.Ftv {
-    top: 908px;
-}
+/* Remove FTV section styles since we don't need them anymore */
 
-.FtvImages {
-    top: 998px;
+/* Writers grid styling */
+.writers-grid {
     position: absolute;
+    top: 322px; /* Position at the same place as WritersImages */
     left: 0;
     width: 100%;
-    height: 206px;
-}
-
-.FtvImages .carousel-track img {
-    height: 166px;
-    width: 300px; /* Set a fixed width */
-    object-fit: cover; /* Ensure images cover the area without distortion */
-    margin: 0; /* Remove the horizontal margin to eliminate spacing */
-}
-
-.FtvImages .carousel-track {
-    gap: 0; /* Ensure no gap between items in the FTV section */
-}
-
-.FtvImages .composer-name-overlay {
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
-    font-family: 'CircularXX', Arial, sans-serif;
-    font-size: 18px;
-    text-transform: capitalize; /* Capitalize the image names */
+    padding: 20px;
+    display: none; /* Hidden by default */
 }

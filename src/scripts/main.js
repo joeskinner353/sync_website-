@@ -1,7 +1,7 @@
 // main.js
 
 import { loadVisibleComposers, createComposerElement } from './composers.js';
-import { loadFTVImages, supabase } from './supabase.js';
+import { supabase } from './supabase.js';
 import { getCurrentVersion, appendVersionToUrl } from './site-version.js';
 
 // Cache for composer data to prevent redundant fetches
@@ -188,66 +188,6 @@ async function initComposersCarousel() {
     }
 }
 
-// Initialize FTV carousel
-async function initFTVCarousel() {
-    try {
-        const ftvTrack = document.querySelector('.FtvImages .carousel-track');
-        if (!ftvTrack) {
-            console.error('FTV track element not found');
-            return;
-        }
-
-        // Clear existing static content
-        ftvTrack.innerHTML = '';
-
-        // Load FTV images from Supabase
-        const ftvImages = await loadFTVImages();
-        console.log('Loaded FTV images:', ftvImages);
-        
-        if (!ftvImages || ftvImages.length === 0) {
-            console.warn('No FTV images found');
-            // Add back the default image as fallback with link to ftv.html
-            ftvTrack.innerHTML = '<a href="ftv.html" class="carousel-link"><img src="assets/images/ftv.png" alt="FTV"></a>';
-            return;
-        }
-
-        // Add FTV images to carousel
-        ftvImages.forEach(image => {
-            const link = document.createElement('a');
-            link.href = "ftv.html"; // Link to ftv.html instead of "#"
-            link.className = 'carousel-link';
-            
-            const img = document.createElement('img');
-            img.src = image.url;
-            img.alt = image.name;
-            console.log('Creating image element with URL:', image.url);
-            
-            const overlay = document.createElement('div');
-            overlay.className = 'composer-name-overlay';
-            overlay.textContent = image.name;
-            
-            link.appendChild(img);
-            link.appendChild(overlay);
-            ftvTrack.appendChild(link);
-        });
-
-        // Clone FTV images for infinite scroll
-        const links = Array.from(ftvTrack.querySelectorAll('.carousel-link'));
-        if (links.length > 0) {
-            links.forEach(link => {
-                ftvTrack.appendChild(link.cloneNode(true));
-            });
-        }
-    } catch (err) {
-        console.error('Error initializing FTV carousel:', err);
-        // Add back the default image as fallback with link to ftv.html
-        const ftvTrack = document.querySelector('.FtvImages .carousel-track');
-        if (ftvTrack) {
-            ftvTrack.innerHTML = '<a href="ftv.html" class="carousel-link"><img src="assets/images/ftv.png" alt="FTV"></a>';
-        }
-    }
-}
-
 // Initialize view toggle functionality
 function initViewToggle(composers) {
     const carouselViewBtn = document.querySelector('.toggle-button.carousel-view');
@@ -410,8 +350,6 @@ async function init() {
             console.error('Composers carousel error:', err);
             return [];
         });
-        
-        await initFTVCarousel().catch(err => console.error('FTV carousel error:', err));
         
         // Initialize carousels after dynamic content is loaded
         initCarousels();
