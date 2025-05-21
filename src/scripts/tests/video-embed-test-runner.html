@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Embed Tests - Concord Music Publishing</title>
+    <link rel="stylesheet" href="../../assets/styles/main.css">
+    <style>
+        body {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            color: white;
+        }
+        
+        .test-controls {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+        
+        .test-section {
+            margin-bottom: 30px;
+        }
+        
+        .test-button {
+            background: #F4A461;
+            color: black;
+            border: none;
+            padding: 10px 15px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            font-family: 'CircularXX', Arial, sans-serif;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .test-button:hover {
+            background: #f8b678;
+        }
+        
+        .test-result {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        
+        h1, h2 {
+            font-family: 'CircularXX', Arial, sans-serif;
+        }
+        
+        .video-test-area {
+            margin: 30px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .video-container {
+            aspect-ratio: 16/9;
+            max-width: 100%;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        
+        .url-input {
+            width: 100%;
+            padding: 10px;
+            font-family: monospace;
+            margin-bottom: 10px;
+        }
+        
+        .test-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .fixed-header {
+            position: sticky;
+            top: 0;
+            background: #1F1F1F;
+            padding: 10px 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="fixed-header">
+        <h1>Video Embed Test Suite</h1>
+        <p>Use this page to test video embedding functionality for YouTube and Vimeo</p>
+    </div>
+    
+    <div class="test-controls">
+        <h2>Test Controls</h2>
+        <button id="runAllTests" class="test-button">Run All Tests</button>
+        <button id="testYoutube" class="test-button">Test YouTube URLs</button>
+        <button id="testVimeo" class="test-button">Test Vimeo URLs</button>
+        <button id="testIframes" class="test-button">Test Iframe Generation</button>
+        
+        <div id="testResult" class="test-result">Test results will appear here...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Manual Testing</h2>
+        <div class="test-card">
+            <h3>YouTube Embed Test</h3>
+            <input type="text" id="youtubeUrlInput" class="url-input" placeholder="Enter YouTube URL (e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ)" value="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+            <button id="testYoutubeUrl" class="test-button">Test URL</button>
+            <div class="video-test-area">
+                <div id="youtubeResult" class="test-result">URL processing result will appear here...</div>
+                <div class="video-container" id="youtubeVideoContainer"></div>
+            </div>
+        </div>
+        
+        <div class="test-card">
+            <h3>Vimeo Embed Test</h3>
+            <input type="text" id="vimeoUrlInput" class="url-input" placeholder="Enter Vimeo URL (e.g., https://vimeo.com/148751763)" value="https://vimeo.com/148751763">
+            <button id="testVimeoUrl" class="test-button">Test URL</button>
+            <div class="video-test-area">
+                <div id="vimeoResult" class="test-result">URL processing result will appear here...</div>
+                <div class="video-container" id="vimeoVideoContainer"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Load composer-page.js to access the functions we want to test -->
+    <script type="module">
+        // Import the functions from composer-page.js
+        // Use a try-catch to handle potential import errors
+        try {
+            const composerModule = await import('../composer-page.js');
+            const { getVimeoUrls, getYoutubeUrls, getVimeoEmbedUrl, handleVideoClick } = composerModule;
+            
+            // Make them globally available for testing
+            window.getVimeoUrls = getVimeoUrls;
+            window.getYoutubeUrls = getYoutubeUrls;
+            window.getVimeoEmbedUrl = getVimeoEmbedUrl;
+            window.handleVideoClick = handleVideoClick;
+            
+            console.log('✅ Successfully imported functions from composer-page.js');
+        } catch (error) {
+            console.error('❌ Failed to import functions from composer-page.js:', error);
+            console.log('Falling back to mock implementations...');
+            
+            // Mock the required functions if import fails
+            window.getYoutubeUrls = function(url) {
+                const youtubeRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+                const match = url.match(youtubeRegex);
+                if (match && match[1]) {
+                    const videoId = match[1];
+                    return {
+                        embed: `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0&modestbranding=1`,
+                        thumbnail: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+                        type: 'youtube'
+                    };
+                }
+                return { embed: url, thumbnail: null, type: 'unknown' };
+            };
+            
+            window.getVimeoUrls = function(url) {
+                const vimeoRegex = /(?:vimeo.com\/|player.vimeo.com\/video\/)(\d+)/;
+                const match = url.match(vimeoRegex);
+                if (match && match[1]) {
+                    const videoId = match[1];
+                    return {
+                        embed: `https://player.vimeo.com/video/${videoId}?h=&title=0&byline=0&portrait=0`,
+                        thumbnail: `https://vumbnail.com/${videoId}.jpg`,
+                        type: 'vimeo'
+                    };
+                }
+                return { embed: url, thumbnail: null, type: 'unknown' };
+            };
+            
+            window.getVimeoEmbedUrl = function(url) {
+                return window.getVimeoUrls(url).embed;
+            };
+        }
+        
+        // Mock handleVideoClick if not available
+        if (typeof window.handleVideoClick !== 'function') {
+            window.handleVideoClick = function(url, composer) {
+                let videoContainer;
+                let resultContainer;
+                
+                if (url.includes('youtube')) {
+                    videoContainer = document.getElementById('youtubeVideoContainer');
+                    resultContainer = document.getElementById('youtubeResult');
+                } else {
+                    videoContainer = document.getElementById('vimeoVideoContainer');
+                    resultContainer = document.getElementById('vimeoResult');
+                }
+                
+                if (videoContainer) {
+                    try {
+                        // Use the appropriate function based on URL type
+                        let embedInfo;
+                        let allowAttribute;
+                        
+                        if (url.includes('youtube') || url.includes('youtu.be')) {
+                            embedInfo = getYoutubeUrls(url);
+                            allowAttribute = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+                        } else {
+                            embedInfo = getVimeoUrls(url);
+                            allowAttribute = "autoplay; fullscreen; picture-in-picture";
+                        }
+                        
+                        videoContainer.innerHTML = `
+                            <iframe 
+                                src="${embedInfo.embed}" 
+                                frameborder="0" 
+                                allow="${allowAttribute}" 
+                                allowfullscreen
+                                loading="lazy"
+                                referrerpolicy="no-referrer"
+                                title="${composer?.name || 'Video'} Test">
+                            </iframe>
+                        `;
+                        
+                        if (resultContainer) {
+                            resultContainer.textContent = JSON.stringify(embedInfo, null, 2);
+                        }
+                    } catch (err) {
+                        if (resultContainer) {
+                            resultContainer.textContent = `Error: ${err.message}\n${err.stack}`;
+                        }
+                        console.error('Error processing video URL:', err);
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Load the test script directly -->
+    <script src="./video-embed-tests.js"></script>
+    <script>
+        // Check if tests loaded correctly
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                if (window.videoEmbedTests) {
+                    console.log('✅ Test functions are available');
+                } else {
+                    console.error('❌ Test functions are not available. Check video-embed-tests.js');
+                    document.getElementById('testResult').textContent = 
+                        `Error: Test functions not found.\n\n` +
+                        `Make sure video-embed-tests.js is properly loaded and exports the test functions.\n\n` +
+                        `Current script location: ${window.location.href}\n` +
+                        `Expected test script: ${window.location.origin}${window.location.pathname.replace(/[^\/]+$/, '')}video-embed-tests.js`;
+                }
+            }, 500);
+        });
+    </script>
+    <script>
+        // Set up console logging to also log to the test result div
+        const originalConsoleLog = console.log;
+        const originalConsoleError = console.error;
+        let testResultBuffer = '';
+        
+        console.log = function(...args) {
+            originalConsoleLog.apply(console, args);
+            testResultBuffer += args.join(' ') + '\n';
+            document.getElementById('testResult').textContent = testResultBuffer;
+        };
+        
+        console.error = function(...args) {
+            originalConsoleError.apply(console, args);
+            testResultBuffer += '🔴 ' + args.join(' ') + '\n';
+            document.getElementById('testResult').textContent = testResultBuffer;
+        };
+        
+        // Set up test buttons
+        document.getElementById('runAllTests').addEventListener('click', function() {
+            testResultBuffer = '';
+            console.log('🧪 Running all video embed tests...\n');
+            
+            if (window.videoEmbedTests) {
+                window.videoEmbedTests.testYoutubeUrlParsing();
+                console.log('\n');
+                window.videoEmbedTests.testVimeoUrlParsing();
+                console.log('\n');
+                window.videoEmbedTests.testIframeGeneration();
+            } else {
+                console.error('Video embed tests not loaded!');
+            }
+        });
+        
+        document.getElementById('testYoutube').addEventListener('click', function() {
+            testResultBuffer = '';
+            if (window.videoEmbedTests) {
+                window.videoEmbedTests.testYoutubeUrlParsing();
+            } else {
+                console.error('Video embed tests not loaded!');
+            }
+        });
+        
+        document.getElementById('testVimeo').addEventListener('click', function() {
+            testResultBuffer = '';
+            if (window.videoEmbedTests) {
+                window.videoEmbedTests.testVimeoUrlParsing();
+            } else {
+                console.error('Video embed tests not loaded!');
+            }
+        });
+        
+        document.getElementById('testIframes').addEventListener('click', function() {
+            testResultBuffer = '';
+            if (window.videoEmbedTests) {
+                window.videoEmbedTests.testIframeGeneration();
+            } else {
+                console.error('Video embed tests not loaded!');
+            }
+        });
+        
+        // Set up manual testing buttons
+        document.getElementById('testYoutubeUrl').addEventListener('click', function() {
+            const url = document.getElementById('youtubeUrlInput').value;
+            if (url) {
+                window.handleVideoClick(url, {name: 'YouTube Test'});
+            } else {
+                document.getElementById('youtubeResult').textContent = 'Please enter a YouTube URL';
+            }
+        });
+        
+        document.getElementById('testVimeoUrl').addEventListener('click', function() {
+            const url = document.getElementById('vimeoUrlInput').value;
+            if (url) {
+                window.handleVideoClick(url, {name: 'Vimeo Test'});
+            } else {
+                document.getElementById('vimeoResult').textContent = 'Please enter a Vimeo URL';
+            }
+        });
+        
+        // Initialize with a welcome message
+        console.log('🎥 Video Embed Test Suite loaded');
+        console.log('Click "Run All Tests" to test all video embedding functionality');
+        console.log('Or use individual test buttons for specific tests');
+    </script>
+</body>
+</html>

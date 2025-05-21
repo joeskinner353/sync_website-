@@ -10,13 +10,43 @@ function getVimeoUrls(url) {
             const videoId = match[1];
             return {
                 embed: `https://player.vimeo.com/video/${videoId}?h=&title=0&byline=0&portrait=0`,
-                thumbnail: `https://vumbnail.com/${videoId}.jpg`
+                thumbnail: `https://vumbnail.com/${videoId}.jpg`,
+                type: 'vimeo'
             };
         }
-        return { embed: url, thumbnail: null };
+        
+        // Check if this is a YouTube URL
+        const youtubeUrls = getYoutubeUrls(url);
+        if (youtubeUrls.type === 'youtube') {
+            return youtubeUrls;
+        }
+        
+        return { embed: url, thumbnail: null, type: 'unknown' };
     } catch (err) {
         console.error('Error processing Vimeo URL:', err);
-        return { embed: url, thumbnail: null };
+        return { embed: url, thumbnail: null, type: 'unknown' };
+    }
+}
+
+// Convert YouTube URL to embed URL and thumbnail URL
+function getYoutubeUrls(url) {
+    try {
+        // Different YouTube URL formats
+        const youtubeRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+        const match = url.match(youtubeRegex);
+        
+        if (match && match[1]) {
+            const videoId = match[1];
+            return {
+                embed: `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0&modestbranding=1`,
+                thumbnail: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+                type: 'youtube'
+            };
+        }
+        return { embed: url, thumbnail: null, type: 'unknown' };
+    } catch (err) {
+        console.error('Error processing YouTube URL:', err);
+        return { embed: url, thumbnail: null, type: 'unknown' };
     }
 }
 
@@ -29,9 +59,16 @@ function getVimeoEmbedUrl(url) {
             const videoId = match[1];
             return `https://player.vimeo.com/video/${videoId}?h=&title=0&byline=0&portrait=0`;
         }
+        
+        // Check if this is a YouTube URL
+        const youtubeUrls = getYoutubeUrls(url);
+        if (youtubeUrls.type === 'youtube') {
+            return youtubeUrls.embed;
+        }
+        
         return url;
     } catch (err) {
-        console.error('Error processing Vimeo URL:', err);
+        console.error('Error processing video URL:', err);
         return url;
     }
 }
@@ -78,17 +115,29 @@ function handleVideoClick(url, composer) {
     const featuredVideo = document.querySelector('.featured-video');
     if (featuredVideo) {
         const urls = getVimeoUrls(url);
-        featuredVideo.innerHTML = `
+        let allowAttribute = "autoplay; fullscreen; picture-in-picture";
+        
+        // Add additional permissions for YouTube videos
+        if (urls.type === 'youtube') {
+            allowAttribute = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+        }
+        
+        // Make sure we're actually updating the DOM element's HTML
+        // Using document fragment to ensure the iframe is properly created
+        const fragment = document.createRange().createContextualFragment(`
             <iframe 
                 src="${urls.embed}" 
                 frameborder="0" 
-                allow="autoplay; fullscreen; picture-in-picture" 
+                allow="${allowAttribute}" 
                 allowfullscreen
                 loading="lazy"
                 referrerpolicy="no-referrer"
                 title="${composer.name}'s Featured Video">
             </iframe>
-        `;
+        `);
+        
+        featuredVideo.innerHTML = ''; // Clear existing content
+        featuredVideo.appendChild(fragment); // Add the new iframe element
     }
 }
 
@@ -216,17 +265,26 @@ function populateComposerData(composer) {
                     videoContainer.dataset.videoUrl = url;
                     videoContainer.dataset.index = index;
                     
-                    videoContainer.innerHTML = `
+                    // Determine video type and set appropriate allow attribute
+                    const videoType = url.includes('youtube.com') || url.includes('youtu.be') ? 'youtube' : 'vimeo';
+                    const allowAttribute = videoType === 'youtube' 
+                        ? "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        : "autoplay; fullscreen-request; picture-in-picture";
+                    
+                    // Create iframe using document fragment for reliable DOM parsing
+                    const fragment = document.createRange().createContextualFragment(`
                         <iframe 
                             src="${embedUrl}" 
                             frameborder="0" 
-                            allow="autoplay; fullscreen-request; picture-in-picture" 
+                            allow="${allowAttribute}" 
                             loading="lazy"
+                            allowfullscreen
                             referrerpolicy="no-referrer"
                             title="${composer.name}'s Video ${index + 1}">
                         </iframe>
-                    `;
+                    `);
                     
+                    videoContainer.appendChild(fragment);
                     videoTrack.appendChild(videoContainer);
                     
                     // Add indicator dot for this video
@@ -665,3 +723,11 @@ document.addEventListener('DOMContentLoaded', () => {
     loadComposerData();
     initPdfDownload();
 });
+
+// Export functions for testing
+export {
+    getVimeoUrls,
+    getVimeoEmbedUrl,
+    getYoutubeUrls,
+    handleVideoClick
+};
