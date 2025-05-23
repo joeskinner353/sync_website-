@@ -2,6 +2,14 @@
 
 A responsive web platform for Concord Music Publishing that showcases music catalogs, writers (composers), and Film/TV content. Built with vanilla JavaScript, HTML, and CSS, with Supabase as the backend database.
 
+## Site Versions
+
+- **Main Version**: Contains catalogs, writers (composers), and Film/TV content
+- **Roster-Only Version**: Focused exclusively on writers/composers without catalogs or FTV sections
+  - Available on the `roster_only` branch
+  - Deployed on a separate Netlify URL
+  - Uses YouTube's privacy-enhanced mode for video embedding
+
 ## Features
 
 - **Dynamic Writer Showcase**:
@@ -13,7 +21,7 @@ A responsive web platform for Concord Music Publishing that showcases music cata
 - **Composer Profiles**:
   - Individual pages for each composer with biography
   - Social media integration (Spotify, Instagram, TikTok)
-  - Interactive video gallery with fullscreen support
+  - Interactive video gallery with fullscreen support using privacy-enhanced YouTube embeds
   - Spotify playlist embedding
 
 - **Catalog Integration**:

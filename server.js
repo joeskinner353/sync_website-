@@ -1,6 +1,10 @@
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
+import http from 'http';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const PORT = process.env.PORT || 3000;
 
@@ -48,7 +52,7 @@ const server = http.createServer((request, response) => {
       if (error.code === 'ENOENT') {
         // File not found
         console.error(`File not found: ${filePath}`);
-        fs.readFile('./404.html', (err, content) => {
+        fs.readFile(path.join(__dirname, '404.html'), (err, content) => {
           response.writeHead(404, { 'Content-Type': 'text/html' });
           response.end(content || '404 Not Found', 'utf-8');
         });

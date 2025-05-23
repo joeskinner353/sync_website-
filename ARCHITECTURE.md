@@ -102,6 +102,8 @@ Two types of scrolling mechanisms are implemented:
 - Visual indicators for current video position
 - Keyboard navigation support (left/right arrows)
 - Vimeo integration with optimized embed parameters
+- YouTube videos use privacy-enhanced mode with youtube-nocookie.com domain
+- Standardized iframe embedding with proper security attributes
 - Fullscreen support with keyboard controls
 - Responsive video sizing with consistent dimensions
 - Dynamic video loading from composer data

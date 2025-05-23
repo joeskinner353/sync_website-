@@ -18,13 +18,22 @@ This document tracks desired improvements and new features for future developmen
   - All images in FTV carousel now link to the FTV page
   - Added FTV section title link for improved navigation
   - Mobile-responsive design with adaptive layout
+- [x] **Create roster-only version** _(Completed May 23, 2025)_
+  - Created `roster_only` branch without catalogs and FTV sections
+  - Repositioned writers section to be the focal point of the homepage
+  - Removed navigation links while preserving grid toggle functionality
+  - Set up separate Netlify deployment configuration
+  - Maintained core functionality for composer profiles
 
 ### Media Playback
-- [ ] **Improve video playback**
-  - fix bug where videos are not playing full screen by default
-  - add functionality so that pressing 'f' key will toggle fullscreen. 'escape' key should cancel fullscreen
+- [x] **Improve video playback** _(Completed May 23, 2025)_
+  - Implemented YouTube privacy-enhanced mode with youtube-nocookie.com domain
+  - Fixed fullscreen issues with proper iframe allow attributes
+  - Standardized embed parameters across YouTube and Vimeo videos
+  - Added proper security attributes for all embedded videos
+- [ ] **Additional video enhancements**
+  - add functionality so that pressing 'f' key will toggle fullscreen
   - Implement smoother transitions between videos
-  - Fix any loading/buffering issues
 
 
 
@@ -37,4 +46,4 @@ This document tracks desired improvements and new features for future developmen
 
 ## Last Updated
 
-May 6, 2025
+May 23, 2025

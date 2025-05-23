@@ -23,6 +23,24 @@ Go to Site settings > Build & deploy > Environment > Environment variables and a
 The site includes a `netlify.toml` file that configures:
 - Build settings
 - Redirect rules for SPA functionality
+- Branch-specific deployment options
+
+## Branch Deployments
+
+### Main Branch
+- Contains the full website with catalogs, writers (composers), and Film/TV content
+- Deploys to the main production URL
+
+### Roster-Only Branch
+- Contains only the writers/composers section without catalogs or FTV content
+- Deploys to a separate URL (preview deployment)
+- Includes YouTube privacy-enhanced mode for video embeds
+- Configuration in netlify.toml:
+  ```toml
+  [context.roster_only]
+    command = "mkdir -p dist && npm run build"
+    publish = "dist"
+  ```
 
 ## Troubleshooting
 

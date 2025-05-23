@@ -96,7 +96,7 @@ function testYoutubeUrlParsing() {
       
       // If we expect a valid ID, also check that the embed URL is correctly formed
       if (test.expectedId) {
-        const expectedEmbedUrl = `https://www.youtube.com/embed/${test.expectedId}`;
+        const expectedEmbedUrl = `https://www.youtube-nocookie.com/embed/${test.expectedId}`;
         if (result.embed && result.embed.startsWith(expectedEmbedUrl)) {
           console.log(`✅ Embed URL correctly formatted`);
         } else {
