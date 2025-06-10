@@ -234,6 +234,7 @@ The website implements Content Security Policy headers for enhanced security whi
 <meta http-equiv="Content-Security-Policy" 
       content="default-src 'self'; 
                connect-src 'self' https://lycmyaohsycrdergwpmq.supabase.co https://cdn.jsdelivr.net; 
+               frame-src 'self' https://player.vimeo.com https://www.youtube-nocookie.com https://concord-music-publishing.disco.ac;
                style-src 'self' 'unsafe-inline'; 
                font-src 'self' data:; 
                img-src 'self' data: https:; 
@@ -242,6 +243,7 @@ The website implements Content Security Policy headers for enhanced security whi
 
 **Key CSP Directives:**
 - `connect-src`: Allows connections to Supabase API and CDN for data fetching
+- `frame-src`: Permits embedding videos from Vimeo, YouTube, and Disco playlists
 - `style-src`: Permits inline styles for dynamic styling
 - `font-src`: Enables loading of custom font files
 - `img-src`: Allows images from HTTPS sources and data URIs

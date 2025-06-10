@@ -28,7 +28,7 @@ function getVimeoUrls(url) {
     }
 }
 
-// Convert YouTube URL to embed URL and thumbnail URL
+// Convert YouTube URL to embed URL and thumbnail URL using privacy-enhanced mode
 function getYoutubeUrls(url) {
     try {
         // Different YouTube URL formats
@@ -38,7 +38,7 @@ function getYoutubeUrls(url) {
         if (match && match[1]) {
             const videoId = match[1];
             return {
-                embed: `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0&modestbranding=1`,
+                embed: `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=0&rel=0&modestbranding=1`,
                 thumbnail: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
                 type: 'youtube'
             };
@@ -115,12 +115,8 @@ function handleVideoClick(url, composer) {
     const featuredVideo = document.querySelector('.featured-video');
     if (featuredVideo) {
         const urls = getVimeoUrls(url);
-        let allowAttribute = "autoplay; fullscreen; picture-in-picture";
-        
-        // Add additional permissions for YouTube videos
-        if (urls.type === 'youtube') {
-            allowAttribute = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-        }
+        // Set unified allow attribute that works for both YouTube and Vimeo
+        const allowAttribute = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen";
         
         // Make sure we're actually updating the DOM element's HTML
         // Using document fragment to ensure the iframe is properly created
@@ -265,11 +261,8 @@ function populateComposerData(composer) {
                     videoContainer.dataset.videoUrl = url;
                     videoContainer.dataset.index = index;
                     
-                    // Determine video type and set appropriate allow attribute
-                    const videoType = url.includes('youtube.com') || url.includes('youtu.be') ? 'youtube' : 'vimeo';
-                    const allowAttribute = videoType === 'youtube' 
-                        ? "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                        : "autoplay; fullscreen-request; picture-in-picture";
+                    // Set unified allow attribute that works for both YouTube and Vimeo
+                    const allowAttribute = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen";
                     
                     // Create iframe using document fragment for reliable DOM parsing
                     const fragment = document.createRange().createContextualFragment(`

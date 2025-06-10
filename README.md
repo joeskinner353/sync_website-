@@ -55,12 +55,12 @@ A responsive web platform for Concord Music Publishing that showcases music cata
 - **CSP Headers**: Added Content Security Policy headers for improved security
 
 ### Writers Carousel Loading Issue ✅ COMPLETED  
-- **Root Cause**: Content Security Policy (CSP) was blocking connections to Supabase API
-- **Solution**: Updated CSP `connect-src` directive in all HTML files to allow connections to:
-  - `https://lycmyaohsycrdergwpmq.supabase.co` (Supabase API)
-  - `https://cdn.jsdelivr.net` (Supabase JS library)
+- **Root Cause**: Content Security Policy (CSP) was blocking connections to Supabase API and video embeds
+- **Solution**: Updated CSP directives in all HTML files:
+  - Added `connect-src` for Supabase API (`https://lycmyaohsycrdergwpmq.supabase.co`) and CDN (`https://cdn.jsdelivr.net`)
+  - Added `frame-src` for video embeds (Vimeo, YouTube) and Disco playlists (`https://concord-music-publishing.disco.ac`)
 - **Files Updated**: All HTML files (index.html, composer.html, ftv.html, composer_grid.html)
-- **Result**: Writers carousel now loads composer data successfully from Supabase
+- **Result**: Writers carousel loads composer data and videos/playlists embed correctly
 
 ### Font System Improvements ✅ COMPLETED
 - **CORS Configuration**: Added proper CORS headers for font files in both local server and Netlify deployment

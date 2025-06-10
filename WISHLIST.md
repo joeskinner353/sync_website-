@@ -16,7 +16,7 @@ This document tracks desired improvements and new features for future developmen
 - [x] **Fix writers carousel not loading** _(Completed June 10, 2025)_
   - Resolved Content Security Policy (CSP) blocking Supabase API connections
   - Updated CSP connect-src directive in all HTML files 
-  - Added proper allowlist for Supabase API and CDN connections
+  - Added frame-src directive for video embeds (Vimeo, YouTube) and Disco playlists
   - Improved error handling and fallback mechanisms for data loading
 
 ## User Experience Improvements
