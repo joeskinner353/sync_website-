@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://lycmyaohsycrdergwpmq.supabase.co https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
     <title>Film & TV | Concord Music Publishing</title>
+    <!-- Preload critical font file -->
+    <link rel="preload" href="assets/fonts/CircularXXSub-Black.woff" as="font" type="font/woff" crossorigin>
     <link rel="stylesheet" href="assets/styles/main.css">
     <link rel="icon" type="image/x-icon" href="assets/images/concord-C-icon-red.png">
     <style>
@@ -15,7 +18,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: 'CircularXX TT', sans-serif;
+            font-family: 'CircularXX', Arial, sans-serif;
         }
         
         .FtvSmaller2 {
@@ -56,7 +59,7 @@
             flex-direction: column;
             color: white;
             font-size: 30px;
-            font-family: 'CircularXX TT', sans-serif;
+            font-family: 'CircularXX', Arial, sans-serif;
             font-weight: 900;
             word-wrap: break-word;
         }
@@ -79,7 +82,7 @@
             flex-direction: column;
             color: white;
             font-size: 20px;
-            font-family: 'CircularXX TT', sans-serif;
+            font-family: 'CircularXX', Arial, sans-serif;
             font-weight: 900;
             word-wrap: break-word;
         }
@@ -104,7 +107,7 @@
             flex-direction: column;
             color: white;
             font-size: 20px;
-            font-family: 'CircularXX TT', sans-serif;
+            font-family: 'CircularXX', Arial, sans-serif;
             font-weight: 900;
             word-wrap: break-word;
         }
@@ -129,7 +132,7 @@
             flex-direction: column;
             color: white;
             font-size: 20px;
-            font-family: 'CircularXX TT', sans-serif;
+            font-family: 'CircularXX', Arial, sans-serif;
             font-weight: 900;
             word-wrap: break-word;
         }
@@ -152,7 +155,7 @@
             flex-direction: column;
             color: white;
             font-size: 30px;
-            font-family: 'CircularXX TT', sans-serif;
+            font-family: 'CircularXX', Arial, sans-serif;
             font-weight: 900;
             word-wrap: break-word;
         }
@@ -165,7 +168,7 @@
             flex-direction: column;
             color: white;
             font-size: 20px;
-            font-family: 'CircularXX TT', sans-serif;
+            font-family: 'CircularXX', Arial, sans-serif;
             font-weight: 900;
             word-wrap: break-word;
             cursor: pointer;
@@ -200,7 +203,7 @@
         .nav-link {
             color: white;
             text-decoration: none;
-            font-family: 'CircularXX TT', sans-serif;
+            font-family: 'CircularXX', Arial, sans-serif;
             font-size: 16px;
             font-weight: 500;
             padding: 8px 16px;

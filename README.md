@@ -34,6 +34,41 @@ A responsive web platform for Concord Music Publishing that showcases music cata
   - Direct content access from each section
   - Smart internal linking between related content
 
+## Font System & Loading
+
+- **Custom Typography**: CircularXX font family for consistent branding
+- **Font Loading Optimization**: 
+  - CORS headers configured for cross-origin font loading
+  - Absolute paths for reliable font file access
+  - Proper MIME types for all font formats
+  - Cache-optimized headers (1-year cache for font files)
+- **Fallback Strategy**: Comprehensive font stack with system font fallbacks
+- **Browser Compatibility**: Support for WOFF and WOFF2 formats
+
+## Recent Fixes (June 2025)
+
+### Font Loading System Fixes ✅ COMPLETED
+- **CORS Issues**: Fixed server CORS headers for font files in both Node.js server and Netlify configuration
+- **Font Path Issues**: Corrected relative font paths in CSS files
+- **Font Consistency**: Unified all website text to use CircularXX font family consistently across all pages
+- **Font Preloading**: Added proper font preloading with crossorigin attributes to all HTML files
+- **CSP Headers**: Added Content Security Policy headers for improved security
+
+### Writers Carousel Loading Issue ✅ COMPLETED  
+- **Root Cause**: Content Security Policy (CSP) was blocking connections to Supabase API
+- **Solution**: Updated CSP `connect-src` directive in all HTML files to allow connections to:
+  - `https://lycmyaohsycrdergwpmq.supabase.co` (Supabase API)
+  - `https://cdn.jsdelivr.net` (Supabase JS library)
+- **Files Updated**: All HTML files (index.html, composer.html, ftv.html, composer_grid.html)
+- **Result**: Writers carousel now loads composer data successfully from Supabase
+
+### Font System Improvements ✅ COMPLETED
+- **CORS Configuration**: Added proper CORS headers for font files in both local server and Netlify deployment
+- **Path Resolution**: Fixed relative font paths (`../fonts/`) to absolute paths (`/src/assets/fonts/`)
+- **Server Configuration**: Updated `server.js` with font-specific CORS and caching headers
+- **Netlify Deployment**: Added font MIME types and CORS headers to `netlify.toml`
+- **Font Consistency**: Unified all website text to use CircularXXSub-Black font family across all pages
+
 ## Project Structure
 
 ```
@@ -130,4 +165,4 @@ The application uses Supabase with the following schema for composers:
 
 ## Last Updated
 
-April 23, 2025
+June 10, 2025 - ✅ Writers carousel loading issue resolved (CSP fix completed)

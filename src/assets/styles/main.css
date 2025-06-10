@@ -11,6 +11,7 @@
     font-family: 'CircularXX';
     src: url('../fonts/CircularXXSub-Black.woff') format('woff');
     font-weight: 900;
+    font-display: swap;
 }
 
 body {

@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://lycmyaohsycrdergwpmq.supabase.co https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
     <title>Composer Profile | Concord Music Publishing</title>
+    <!-- Preload critical font file -->
+    <link rel="preload" href="assets/fonts/CircularXXSub-Black.woff" as="font" type="font/woff" crossorigin>
     <link rel="stylesheet" href="assets/styles/main.css">
     <link rel="icon" type="image/x-icon" href="assets/images/concord-C-icon-red.png">
     <style>
@@ -55,7 +58,7 @@
             position: absolute;
             color: rgba(0, 0, 0, 0.80);
             font-size: 20px;
-            font-family: CircularXX TT;
+            font-family: 'CircularXX', Arial, sans-serif;
             font-weight: 500;
             word-wrap: break-word;
             margin-bottom: 25px; /* Reduced from 50px to 25px */
@@ -96,7 +99,7 @@
             align-self: stretch;
             color: black;
             font-size: 60px;
-            font-family: CircularXX TT;
+            font-family: 'CircularXX', Arial, sans-serif;
             font-weight: 900;
             word-wrap: break-word;
         }
@@ -254,7 +257,7 @@
         .nav-link {
             color: black;
             text-decoration: none;
-            font-family: CircularXX TT;
+            font-family: 'CircularXX', Arial, sans-serif;
             font-size: 16px;
             font-weight: 500;
             padding: 8px 16px;

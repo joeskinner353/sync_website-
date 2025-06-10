@@ -120,7 +120,7 @@ async function initComposersCarousel() {
     const writersTrack = document.querySelector('.WritersImages .carousel-track');
     if (!writersTrack) {
         console.error('Writers track element not found');
-        return;
+        return [];
     }
 
     // Performance: Track loading time
@@ -149,9 +149,9 @@ async function initComposersCarousel() {
         
         if (!composers || composers.length === 0) {
             console.warn('No composers returned from database');
-            return;
+            return [];
         }
-        
+
         // Performance: Use document fragment for batch DOM updates
         const fragment = document.createDocumentFragment();
         

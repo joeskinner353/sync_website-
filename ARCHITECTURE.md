@@ -193,6 +193,23 @@ Uses Supabase with the following schema for composers:
 - Transparent containers for cleaner visual presentation
 - Video player with subtle background and rounded corners
 
+#### Font Loading System (Updated June 2025)
+- **CORS Configuration**: Proper cross-origin resource sharing headers for font files
+  - Local development server configured with font-specific CORS headers
+  - Netlify production deployment with comprehensive font CORS support
+  - Cache-Control headers for optimal font caching (1-year cache duration)
+- **Path Resolution**: Absolute font paths for reliable cross-page compatibility
+  - Fixed relative path issues (`../fonts/` → `/src/assets/fonts/`)
+  - Consistent font loading regardless of page depth or routing
+- **MIME Type Configuration**: Proper content types for all font formats
+  - `.woff`: `font/woff`
+  - `.woff2`: `font/woff2`
+  - `.ttf`: `font/ttf`
+- **Browser Compatibility**: Comprehensive fallback strategy
+  - Primary: CircularXX custom font
+  - Fallbacks: System fonts (Arial, Helvetica, sans-serif)
+  - Support for modern (WOFF2) and legacy (WOFF) formats
+
 #### Testing
 - Jest-based testing suite
 - Supabase connectivity tests
@@ -207,6 +224,28 @@ Uses Supabase with the following schema for composers:
 - External link security measures
 - Element existence checks before DOM operations
 - Detailed error logging for debugging
+
+## Security Implementation
+
+### Content Security Policy (CSP)
+The website implements Content Security Policy headers for enhanced security while allowing necessary external connections:
+
+```html
+<meta http-equiv="Content-Security-Policy" 
+      content="default-src 'self'; 
+               connect-src 'self' https://lycmyaohsycrdergwpmq.supabase.co https://cdn.jsdelivr.net; 
+               style-src 'self' 'unsafe-inline'; 
+               font-src 'self' data:; 
+               img-src 'self' data: https:; 
+               script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
+```
+
+**Key CSP Directives:**
+- `connect-src`: Allows connections to Supabase API and CDN for data fetching
+- `style-src`: Permits inline styles for dynamic styling
+- `font-src`: Enables loading of custom font files
+- `img-src`: Allows images from HTTPS sources and data URIs
+- `script-src`: Permits inline scripts and external script loading
 
 ## File Structure
 

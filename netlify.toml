@@ -2,6 +2,33 @@
   publish = "dist"
   command = "mkdir -p dist && npm run build"
 
+# Add CORS headers for font files
+[[headers]]
+  for = "/src/assets/fonts/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET"
+    Cache-Control = "public, max-age=31536000"
+
+# Add correct MIME types for font files
+[[headers]]
+  for = "*.woff"
+  [headers.values]
+    Content-Type = "font/woff"
+    Access-Control-Allow-Origin = "*"
+
+[[headers]]
+  for = "*.woff2"
+  [headers.values]
+    Content-Type = "font/woff2"
+    Access-Control-Allow-Origin = "*"
+
+[[headers]]
+  for = "*.ttf"
+  [headers.values]
+    Content-Type = "font/ttf"
+    Access-Control-Allow-Origin = "*"
+
 [[redirects]]
   from = "/*"
   to = "/index.html"

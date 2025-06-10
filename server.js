@@ -1,6 +1,10 @@
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
+import http from 'http';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const PORT = process.env.PORT || 3000;
 
@@ -25,6 +29,18 @@ const MIME_TYPES = {
 const server = http.createServer((request, response) => {
   console.log(`Request: ${request.method} ${request.url}`);
 
+  // Add CORS headers for all requests
+  response.setHeader('Access-Control-Allow-Origin', '*');
+  response.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  response.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Cache-Control');
+
+  // Handle preflight OPTIONS requests
+  if (request.method === 'OPTIONS') {
+    response.statusCode = 204;
+    response.end();
+    return;
+  }
+
   // Handle favicon.ico request
   if (request.url === '/favicon.ico') {
     response.statusCode = 204; // No content
@@ -32,8 +48,9 @@ const server = http.createServer((request, response) => {
     return;
   }
 
-  // Normalize file path
-  let filePath = '.' + request.url;
+  // Normalize file path - parse URL to remove query parameters
+  const url = new URL(request.url, `http://${request.headers.host}`);
+  let filePath = '.' + url.pathname;
   if (filePath === './') {
     filePath = './src/scripts/tests/video-embed-test-runner.html';
   }
@@ -59,8 +76,17 @@ const server = http.createServer((request, response) => {
         response.end(`Server Error: ${error.code}`);
       }
     } else {
-      // Success
-      response.writeHead(200, { 'Content-Type': contentType });
+      // Success - Add specific CORS headers for font files
+      const headers = { 'Content-Type': contentType };
+      
+      // Add additional CORS headers for font files
+      if (extname === '.woff' || extname === '.woff2' || extname === '.ttf' || extname === '.eot' || extname === '.otf') {
+        headers['Access-Control-Allow-Origin'] = '*';
+        headers['Access-Control-Allow-Methods'] = 'GET';
+        headers['Cache-Control'] = 'public, max-age=31536000'; // Cache fonts for 1 year
+      }
+      
+      response.writeHead(200, headers);
       response.end(content, 'utf-8');
     }
   });
