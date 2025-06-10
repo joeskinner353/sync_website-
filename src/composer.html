@@ -59,9 +59,19 @@
             color: rgba(0, 0, 0, 0.80);
             font-size: 20px;
             font-family: 'CircularXX', Arial, sans-serif;
-            font-weight: 500;
+            font-weight: 100 !important; /* Use the lightest possible weight */
             word-wrap: break-word;
             margin-bottom: 25px; /* Reduced from 50px to 25px */
+            -webkit-font-smoothing: antialiased; /* Smoother font rendering */
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            letter-spacing: 0.02em; /* Slight letter spacing to make text appear lighter */
+        }
+        
+        /* Override any font-weight inheritance specifically for ComposerBio */
+        .ComposerBio, .ComposerBio * {
+            font-weight: 100 !important;
+            font-synthesis: none; /* Prevent browser from synthesizing bold */
         }
         
         .ComposerDisco {
