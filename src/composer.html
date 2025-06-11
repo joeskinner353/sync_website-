@@ -3,10 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://lycmyaohsycrdergwpmq.supabase.co https://cdn.jsdelivr.net; frame-src 'self' https://player.vimeo.com https://www.youtube-nocookie.com https://concord-music-publishing.disco.ac; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://lycmyaohsycrdergwpmq.supabase.co https://cdn.jsdelivr.net; frame-src 'self' https://player.vimeo.com https://www.youtube-nocookie.com https://concord-music-publishing.disco.ac https://embed.disco.ac; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
     <title>Composer Profile | Concord Music Publishing</title>
-    <!-- Preload critical font file -->
+    
+    <!-- Essential DNS prefetch and preconnect for Disco embed -->
+    <link rel="dns-prefetch" href="//concord-music-publishing.disco.ac">
+    <link rel="preconnect" href="https://concord-music-publishing.disco.ac" crossorigin>
+    <link rel="dns-prefetch" href="//embed.disco.ac">
+    <link rel="preconnect" href="https://embed.disco.ac" crossorigin>
+    
+    <!-- Video platform optimizations -->
+    <link rel="dns-prefetch" href="//player.vimeo.com">
+    <link rel="preconnect" href="https://player.vimeo.com" crossorigin>
+    <link rel="dns-prefetch" href="//www.youtube-nocookie.com">
+    <link rel="preconnect" href="https://www.youtube-nocookie.com" crossorigin>
+    
+    <!-- Early script loading with high priority -->
+    <link rel="modulepreload" href="scripts/composer-page.js">
+    
+    <!-- Fix font preload with immediate use -->
     <link rel="preload" href="assets/fonts/CircularXXSub-Black.woff" as="font" type="font/woff" crossorigin>
+    <style>
+        /* Immediately use the preloaded font to prevent warning */
+        @font-face {
+            font-family: 'CircularXX';
+            src: url('assets/fonts/CircularXXSub-Black.woff') format('woff');
+            font-weight: 900;
+            font-display: swap;
+        }
+    </style>
+    
+    <!-- Reduce priority for non-critical resources -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" as="script" importance="low">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" as="script" importance="low">
+    
     <link rel="stylesheet" href="assets/styles/main.css">
     <link rel="icon" type="image/x-icon" href="assets/images/concord-C-icon-red.png">
     <style>
@@ -80,17 +110,27 @@
             left: 100px;
             top: 1000px;
             position: absolute;
-            background: transparent; /* Changed from #D9D9D9 to transparent */
+            background: transparent;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 25px; /* Added upper margin of 25px */
+            margin-top: 25px;
         }
         
         .ComposerDisco iframe {
             margin: 0 auto;
             display: block;
             max-width: 100%;
+            overflow: auto;
+            /* Simplified performance optimizations */
+            transform: translateZ(0);
+            border-radius: 12px;
+            border: none;
+        }
+        
+        /* Simplified disco container optimization */
+        .ComposerDisco {
+            contain: layout;
         }
         
         .ComposerHeader {

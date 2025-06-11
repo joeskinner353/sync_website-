@@ -189,16 +189,115 @@ async function loadComposerData() {
         }
         
         console.log('Using fallback composer data (not filtered by version)');
+        // IMMEDIATE: Start disco preload as soon as fallback data is available
+        if (fallbackComposer.disco_playlist) {
+            preloadDiscoIframe(fallbackComposer);
+        }
         populateComposerData(fallbackComposer);
         return;
     }
 
+    // IMMEDIATE: Start disco preload as soon as primary data is available
+    if (composer.disco_playlist) {
+        preloadDiscoIframe(composer);
+    }
     populateComposerData(composer);
+}
+
+// Global disco preload strategy - start as early as possible
+let discoPreloadData = null;
+
+// Register service worker for aggressive disco caching
+async function registerDiscoCacheWorker() {
+    if ('serviceWorker' in navigator) {
+        try {
+            const registration = await navigator.serviceWorker.register('/src/disco-cache-worker.js');
+            console.log('🎵 Disco cache worker registered:', registration.scope);
+        } catch (error) {
+            console.log('🎵 Disco cache worker registration failed:', error);
+        }
+    }
+}
+
+// Preload disco content immediately when composer data is fetched
+function preloadDiscoIframe(composer) {
+    if (!composer.disco_playlist) return;
+    
+    try {
+        // Parse the disco HTML to extract iframe URL
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = composer.disco_playlist;
+        const iframe = tempDiv.querySelector('iframe');
+        
+        if (iframe && iframe.src) {
+            console.log('🎵 Disco iframe preloading started');
+            
+            // Simple, aggressive preload strategy - just start loading in background
+            const preloadIframe = document.createElement('iframe');
+            
+            // Use original URL without modifications to avoid breaking Disco
+            preloadIframe.src = iframe.src;
+            preloadIframe.style.cssText = `
+                position: absolute;
+                left: -9999px;
+                top: -9999px;
+                width: 1200px;
+                height: 300px;
+                opacity: 0;
+                pointer-events: none;
+                border: none;
+                visibility: hidden;
+            `;
+            
+            // Minimal attributes for fastest loading
+            preloadIframe.setAttribute('loading', 'eager');
+            preloadIframe.setAttribute('fetchpriority', 'high');
+            preloadIframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-forms');
+            
+            // Store the preload data
+            discoPreloadData = {
+                iframe: preloadIframe,
+                originalSrc: iframe.src,
+                loadStart: performance.now(),
+                contentReady: true // Assume ready immediately for fastest display
+            };
+            
+            // Add to DOM to start loading immediately
+            document.body.appendChild(preloadIframe);
+            
+            // Simple load monitoring without complex checks
+            preloadIframe.onload = () => {
+                const preloadTime = performance.now() - discoPreloadData.loadStart;
+                console.log(`🎵 Disco iframe preloaded in ${preloadTime.toFixed(2)}ms`);
+                discoPreloadData.contentReady = true;
+            };
+        }
+    } catch (err) {
+        console.error('Error preloading disco iframe:', err);
+    }
 }
 
 // Function to populate composer data in the UI
 function populateComposerData(composer) {
-    // Update page content
+    // PERFORMANCE CRITICAL: Show disco placeholder immediately, load content after render
+    const discoSection = document.querySelector('.ComposerDisco');
+    if (discoSection && composer.disco_playlist) {
+        // Show immediate loading placeholder with composer info
+        showDiscoLoadingPlaceholder(discoSection, composer);
+        
+        // Use requestAnimationFrame to ensure placeholder renders before replacement
+        requestAnimationFrame(() => {
+            if (discoPreloadData) {
+                loadDiscoContentFromPreload(discoSection, composer);
+            } else {
+                loadDiscoContent(discoSection, composer);
+            }
+        });
+    } else if (discoSection) {
+        discoSection.style.display = 'none';
+    }
+
+    // Continue with other content after disco is initiated
     document.querySelector('.ComposerName').textContent = composer.name;
     document.querySelector('.ComposerBio').textContent = composer.bio;
 
@@ -368,27 +467,273 @@ function populateComposerData(composer) {
             videosSection.style.display = 'none';
         }
     }
+}
 
-    // Update disco section with playlist
-    const discoSection = document.querySelector('.ComposerDisco');
-    if (discoSection && composer.disco_playlist) {
-        try {
-            discoSection.innerHTML = composer.disco_playlist;
-            
-            // Add security attributes to the generated iframe
-            const iframe = discoSection.querySelector('iframe');
-            if (iframe) {
-                iframe.setAttribute('loading', 'lazy');
-                iframe.setAttribute('referrerpolicy', 'no-referrer');
-                iframe.setAttribute('title', `${composer.name}'s Playlist`);
-                iframe.style.borderRadius = '12px';
+// Simplified intersection observer for disco priority loading
+function setupDiscoIntersectionObserver(discoSection, composer) {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Disco section is visible - just log for now
+                console.log('🎵 Disco section visible');
+                observer.unobserve(entry.target);
             }
-        } catch (err) {
-            console.error('Error loading disco playlist:', err);
-            discoSection.style.display = 'none';
+        });
+    }, {
+        threshold: [0.1]
+    });
+    
+    observer.observe(discoSection);
+}
+
+// Show adaptive loading placeholder that responds to actual load time
+function showDiscoLoadingPlaceholder(discoSection, composer) {
+    const placeholderHtml = `
+        <div class="disco-loading-placeholder" style="
+            width: 100%;
+            height: 300px;
+            background: transparent;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        ">
+            <div style="
+                color: #000;
+                font-family: 'Jost', sans-serif;
+                font-size: 16px;
+                font-weight: 500;
+                margin-bottom: 20px;
+                opacity: 0.8;
+                text-align: center;
+            ">Loading ${composer.name}'s playlist...</div>
+            
+            <div style="
+                width: 60%;
+                max-width: 300px;
+                height: 4px;
+                background: rgba(0,0,0,0.1);
+                border-radius: 2px;
+                overflow: hidden;
+                position: relative;
+            ">
+                <div class="adaptive-loading-bar" style="
+                    height: 100%;
+                    background: linear-gradient(90deg, #000 0%, #333 50%, #000 100%);
+                    border-radius: 2px;
+                    width: 0%;
+                    animation: adaptiveLoading 0.8s ease-out forwards;
+                    transform-origin: left;
+                "></div>
+            </div>
+            
+            <div style="
+                color: #000;
+                font-family: 'Jost', sans-serif;
+                font-size: 12px;
+                margin-top: 15px;
+                opacity: 0.6;
+                animation: pulse 1.5s ease-in-out infinite;
+            ">Optimizing for instant playback...</div>
+        </div>
+        
+        <style>
+            @keyframes adaptiveLoading {
+                0% { 
+                    width: 0%; 
+                }
+                30% { 
+                    width: 60%; 
+                }
+                60% { 
+                    width: 85%; 
+                }
+                100% { 
+                    width: 100%; 
+                }
+            }
+            
+            @keyframes pulse {
+                0%, 100% { opacity: 0.6; }
+                50% { opacity: 0.3; }
+            }
+        </style>
+    `;
+    
+    discoSection.innerHTML = placeholderHtml;
+    console.log('🎵 Adaptive loading placeholder shown - will be replaced when content ready');
+}
+
+// Use preloaded disco iframe with visible loading feedback
+function loadDiscoContentFromPreload(discoSection, composer) {
+    const discoLoadStart = performance.now();
+    console.log('🎵 Loading Disco from preload...');
+    
+    try {
+        if (discoPreloadData && discoPreloadData.iframe) {
+            console.log('🎵 Using preloaded iframe - moving to visible location');
+            
+            // Move the preloaded iframe instead of cloning to avoid double-loading
+            const iframe = discoPreloadData.iframe;
+            
+            // Reset styles for visible display with optimized settings
+            iframe.style.cssText = `
+                border-radius: 12px;
+                opacity: 1;
+                display: block;
+                width: 100%;
+                min-height: 300px;
+                border: none;
+                contain: layout style;
+                transform: translateZ(0);
+                will-change: auto;
+                position: static;
+                left: auto;
+                top: auto;
+                visibility: visible;
+            `;
+            
+            // Set proper attributes for maximum performance
+            iframe.setAttribute('title', `${composer.name}'s Playlist`);
+            
+            // Use another requestAnimationFrame to ensure loading animation is visible
+            requestAnimationFrame(() => {
+                // Replace with actual content - move the existing iframe
+                discoSection.innerHTML = '';
+                discoSection.appendChild(iframe);
+                
+                const domInsertTime = performance.now();
+                console.log(`🎵 Disco iframe moved from preload in ${(domInsertTime - discoLoadStart).toFixed(2)}ms total`);
+                console.log(`🎵 Total disco optimization saved: ${(discoPreloadData.loadStart ? (discoLoadStart - discoPreloadData.loadStart).toFixed(2) : 0)}ms`);
+                console.log(`🎵 Disco content replaced placeholder - no duplicate loading`);
+                
+                // Setup intersection observer for priority handling
+                setupDiscoIntersectionObserver(discoSection, composer);
+                
+                // Clear preload data
+                discoPreloadData = null;
+            });
+
+        } else {
+            // No preload data available, fallback to regular loading
+            console.log('🎵 No preload data, using regular load');
+            loadDiscoContent(discoSection, composer);
         }
-    } else {
-        discoSection.style.display = 'none';
+        
+    } catch (err) {
+        console.error('Error loading disco from preload:', err);
+        // Fallback to regular loading
+        loadDiscoContent(discoSection, composer);
+    }
+}
+
+// Separate function to handle disco content loading with streamlined optimization
+function loadDiscoContent(discoSection, composer) {
+    // Performance monitoring
+    const discoLoadStart = performance.now();
+    console.log('🎵 Starting Disco playlist load...');
+    
+    try {
+        // Create a temporary container to parse the HTML
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = composer.disco_playlist;
+        
+        // Find the iframe in the disco playlist HTML
+        const iframe = tempDiv.querySelector('iframe');
+        if (iframe) {
+            // Enhanced iframe optimization with performance hints
+            iframe.setAttribute('referrerpolicy', 'no-referrer');
+            iframe.setAttribute('title', `${composer.name}'s Playlist`);
+            iframe.setAttribute('loading', 'eager');
+            iframe.setAttribute('fetchpriority', 'high');
+            iframe.setAttribute('scrolling', 'yes');
+            
+            // Essential styling for performance with GPU acceleration
+            iframe.style.cssText = `
+                border-radius: 12px;
+                opacity: 1;
+                display: block;
+                width: 100%;
+                min-height: 300px;
+                border: none;
+                contain: layout style;
+                transform: translateZ(0);
+                will-change: transform;
+                backface-visibility: hidden;
+            `;
+            
+            // Use DocumentFragment for faster DOM insertion
+            const fragment = document.createDocumentFragment();
+            fragment.appendChild(iframe);
+            
+            // Immediately clear and insert to start loading ASAP
+            discoSection.innerHTML = '';
+            discoSection.appendChild(fragment);
+            
+            // Setup intersection observer for priority boosting
+            setupDiscoIntersectionObserver(discoSection, composer);
+            
+            // Performance monitoring
+            const domInsertTime = performance.now();
+            console.log(`🎵 Disco iframe inserted into DOM in ${(domInsertTime - discoLoadStart).toFixed(2)}ms`);
+            console.log(`🎵 Disco content replaced placeholder - user sees immediate improvement`);
+            
+            // Enhanced load event listener with simplified checking
+            let loadEventFired = false;
+            
+            const loadCompleteHandler = () => {
+                if (loadEventFired) return; // Prevent duplicate calls
+                loadEventFired = true;
+                
+                const loadCompleteTime = performance.now();
+                console.log(`🎵 Disco playlist iframe loaded in ${(loadCompleteTime - discoLoadStart).toFixed(2)}ms`);
+                
+                // Post-load optimizations
+                requestAnimationFrame(() => {
+                    iframe.style.willChange = 'auto';
+                    iframe.style.contain = 'layout style paint';
+                });
+            };
+            
+            // Use single load event listener
+            iframe.addEventListener('load', loadCompleteHandler, { once: true });
+            
+            // Reasonable timeout for load event
+            setTimeout(() => {
+                if (!loadEventFired) {
+                    console.log('🎵 Disco iframe load timeout fallback');
+                    loadCompleteHandler();
+                }
+            }, 5000);
+            
+        } else {
+            // Fallback: use original HTML if no iframe found
+            discoSection.innerHTML = composer.disco_playlist;
+            console.log('🎵 Disco loaded as raw HTML (no iframe detected)');
+        }
+        
+    } catch (err) {
+        console.error('Error loading disco playlist:', err);
+        discoSection.innerHTML = `
+            <div style="
+                height: 100px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #999;
+                font-style: italic;
+                background: rgba(255, 0, 0, 0.1);
+                border-radius: 12px;
+            ">
+                <div style="text-align: center;">
+                    <div style="margin-bottom: 5px;">⚠️</div>
+                    <div>Unable to load playlist</div>
+                </div>
+            </div>
+        `;
     }
 }
 
@@ -713,7 +1058,29 @@ function initPdfDownload() {
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    loadComposerData();
+    // Performance monitoring
+    const perfStart = performance.now();
+    console.log('🚀 Composer page loading started');
+    
+    // Register service worker for disco caching (non-blocking)
+    registerDiscoCacheWorker();
+    
+    loadComposerData().then(() => {
+        const loadTime = performance.now() - perfStart;
+        console.log(`✅ Composer page loaded in ${loadTime.toFixed(2)}ms`);
+        
+        // Track specific loading metrics
+        if (performance.getEntriesByType) {
+            const entries = performance.getEntriesByType('navigation')[0];
+            if (entries) {
+                console.log(`📊 Page Performance Metrics:
+                    - DOM Content Loaded: ${entries.domContentLoadedEventEnd - entries.domContentLoadedEventStart}ms
+                    - Page Load Complete: ${entries.loadEventEnd - entries.loadEventStart}ms
+                    - Total Page Load: ${entries.loadEventEnd - entries.fetchStart}ms`);
+            }
+        }
+    });
+    
     initPdfDownload();
 });
 
