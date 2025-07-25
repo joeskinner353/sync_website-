@@ -46,7 +46,8 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            background: #F4A461;
+            background: linear-gradient(135deg, #F4A461 0%, #E8956A 100%);
+            position: relative;
         }
         
         /* New ComposerTemplateV3 styles */
@@ -67,7 +68,7 @@
             left: 0px;
             top: 0px;
             position: absolute;
-            background: #F4A461;
+            background: transparent; /* Changed from #F4A461 to allow body background to show */
             overflow: hidden;
         }
         
@@ -116,6 +117,8 @@
             justify-content: center;
             align-items: center;
             margin-top: 25px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+            border-radius: 12px;
         }
         
         .ComposerDisco iframe {
@@ -148,12 +151,27 @@
         
         .ComposerName {
             align-self: stretch;
-            color: black;
+            background: linear-gradient(145deg, #000000 0%, #333333 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             font-size: 60px;
             font-family: 'CircularXX', Arial, sans-serif;
-            font-weight: 900;
+            font-weight: 700;
             word-wrap: break-word;
-            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+            position: relative;
+        }
+        
+        .ComposerName::before {
+            content: attr(data-text);
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            background: rgba(0, 0, 0, 0.2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            z-index: -1;
         }
         
         .Socials {
@@ -198,6 +216,7 @@
             background: rgba(0, 0, 0, 0.05);
             border-radius: 8px;
             overflow: hidden;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
         }
         
         /* Video slider styles */

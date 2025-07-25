@@ -3,6 +3,11 @@
  * Used for composer grid view and filtering
  */
 
+/* Ensure black background for grid pages */
+body {
+    background-color: black !important;
+}
+
 /* Main container styling */
 .grid-container {
     max-width: 1440px;

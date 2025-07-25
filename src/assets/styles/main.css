@@ -15,7 +15,8 @@
 }
 
 body {
-    background-color: black;
+    /* Enhanced background applied via inline styles in HTML files */
+    /* background-color: black; -- removed to allow enhanced backgrounds */
     font-family: 'CircularXX', Arial, sans-serif;
     color: white;
     line-height: 1.6;
