@@ -3,6 +3,16 @@
  * Used for composer grid view and filtering
  */
 
+/* Force all text to be white, overriding any browser or dark mode defaults */
+* {
+    color: white !important;
+}
+
+/* Override for elements that should keep their original appearance */
+img, video, canvas, iframe, object, embed, input[type="file"] {
+    color: initial !important;
+}
+
 /* Main container styling */
 .grid-container {
     max-width: 1440px;
@@ -49,7 +59,7 @@
     font-size: 32px;
     font-family: 'CircularXX', Arial, sans-serif;
     font-weight: 700;
-    color: black;
+    color: white !important;
 }
 
 .navigation {
@@ -57,7 +67,7 @@
 }
 
 .nav-link {
-    color: black;
+    color: white !important;
     text-decoration: none;
     margin-left: 20px;
     font-family: 'CircularXX', Arial, sans-serif;
@@ -72,9 +82,10 @@
 }
 
 .nav-link:hover {
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.1);
     transform: translateY(-2px);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    color: white !important;
 }
 
 /* Filter controls styling */
@@ -94,7 +105,7 @@
     font-family: 'CircularXX', Arial, sans-serif;
     font-size: 16px;
     font-weight: 600;
-    color: black;
+    color: white !important;
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -105,6 +116,7 @@
     transform: translateY(-2px);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
     border-color: rgba(255, 255, 255, 0.3);
+    color: white !important;
 }
 
 .filter-button.active {
@@ -173,7 +185,7 @@
     left: 0;
     right: 0;
     background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.8) 100%);
-    color: white;
+    color: white !important;
     padding: 20px 15px 15px;
     font-family: 'CircularXX', Arial, sans-serif;
     font-size: 18px;
@@ -204,7 +216,7 @@
 
 .tag {
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.7) 100%);
-    color: white;
+    color: white !important;
     padding: 6px 12px;
     border-radius: 18px;
     font-size: 11px;
@@ -222,6 +234,7 @@
     padding: 40px;
     font-family: 'CircularXX', Arial, sans-serif;
     font-size: 18px;
+    color: white !important;
 }
 
 /* Animations */
@@ -301,27 +314,35 @@
     }
 }
 
-/* Dark mode support */
+/* Dark mode support - Override only when explicitly in dark mode */
 @media (prefers-color-scheme: dark) {
     .filter-button {
-        background-color: rgba(0, 0, 0, 0.2);
-        color: white;
+        background: rgba(0, 0, 0, 0.2) !important;
+        color: white !important;
+        border-color: rgba(255, 255, 255, 0.2) !important;
     }
     
     .filter-button:hover {
-        background-color: rgba(0, 0, 0, 0.4);
+        background: rgba(0, 0, 0, 0.4) !important;
+        color: white !important;
     }
     
     .filter-button.active {
-        background-color: white;
-        color: black;
+        background: white !important;
+        color: black !important;
+        border-color: rgba(0, 0, 0, 0.2) !important;
     }
     
     .nav-link {
-        color: white;
+        color: white !important;
+    }
+    
+    .nav-link:hover {
+        color: white !important;
+        background: rgba(255, 255, 255, 0.1) !important;
     }
     
     .title {
-        color: white;
+        color: white !important;
     }
 }

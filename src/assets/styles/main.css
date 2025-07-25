@@ -17,11 +17,26 @@
 body {
     background-color: black;
     font-family: 'CircularXX', Arial, sans-serif;
-    color: white;
+    color: white !important;
     line-height: 1.6;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+}
+
+/* Force all text to be white, overriding dark mode */
+*, *::before, *::after {
+    color: white !important;
+}
+
+/* Override specific elements that should remain their original colors */
+img, video, canvas, iframe, object, embed {
+    color: initial !important;
+}
+
+/* Keep button backgrounds and specific styling intact */
+button {
+    color: inherit !important;
 }
 
 header {
@@ -36,7 +51,7 @@ nav {
 }
 
 nav a {
-    color: #ffffff;
+    color: #ffffff !important;
     text-decoration: none;
     padding: 10px 15px;
 }
@@ -86,7 +101,7 @@ footer {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    color: white;
+    color: white !important;
     font-size: 50px;
     font-family: 'CircularXX', Arial, sans-serif;
     font-weight: 900;
@@ -95,7 +110,7 @@ footer {
 .section-title {
     position: absolute;
     text-align: right;
-    color: white;
+    color: white !important;
     font-size: 40px;
     font-family: 'CircularXX', Arial, sans-serif;
     font-weight: 900;
@@ -150,7 +165,7 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    color: white;
+    color: white !important;
     font-family: 'CircularXX', Arial, sans-serif;
     font-size: 18px;
     opacity: 0;
@@ -244,7 +259,7 @@ footer {
 
 .FtvImages .composer-name-overlay {
     background: rgba(0, 0, 0, 0.7);
-    color: white;
+    color: white !important;
     font-family: 'CircularXX', Arial, sans-serif;
     font-size: 18px;
     text-transform: capitalize; /* Capitalize the image names */
