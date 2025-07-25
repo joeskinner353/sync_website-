@@ -14,19 +14,97 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            background: black;
+            background: linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #000000 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             font-family: 'CircularXX', Arial, sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Background collage */
+        .background-collage {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .background-collage img {
+            position: absolute;
+            filter: blur(1px) brightness(0.7);
+            object-fit: cover;
+            transition: opacity 2s ease-in-out;
+            border-radius: 8px;
+        }
+        
+        .background-collage img:nth-child(1) {
+            top: 10%;
+            left: 5%;
+            width: 25%;
+            height: 30%;
+            transform: rotate(-15deg);
+        }
+        
+        .background-collage img:nth-child(2) {
+            top: 15%;
+            right: 10%;
+            width: 20%;
+            height: 25%;
+            transform: rotate(10deg);
+        }
+        
+        .background-collage img:nth-child(3) {
+            bottom: 20%;
+            left: 15%;
+            width: 22%;
+            height: 28%;
+            transform: rotate(20deg);
+        }
+        
+        .background-collage img:nth-child(4) {
+            bottom: 10%;
+            right: 20%;
+            width: 18%;
+            height: 24%;
+            transform: rotate(-10deg);
+        }
+        
+        .background-collage img:nth-child(5) {
+            top: 40%;
+            left: 35%;
+            width: 20%;
+            height: 22%;
+            transform: rotate(5deg);
+        }
+        
+        /* Gradient overlay to blend with black */
+        .background-collage::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.2) 85%, rgba(0,0,0,0.5) 100%);
+            pointer-events: none;
         }
         
         .FtvSmaller2 {
             width: 1200px;
             height: 674px;
             position: relative;
-            background: black;
-            overflow: hidden;
+            background: transparent;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            overflow: visible;
+            z-index: 1;
         }
         
         .Frame4 {
@@ -62,12 +140,17 @@
             font-family: 'CircularXX', Arial, sans-serif;
             font-weight: 900;
             word-wrap: break-word;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
         }
         
         .FtvMain {
             width: 826px;
             height: 166px;
             position: relative;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 6px;
+            padding: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
         
         .ProducerAcquiresExclusiveRightsFromComposerAsAConditionOfCommission {
@@ -85,6 +168,7 @@
             font-family: 'CircularXX', Arial, sans-serif;
             font-weight: 900;
             word-wrap: break-word;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
         }
         
         .Image2 {
@@ -110,6 +194,7 @@
             font-family: 'CircularXX', Arial, sans-serif;
             font-weight: 900;
             word-wrap: break-word;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
         }
         
         .Image3 {
@@ -135,6 +220,7 @@
             font-family: 'CircularXX', Arial, sans-serif;
             font-weight: 900;
             word-wrap: break-word;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
         }
         
         .FtvH2 {
@@ -158,20 +244,46 @@
             font-family: 'CircularXX', Arial, sans-serif;
             font-weight: 900;
             word-wrap: break-word;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
         }
         
         .FtvContact {
-            align-self: stretch;
+            align-self: center;
             text-align: center;
             justify-content: center;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
             color: white;
             font-size: 20px;
             font-family: 'CircularXX', Arial, sans-serif;
             font-weight: 900;
             word-wrap: break-word;
             cursor: pointer;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+            transition: all 0.3s ease;
+            padding: 15px 25px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            margin: 20px 0;
+            width: fit-content;
+        }
+        
+        .FtvContact:hover {
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .email-icon {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
         }
         
         .ConcordLogo {
@@ -262,6 +374,15 @@
     </style>
 </head>
 <body>
+    <!-- Background collage -->
+    <div class="background-collage">
+        <img src="https://lycmyaohsycrdergwpmq.supabase.co/storage/v1/object/public/site-assets/ftv/catastrophe.jpg" alt="Catastrophe" loading="lazy">
+        <img src="https://lycmyaohsycrdergwpmq.supabase.co/storage/v1/object/public/site-assets/ftv/night_manager.jpg" alt="Night Manager" loading="lazy">
+        <img src="https://lycmyaohsycrdergwpmq.supabase.co/storage/v1/object/public/site-assets/ftv/taskmaster.jpg" alt="Taskmaster" loading="lazy">
+        <img src="https://lycmyaohsycrdergwpmq.supabase.co/storage/v1/object/public/site-assets/ftv/unforgotten.jpeg" alt="Unforgotten" loading="lazy">
+        <img src="https://lycmyaohsycrdergwpmq.supabase.co/storage/v1/object/public/site-assets/ftv/mr_loverman.jpg" alt="Mr Loverman" loading="lazy">
+    </div>
+    
     <div class="navigation">
         <a href="index.html" class="nav-link">Home</a>
         <a href="composer_grid.html" class="nav-link">Roster</a>
@@ -288,7 +409,12 @@
             <div data-layer="ftv_h2" class="FtvH2">
                 <div data-layer="ftv_h2">Music for Film & TV has long-term value as films/series are syndicated worldwide</div>
             </div>
-            <div data-layer="ftv_contact" class="FtvContact" id="contact-button">Contact us for more info</div>
+            <div data-layer="ftv_contact" class="FtvContact" id="contact-button">
+                <svg class="email-icon" viewBox="0 0 24 24">
+                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                </svg>
+                Contact us for more info
+            </div>
         </div>
         <div data-layer="concord-logo" class="ConcordLogo">
             <img data-layer="concord-C-icon-red 1" class="ConcordCIconRed1" src="assets/images/concord-C-icon-red.png" alt="Concord C Icon" />
