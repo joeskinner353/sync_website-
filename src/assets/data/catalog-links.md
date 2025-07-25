@@ -11,8 +11,5 @@
 ### Fania
 [Browse Catalog](https://concord-music-publishing.disco.ac/cat/900884433)
 
-### Pusher
-[Browse Catalog](https://concord-music-publishing.disco.ac/cat/663144527)
-
 ### Pulse
 [Browse Catalog](https://pulsesync.disco.ac/cat/1168791475)

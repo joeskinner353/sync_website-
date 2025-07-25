@@ -17,7 +17,7 @@ A responsive web platform for Concord Music Publishing that showcases music cata
   - Spotify playlist embedding
 
 - **Catalog Integration**:
-  - Direct links to catalog platforms including Boosey & Hawkes, Fania, Rodgers & Hammerstein, Pulse, and Pusher
+  - Direct links to catalog platforms including Boosey & Hawkes, Fania, Rodgers & Hammerstein, and Pulse
   - Seamless navigation to external platforms
 
 - **FTV Content Showcase**:

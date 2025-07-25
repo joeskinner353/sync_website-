@@ -13,7 +13,6 @@ The application is a web-based platform for Concord Music Publishing that showca
     - Fania (disco.ac)
     - Rodgers & Hammerstein (disco.ac)
     - Pulse (pulsesync.disco.ac)
-    - Pusher (disco.ac)
   - Writers section (composers from database) with dual view modes:
     - Carousel view (default) - horizontally scrolling composer cards
     - Grid view - responsive grid layout of composer cards

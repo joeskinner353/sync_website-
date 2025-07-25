@@ -156,8 +156,10 @@ footer {
     opacity: 0;
     transition: opacity 0.3s ease;
     text-align: center;
-    padding: 10px;
-    white-space: nowrap;
+    padding: 15px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.2;
 }
 
 .carousel-link:hover .composer-name-overlay {
