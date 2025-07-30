@@ -52,7 +52,7 @@
         /* New ComposerTemplateV3 styles */
         .ComposerTemplateV3Frame {
             width: 1440px;
-            height: 1400px;
+            height: 2500px;
             padding: 10px;
             position: relative;
             justify-content: flex-start;
@@ -63,7 +63,7 @@
         
         .ComposerTemplateV3 {
             width: 1440px;
-            height: 1400px;
+            height: 2500px;
             left: 0px;
             top: 0px;
             position: absolute;
@@ -106,9 +106,9 @@
         }
         
         .ComposerDisco {
-            width: 1200px;
-            height: 300px;
-            left: 100px;
+            width: 1000px;
+            height: 1000px;
+            left: 50%;
             top: 1000px;
             position: absolute;
             background: transparent;
@@ -116,9 +116,15 @@
             justify-content: center;
             align-items: center;
             margin-top: 25px;
+            transform: translateX(-50%); /* Center horizontally */
+            max-width: calc(100vw - 40px); /* Responsive fallback with padding */
+            max-height: calc(100vh - 200px); /* Prevent overflow on smaller screens */
         }
         
         .ComposerDisco iframe {
+            width: 100%;
+            height: 100%;
+            min-height: 1000px;
             margin: 0 auto;
             display: block;
             max-width: 100%;
@@ -127,6 +133,49 @@
             transform: translateZ(0);
             border-radius: 12px;
             border: none;
+        }
+        
+        /* Responsive breakpoints for mobile devices */
+        @media (max-width: 1200px) {
+            .ComposerDisco {
+                width: 90vw;
+                height: 90vw;
+                max-width: 800px;
+                max-height: 800px;
+            }
+            
+            .ComposerDisco iframe {
+                min-height: 600px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .ComposerDisco {
+                width: 95vw;
+                height: 95vw;
+                max-width: 600px;
+                max-height: 600px;
+                left: 2.5%;
+                transform: none;
+            }
+            
+            .ComposerDisco iframe {
+                min-height: 400px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .ComposerDisco {
+                width: 100vw;
+                height: 80vw;
+                max-height: 500px;
+                left: 0;
+                margin-top: 20px;
+            }
+            
+            .ComposerDisco iframe {
+                min-height: 300px;
+            }
         }
         
         /* Simplified disco container optimization */

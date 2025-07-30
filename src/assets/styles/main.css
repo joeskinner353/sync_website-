@@ -24,21 +24,6 @@ body {
     overflow-x: hidden;
 }
 
-/* Force all text to be white, overriding dark mode */
-*, *::before, *::after {
-    color: white !important;
-}
-
-/* Override specific elements that should remain their original colors */
-img, video, canvas, iframe, object, embed {
-    color: initial !important;
-}
-
-/* Keep button backgrounds and specific styling intact */
-button {
-    color: inherit !important;
-}
-
 header {
     background: #35424a;
     color: #ffffff;
