@@ -27,8 +27,8 @@ export function getCurrentVersion() {
     } else if (hostname.includes('concordpub-v5')) {
         return SITE_VERSIONS.VERSION_5;
     } else if (hostname.includes('concordpub-sync') || hostname.includes('netlify')) {
-        // Primary deployment is version_1 (main site)
-        return SITE_VERSIONS.VERSION_1;
+        // This branch (main_version2) deployment is version_2
+        return SITE_VERSIONS.VERSION_2;
     }
     
     // Check URL parameters second (for local development or override)

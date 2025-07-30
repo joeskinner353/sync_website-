@@ -2,10 +2,10 @@ import { supabase } from './supabase.js'
 
 /**
  * Loads visible composers filtered by site version
- * @param {string} siteVersion - The site version to filter by (default: 'version_1')
+ * @param {string} siteVersion - The site version to filter by (default: 'version_2')
  * @returns {Promise<Array>} - Array of composer objects
  */
-export async function loadVisibleComposers(siteVersion = 'version_1') {
+export async function loadVisibleComposers(siteVersion = 'version_2') {
     console.log('Loading composers for version:', siteVersion);
     
         // Try contains first (for JSON arrays)
