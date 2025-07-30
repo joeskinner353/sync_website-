@@ -8,26 +8,33 @@ import { supabase } from './supabase.js'
 export async function loadVisibleComposers(siteVersion = 'version_1') {
     console.log('Loading composers for version:', siteVersion);
     
-    // Try with contains first (for array-based site_version)
+        // Try contains first (for JSON arrays)
     let { data: composers, error } = await supabase
         .from('composers')
         .select('*')
-        .eq('is_visible', true)
         .contains('site_version', [siteVersion])
-        .order('display_order')
+        .eq('is_visible', true)
+        .order('display_order');
 
-    // If no results with contains, try with direct equality (for string-based site_version)
+    // If no results, try equality (for single values)
     if (!composers || composers.length === 0) {
-        console.log('No composers found with contains, trying direct equality...');
-        const { data: composersEq, error: errorEq } = await supabase
+        console.log('Trying equality filter for version...');
+        const { data: singleVersionData, error: singleError } = await supabase
             .from('composers')
             .select('*')
-            .eq('is_visible', true)
             .eq('site_version', siteVersion)
+            .eq('is_visible', true)
             .order('display_order')
         
-        composers = composersEq;
-        error = errorEq;
+        composers = singleVersionData;
+        error = singleError;
+    }
+
+    // No fallback - if no composers match the version, show none
+    if (!composers || composers.length === 0) {
+        console.log(`No composers found for version '${siteVersion}' - this is correct behavior`);
+        composers = [];
+        error = null;
     }
 
     // If still no results, fall back to all visible composers

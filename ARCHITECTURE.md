@@ -196,6 +196,19 @@ Uses Supabase with the following schema for composers:
 - Transparent containers for cleaner visual presentation
 - Video player with subtle background and rounded corners
 
+#### Version Management System
+- **Multi-Version Support**: Database-driven versioning allows multiple site versions
+- **Current Version**: version_1 (production default - main site)
+- **Branch-Based Deployment**: Each version deploys from separate git branches
+- **Automated Sync**: GitHub Actions automatically propagates main branch updates to all version branches
+- **Version-Specific Content**: Database filtering by `site_version` field ensures each site shows only relevant composers
+  - Main site (concordpub-sync.netlify.app): Shows composers with `site_version` containing `"version_1"`
+  - Future v4 site: Shows composers with `site_version` containing `"version_4"`
+  - Future v5 site: Shows composers with `site_version` containing `"version_5"`
+- **Independent Deployments**: Each version can be deployed to separate Netlify URLs
+- **Centralized Development**: All development happens on main branch, automatically synced to version branches
+- **Conflict Resolution**: Automated preservation of version-specific configuration files
+
 #### Font Loading System (Updated June 2025)
 - **CORS Configuration**: Proper cross-origin resource sharing headers for font files
   - Local development server configured with font-specific CORS headers
@@ -286,6 +299,12 @@ src/
         ├── font-loading-test.html
         ├── video-embed-test-runner.html
         └── video-embed-tests.js
+
+.github/
+└── workflows/
+    └── sync-version-branches.yml  # Automated version branch synchronization
+
+VERSION-MANAGEMENT.md      # Version tracking and deployment documentation
 ```
 
 ## Best Practices
@@ -304,6 +323,8 @@ src/
    - Documentation of external links
    - Consistent view state management
    - External libraries loaded via CDN for reduced bundle size
+   - Automated version branch synchronization via GitHub Actions
+   - Centralized development with multi-version deployment support
 
 3. **User Experience**
    - Smooth animations and transitions between views

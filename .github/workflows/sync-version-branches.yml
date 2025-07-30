@@ -1,0 +1,66 @@
+name: Sync Version Branches
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  sync-branches:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        version-branch: [v3-deployment, v4-deployment, v5-deployment]
+        
+    steps:
+    - name: Checkout main branch
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Configure Git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        
+    - name: Sync with version branch
+      run: |
+        # Fetch all branches
+        git fetch origin
+        
+        # Checkout the version branch
+        git checkout -B ${{ matrix.version-branch }} origin/${{ matrix.version-branch }} || git checkout -b ${{ matrix.version-branch }}
+        
+        # Merge main into version branch, keeping version-specific files
+        git merge origin/main --no-edit --strategy-option=ours || {
+          echo "Merge conflict detected, resolving..."
+          
+          # Reset site-version.js to version-specific content
+          VERSION_NUMBER=$(echo ${{ matrix.version-branch }} | grep -o 'v[0-9]*')
+          echo "const SITE_VERSION = '$VERSION_NUMBER';" > src/scripts/site-version.js
+          echo "export { SITE_VERSION };" >> src/scripts/site-version.js
+          
+          # Add the resolved file
+          git add src/scripts/site-version.js
+          
+          # Complete the merge
+          git commit -m "Auto-sync from main: preserve $VERSION_NUMBER site version"
+        }
+        
+        # Push the updated branch
+        git push origin ${{ matrix.version-branch }}
+        
+    - name: Create PR for manual review (if conflicts)
+      if: failure()
+      uses: peter-evans/create-pull-request@v5
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        branch: auto-sync-${{ matrix.version-branch }}-${{ github.sha }}
+        title: "Auto-sync main to ${{ matrix.version-branch }} (manual review needed)"
+        body: |
+          Automated sync from main branch to ${{ matrix.version-branch }} encountered conflicts.
+          Please review and merge manually.
+          
+          Source commit: ${{ github.sha }}
