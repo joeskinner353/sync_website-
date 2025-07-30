@@ -11,8 +11,7 @@ jobs:
     
     strategy:
       matrix:
-        # Sync main to version-specific branches
-        version-branch: [main_version2]
+        version-branch: [main_version2, main_version3]
         
     steps:
     - name: Checkout main branch
@@ -31,26 +30,31 @@ jobs:
         # Fetch all branches
         git fetch origin
         
-        # Checkout the version branch (create if doesn't exist)
+        # Checkout the version branch
         git checkout -B ${{ matrix.version-branch }} origin/${{ matrix.version-branch }} || git checkout -b ${{ matrix.version-branch }}
         
-        # Merge main into version branch, preserving version-specific files
-        git merge origin/main --no-edit || {
+        # Merge main into version branch, keeping version-specific files
+        git merge origin/main --no-edit --strategy-option=ours || {
           echo "Merge conflict detected, resolving..."
           
-          # Update site-version.js for version_2 branch
-          if [[ "${{ matrix.version-branch }}" == "main_version2" ]]; then
-            # Update the default version to version_2
-            sed -i 's/VERSION_1: '\''version_1'\''/VERSION_2: '\''version_2'\''/g' src/scripts/site-version.js
-            sed -i 's/DEFAULT_VERSION = SITE_VERSIONS.VERSION_1/DEFAULT_VERSION = SITE_VERSIONS.VERSION_2/g' src/scripts/site-version.js
-            sed -i 's/Primary deployment is version_1/Primary deployment is version_2/g' src/scripts/site-version.js
+          # Reset site-version.js to version-specific content for version branches
+          if [ "${{ matrix.version-branch }}" = "main_version2" ]; then
+            # Update DEFAULT_VERSION and hostname detection for version_2
+            sed -i 's/DEFAULT_VERSION = SITE_VERSIONS\.VERSION_1/DEFAULT_VERSION = SITE_VERSIONS.VERSION_2/' src/scripts/site-version.js
+            sed -i 's/return SITE_VERSIONS\.VERSION_1/return SITE_VERSIONS.VERSION_2/' src/scripts/site-version.js
+            sed -i 's/targetVersion = '\''version_1'\''/targetVersion = '\''version_2'\''/' src/scripts/composers.js
+          elif [ "${{ matrix.version-branch }}" = "main_version3" ]; then
+            # Update DEFAULT_VERSION and hostname detection for version_3
+            sed -i 's/DEFAULT_VERSION = SITE_VERSIONS\.VERSION_1/DEFAULT_VERSION = SITE_VERSIONS.VERSION_3/' src/scripts/site-version.js
+            sed -i 's/return SITE_VERSIONS\.VERSION_1/return SITE_VERSIONS.VERSION_3/' src/scripts/site-version.js
+            sed -i 's/targetVersion = '\''version_1'\''/targetVersion = '\''version_3'\''/' src/scripts/composers.js
           fi
           
           # Add the resolved files
-          git add src/scripts/site-version.js
+          git add src/scripts/site-version.js src/scripts/composers.js
           
           # Complete the merge
-          git commit -m "Auto-sync from main: configure for ${{ matrix.version-branch }}"
+          git commit -m "Auto-sync from main: preserve version-specific configuration for ${{ matrix.version-branch }}"
         }
         
         # Push the updated branch
