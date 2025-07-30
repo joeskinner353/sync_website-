@@ -7,6 +7,7 @@
 export const SITE_VERSIONS = {
     VERSION_1: 'version_1',  // Main/primary site version (main branch)
     VERSION_2: 'version_2',  // Version 2 site (main_version2 branch)
+    VERSION_3: 'version_3',  // Version 3 site (main_version3 branch)
 };
 
 // Default site version (main site)

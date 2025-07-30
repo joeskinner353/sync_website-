@@ -203,8 +203,8 @@ Uses Supabase with the following schema for composers:
 - **Automated Sync**: GitHub Actions automatically propagates main branch updates to all version branches
 - **Version-Specific Content**: Database filtering by `site_version` field ensures each site shows only relevant composers
   - Main site (concordpub-sync.netlify.app): Shows composers with `site_version` containing `"version_1"`
-  - Future version_4 site: Shows composers with `site_version` containing `"version_4"`
-  - Future version_5 site: Shows composers with `site_version` containing `"version_5"`
+  - Version 2 site: Shows composers with `site_version` containing `"version_2"`
+  - Version 3 site: Shows composers with `site_version` containing `"version_3"`
 - **Independent Deployments**: Each version can be deployed to separate Netlify URLs
 - **Centralized Development**: All development happens on main branch, automatically synced to version branches
 - **Conflict Resolution**: Automated preservation of version-specific configuration files

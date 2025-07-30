@@ -1,4 +1,10 @@
-# Vers| Version | Name | Description | Status | Deployment URL | Branch |
+# Vers|## Version Overview
+
+| Version | Name | Description | Status | Deployment URL | Branch |
+|---------|------|-------------|--------|----------------|---------|
+| version_1 | Default/Production | Current production version with enhanced features | 🟢 Active | concordpub-sync.netlify.app | main |
+| version_2 | Version 2 Site | Second version for additional composers | 🟡 Active | TBD | main_version2 |
+| version_3 | Version 3 Site | Third version for additional composers | 🟡 Active | TBD | main_version3 | | Name | Description | Status | Deployment URL | Branch |
 |---------|------|-------------|--------|----------------|---------|
 | version_1 | Default/Production | Current production version with enhanced features | 🟢 Active | concordpub-sync.netlify.app | main |
 | version_2 | Version 2 Site | Second version for additional composers | 🟡 Active | TBD | main_version2 |nagement
