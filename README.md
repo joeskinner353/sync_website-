@@ -34,6 +34,17 @@ A responsive web platform for Concord Music Publishing that showcases music cata
   - Direct content access from each section
   - Smart internal linking between related content
 
+## Version Management
+
+- **Multi-Version Support**: Database-driven versioning system allowing multiple site versions
+- **Current Version**: `version_1` (production default on main branch)
+- **Version Filtering**: Each site version shows only relevant composers based on `site_version` database field
+- **Branch-Based Deployment**: Separate git branches for each version with automated synchronization
+- **Hostname Detection**: Automatic version detection based on deployment URL
+- **Future Versions**: `version_4` and `version_5` planned for future composer rosters
+
+For detailed version information, see [VERSION-MANAGEMENT.md](VERSION-MANAGEMENT.md)
+
 ## Font System & Loading
 
 - **Custom Typography**: CircularXX font family for consistent branding

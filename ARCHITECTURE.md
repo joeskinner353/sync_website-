@@ -30,15 +30,15 @@ The application is a web-based platform for Concord Music Publishing that showca
   - Profile photo
   - Biography with customizable typography
   - Social media links (Spotify, Instagram, TikTok) with standardized SVG icons
-  - **New in V3**: Single video carousel with navigation arrows:
+  - **Enhanced Features**: Single video carousel with navigation arrows:
     - One-video-at-a-time display format
     - Left/right navigation buttons for video switching
     - Indicator dots showing current position
     - Keyboard arrow key navigation
     - Fullscreen video support with keyboard controls (Escape/Backspace)
   - Spotify playlist integration with centered alignment
-  - **New in V3**: Improved spacing and layout with consistent margins
-  - **New in V3**: Cleaner container styling with transparent backgrounds
+  - **Enhanced Features**: Improved spacing and layout with consistent margins
+  - **Enhanced Features**: Cleaner container styling with transparent backgrounds
 
 - **Composer Grid Page (composer_grid.html)**
   - Full grid view of all composers
@@ -99,7 +99,7 @@ Two types of scrolling mechanisms are implemented:
 - Animation-based transitions between view modes
 - Toggle button UI with active state indicators and hover animations
 
-#### Video Player Features (Updated in V3)
+#### Video Player Features (Enhanced Version)
 - Single-video display with navigation controls
 - Previous/next video navigation with arrow buttons
 - Visual indicators for current video position
@@ -182,7 +182,7 @@ Uses Supabase with the following schema for composers:
 - Session caching of composer data
 - Optimized image loading in grid view
 
-#### Styling (Updated for V3)
+#### Styling (Current Version)
 - Custom CircularXX font
 - Responsive design
 - Warm background theme (#F4A461)
@@ -203,8 +203,8 @@ Uses Supabase with the following schema for composers:
 - **Automated Sync**: GitHub Actions automatically propagates main branch updates to all version branches
 - **Version-Specific Content**: Database filtering by `site_version` field ensures each site shows only relevant composers
   - Main site (concordpub-sync.netlify.app): Shows composers with `site_version` containing `"version_1"`
-  - Future v4 site: Shows composers with `site_version` containing `"version_4"`
-  - Future v5 site: Shows composers with `site_version` containing `"version_5"`
+  - Future version_4 site: Shows composers with `site_version` containing `"version_4"`
+  - Future version_5 site: Shows composers with `site_version` containing `"version_5"`
 - **Independent Deployments**: Each version can be deployed to separate Netlify URLs
 - **Centralized Development**: All development happens on main branch, automatically synced to version branches
 - **Conflict Resolution**: Automated preservation of version-specific configuration files

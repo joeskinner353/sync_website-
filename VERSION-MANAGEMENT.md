@@ -6,13 +6,13 @@ This document tracks all versions of the Concord Music Publishing website and th
 
 | Version | Name | Description | Status | Deployment URL | Branch |
 |---------|------|-------------|--------|----------------|---------|
-| v3 | Default/Production | Current production version with V3 features | 🟢 Active | concordpub-sync.netlify.app | main |
-| v4 | TBD | Future version with new composers | 🟡 Planned | concordpub-v4.netlify.app | v4-deployment |
-| v5 | TBD | Future version | 🔴 Reserved | concordpub-v5.netlify.app | v5-deployment |
+| version_1 | Default/Production | Current production version with enhanced features | 🟢 Active | concordpub-sync.netlify.app | main |
+| version_4 | TBD | Future version with new composers | 🟡 Planned | concordpub-v4.netlify.app | v4-deployment |
+| version_5 | TBD | Future version | 🔴 Reserved | concordpub-v5.netlify.app | v5-deployment |
 
 ## Version Details
 
-### v3 - Default/Production
+### version_1 - Default/Production
 - **Current Status**: Active production version
 - **Features**: 
   - Single video carousel with navigation arrows
@@ -21,37 +21,37 @@ This document tracks all versions of the Concord Music Publishing website and th
   - Hover animations for navigation elements
   - PDF generation for composer profiles
 - **Deployment**: Main branch deploys to primary Netlify URL
-- **Database Filter**: `site_version = 'v3'`
+- **Database Filter**: `site_version` containing `'version_1'`
 
-### v4 - TBD
+### version_4 - TBD
 - **Current Status**: Planned for future deployment
-- **Features**: Will inherit all v3 features plus new additions
+- **Features**: Will inherit all version_1 features plus new additions
 - **Deployment**: v4-deployment branch will deploy to separate Netlify URL
-- **Database Filter**: `site_version = 'v4'`
+- **Database Filter**: `site_version` containing `'version_4'`
 
-### v5 - TBD
+### version_5 - TBD
 - **Current Status**: Reserved for future use
 - **Features**: Will inherit all previous features plus new additions
 - **Deployment**: v5-deployment branch will deploy to separate Netlify URL
-- **Database Filter**: `site_version = 'v5'`
+- **Database Filter**: `site_version` containing `'version_5'`
 
 ## Deployment Architecture
 
 ```
 Production Sites:
-├── concordpub-sync.netlify.app     (v3 - main branch)
-├── concordpub-v4.netlify.app       (v4 - v4-deployment branch)
-└── concordpub-v5.netlify.app       (v5 - v5-deployment branch)
+├── concordpub-sync.netlify.app     (version_1 - main branch)
+├── concordpub-v4.netlify.app       (version_4 - v4-deployment branch)
+└── concordpub-v5.netlify.app       (version_5 - v5-deployment branch)
 
 Git Branches:
-├── main                            (v3 codebase)
-├── v4-deployment                   (v4 with specific site-version.js)
-└── v5-deployment                   (v5 with specific site-version.js)
+├── main                            (version_1 codebase)
+├── v4-deployment                   (version_4 with specific site-version.js)
+└── v5-deployment                   (version_5 with specific site-version.js)
 
 Database Content:
-├── composers with site_version='v3' (shown on v3 site)
-├── composers with site_version='v4' (shown on v4 site)
-└── composers with site_version='v5' (shown on v5 site)
+├── composers with site_version='version_1' (shown on version_1 site)
+├── composers with site_version='version_4' (shown on version_4 site)
+└── composers with site_version='version_5' (shown on version_5 site)
 ```
 
 ## Automated Sync Process
@@ -71,9 +71,9 @@ Database Content:
 
 ## Version History
 
-- **v3** (Current): Launched with enhanced video player and navigation features
-- **v4** (Planned): Reserved for new composer roster
-- **v5** (Planned): Reserved for future expansion
+- **version_1** (Current): Launched with enhanced video player and navigation features
+- **version_4** (Planned): Reserved for new composer roster
+- **version_5** (Planned): Reserved for future expansion
 
 ---
 
