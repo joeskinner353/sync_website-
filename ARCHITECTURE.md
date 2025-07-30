@@ -4,6 +4,8 @@
 
 The application is a web-based platform for Concord Music Publishing that showcases their catalogs, writers (composers), and FTV content. It's built with vanilla JavaScript, HTML, and CSS, using Supabase as the backend database.
 
+**Note**: The project contains legacy React dependencies in package.json that are not used in the current vanilla JavaScript implementation. The `/src/components/` directory contains unused React template components.
+
 ## Core Components
 
 ### 1. Page Structure
@@ -140,7 +142,7 @@ Uses Supabase with the following schema for composers:
 
 #### PDF Generation
 - One-click composer profile PDF export
-- Implementation using html2canvas and jsPDF libraries
+- Implementation using html2canvas and jsPDF libraries (loaded via CDN)
 - PDF download with composer-specific filename
 - Custom PDF layout matching brand design:
   - Concord logo with hyperlink to company website
@@ -152,7 +154,8 @@ Uses Supabase with the following schema for composers:
   - Clickable social media icons (Spotify, Instagram, TikTok)
   - Clickable Concord logo linking to music publishing homepage
 - Technical approach:
-  - DOM-to-canvas rendering for visual elements
+  - DOM-to-canvas rendering for visual elements via CDN-loaded html2canvas library
+  - PDF generation via CDN-loaded jsPDF library
   - Custom link annotation placement for interactive elements
   - PDF metadata and copyright information
   - A4 format with precise element positioning
@@ -214,6 +217,8 @@ Uses Supabase with the following schema for composers:
 - Supabase connectivity tests
 - Data structure validation
 - Carousel animation testing
+- Video embed functionality testing
+- Font loading and debug testing
 
 ### 5. Error Handling
 - Database connection validation
@@ -264,17 +269,22 @@ src/
 │   └── styles/
 │       ├── main.css     # Main stylesheet
 │       └── grid.css     # Grid-specific styles
-├── components/          # Reusable UI components
+├── components/          # Legacy React components (unused in vanilla JS implementation)
 └── scripts/
     ├── composer-page.js # Composer page logic
     ├── composer-grid.js # Grid view logic
     ├── composers.js     # Composer data handling
+    ├── font-debug.js    # Font debugging utilities (currently inactive)
     ├── main.js          # Core application logic with view toggle
     ├── site-version.js  # Version handling for multi-version support
     ├── supabase.js      # Database connectivity
     └── tests/           # Test files
         ├── carousel-test-runner.html
-        └── carousel-tests.js
+        ├── carousel-tests.js
+        ├── font-debug-test.html
+        ├── font-loading-test.html
+        ├── video-embed-test-runner.html
+        └── video-embed-tests.js
 ```
 
 ## Best Practices
@@ -292,6 +302,7 @@ src/
    - Comprehensive error handling
    - Documentation of external links
    - Consistent view state management
+   - External libraries loaded via CDN for reduced bundle size
 
 3. **User Experience**
    - Smooth animations and transitions between views

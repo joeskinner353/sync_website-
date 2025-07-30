@@ -62,12 +62,15 @@ footer {
 }
 
 .Desktop1 {
-    width: 1440px;
-    height: 1583px;
+    width: 100%;
+    min-height: 1583px;
+    height: auto;
     position: relative;
     background: black;
     overflow: hidden;
     margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
 }
 
 .ConcordCIconRed1 {
@@ -79,7 +82,7 @@ footer {
 }
 
 .ConcordMusicPublishing {
-    left: 814px;
+    right: 0;
     top: 0;
     position: absolute;
     text-align: right;
@@ -90,6 +93,7 @@ footer {
     font-size: 50px;
     font-family: 'CircularXX', Arial, sans-serif;
     font-weight: 900;
+    padding-right: 20px;
 }
 
 .section-title {
@@ -248,4 +252,27 @@ footer {
     font-family: 'CircularXX', Arial, sans-serif;
     font-size: 18px;
     text-transform: capitalize; /* Capitalize the image names */
+}
+
+/* Responsive Design for Mobile and Tablet */
+@media (max-width: 768px) {
+    .ConcordMusicPublishing {
+        font-size: 32px;
+        padding-right: 15px;
+    }
+    
+    .Desktop1 {
+        padding: 0 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ConcordMusicPublishing {
+        font-size: 24px;
+        padding-right: 10px;
+    }
+    
+    .Desktop1 {
+        padding: 0 10px;
+    }
 }
