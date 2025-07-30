@@ -15,9 +15,10 @@ img, video, canvas, iframe, object, embed, input[type="file"] {
 
 /* Main container styling */
 .grid-container {
-    max-width: 1440px;
+    width: 100%;
     margin: 0 auto;
     padding: 0 20px;
+    box-sizing: border-box;
 }
 
 /* Header and navigation styling */
@@ -278,6 +279,10 @@ img, video, canvas, iframe, object, embed, input[type="file"] {
 }
 
 @media (max-width: 768px) {
+    .grid-container {
+        padding: 0 15px;
+    }
+    
     .composer-grid {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         gap: 15px;
@@ -298,6 +303,10 @@ img, video, canvas, iframe, object, embed, input[type="file"] {
 }
 
 @media (max-width: 480px) {
+    .grid-container {
+        padding: 0 10px;
+    }
+    
     .composer-grid {
         grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
         gap: 10px;
