@@ -16,11 +16,12 @@ The application is a web-based platform for Concord Music Publishing that showca
     - Rodgers & Hammerstein (disco.ac)
     - Pulse (pulsesync.disco.ac)
   - Writers section (composers from database) with dual view modes:
+    - "Bespoke roster" title links to the full composer grid page with hover animation
     - Carousel view (default) - horizontally scrolling composer cards
     - Grid view - responsive grid layout of composer cards
   - FTV content section with scrolling carousel of Film & TV content
     - All items in carousel link directly to the FTV page
-    - Section title also acts as a clickable link to the FTV page
+    - Section title also acts as a clickable link to the FTV page with hover animation
   - Header with Concord logo
   - Note: Top navigation links have been removed in the latest update
 
@@ -96,7 +97,7 @@ Two types of scrolling mechanisms are implemented:
 - Grid view: Responsive grid layout with consistent spacing
 - View state resets to carousel when returning from other pages
 - Animation-based transitions between view modes
-- Toggle button UI with active state indicators
+- Toggle button UI with active state indicators and hover animations
 
 #### Video Player Features (Updated in V3)
 - Single-video display with navigation controls

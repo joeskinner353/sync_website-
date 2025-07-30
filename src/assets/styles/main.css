@@ -105,6 +105,12 @@ footer {
     font-weight: 900;
     right: 0; /* Change from left: 0 to right: 0 */
     padding-right: 20px; /* Add some padding from the right edge */
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.section-title:hover {
+    transform: translateX(-10px);
 }
 
 .scrollable-container {

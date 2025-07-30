@@ -74,6 +74,12 @@
             font-family: 'CircularXX', Arial, sans-serif;
             font-weight: 700;
             margin: 0;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .writers-title:hover {
+            transform: translateX(10px);
         }
         
         .view-toggle {
@@ -91,11 +97,12 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s ease, transform 0.3s ease;
         }
         
         .toggle-button:hover {
             background: rgba(255, 255, 255, 0.4);
+            transform: translateX(10px);
         }
         
         .toggle-button.active {
@@ -184,7 +191,9 @@
 
         <!-- Writers section with title and view toggle -->
         <div class="view-toggle-container">
-            <div data-layer="writers" class="writers-title">bespoke roster</div>
+            <a href="composer_grid.html" style="text-decoration: none; color: inherit;">
+                <div data-layer="writers" class="writers-title">bespoke roster</div>
+            </a>
             <div class="view-toggle">
                 <button class="toggle-button carousel-view active" aria-label="Carousel View">
                     <svg viewBox="0 0 24 24" width="24" height="24">
