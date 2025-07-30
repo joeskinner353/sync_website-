@@ -73,7 +73,7 @@ function getVimeoEmbedUrl(url) {
     }
 }
 
-// Initialize smooth scrolling for video thumbnails
+// Initialize smooth scrolling for video thumbnails with touch and mouse support
 function initVideoScroll() {
     const videoThumbnails = document.querySelector('.video-thumbnails');
     if (!videoThumbnails) return;
@@ -82,31 +82,50 @@ function initVideoScroll() {
     let startX;
     let scrollLeft;
 
-    videoThumbnails.addEventListener('mousedown', (e) => {
+    // Helper function to get X coordinate from mouse or touch event
+    function getEventX(e) {
+        return e.type.includes('mouse') ? e.pageX : e.touches[0].pageX;
+    }
+
+    // Helper function to start drag/scroll
+    function startDrag(e) {
         isDown = true;
         videoThumbnails.style.cursor = 'grabbing';
-        startX = e.pageX - videoThumbnails.offsetLeft;
+        startX = getEventX(e) - videoThumbnails.offsetLeft;
         scrollLeft = videoThumbnails.querySelector('.video-track').style.transform || 'translateX(0)';
         scrollLeft = parseInt(scrollLeft.match(/-?\d+/) || 0);
-    });
+    }
 
-    videoThumbnails.addEventListener('mouseleave', () => {
+    // Helper function to end drag/scroll
+    function endDrag() {
         isDown = false;
         videoThumbnails.style.cursor = 'grab';
-    });
+    }
 
-    videoThumbnails.addEventListener('mouseup', () => {
-        isDown = false;
-        videoThumbnails.style.cursor = 'grab';
-    });
-
-    videoThumbnails.addEventListener('mousemove', (e) => {
+    // Helper function to handle drag/scroll movement
+    function handleMove(e) {
         if (!isDown) return;
         e.preventDefault();
-        const x = e.pageX - videoThumbnails.offsetLeft;
+        const x = getEventX(e) - videoThumbnails.offsetLeft;
         const walk = (x - startX) * 2;
         const track = videoThumbnails.querySelector('.video-track');
         track.style.transform = `translateX(${scrollLeft + walk}px)`;
+    }
+
+    // Mouse events
+    videoThumbnails.addEventListener('mousedown', startDrag);
+    videoThumbnails.addEventListener('mouseleave', endDrag);
+    videoThumbnails.addEventListener('mouseup', endDrag);
+    videoThumbnails.addEventListener('mousemove', handleMove);
+
+    // Touch events for mobile support
+    videoThumbnails.addEventListener('touchstart', startDrag, { passive: false });
+    videoThumbnails.addEventListener('touchend', endDrag);
+    videoThumbnails.addEventListener('touchmove', handleMove, { passive: false });
+
+    // Prevent text selection during drag
+    videoThumbnails.addEventListener('selectstart', (e) => {
+        if (isDown) e.preventDefault();
     });
 }
 

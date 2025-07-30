@@ -68,16 +68,20 @@ The application is a web-based platform for Concord Music Publishing that showca
 Two types of scrolling mechanisms are implemented:
 
 1. **Manual Scrolling (initSmoothScroll)**
-   - Click and drag functionality
-   - Smooth scrolling behavior
-   - Cursor feedback (grab/grabbing)
-   - Mouse event handling
+   - Click and drag functionality for desktop
+   - Touch and drag functionality for mobile devices
+   - Smooth scrolling behavior with touch-action: pan-x CSS support
+   - Cursor feedback (grab/grabbing) on desktop
+   - Mouse and touch event handling with unified coordinate detection
+   - Prevents text selection during drag operations
+   - Passive event listeners for optimal performance
 
 2. **Automatic Scrolling (initCarousels)**
    - Infinite scroll animation
    - Automatic horizontal scrolling
    - Content cloning for seamless loops
-   - Hover pause functionality
+   - Hover pause functionality on desktop
+   - Touch pause functionality on mobile with delayed resume
    - Page visibility handling
 
 #### FTV Integration Features
