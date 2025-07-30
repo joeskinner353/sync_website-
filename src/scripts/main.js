@@ -7,38 +7,162 @@ import { getCurrentVersion, appendVersionToUrl } from './site-version.js';
 // Cache for composer data to prevent redundant fetches
 const composerCache = new Map();
 
-// Initialize smooth scrolling for image containers
+// Global state for carousel animations
+const carouselStates = new Map();
+
+// Initialize smooth scrolling for image containers with touch and mouse support
 function initSmoothScroll() {
     const containers = document.querySelectorAll('.scrollable-container');
     
-    containers.forEach(container => {
+    containers.forEach((container, containerIndex) => {
         let isDown = false;
         let startX;
-        let scrollLeft;
+        let startTransform;
+        let lastX = 0;
+        let velocity = 0;
 
-        container.addEventListener('mousedown', (e) => {
+        // Helper function to get X coordinate from mouse or touch event
+        function getEventX(e) {
+            return e.type.includes('mouse') ? e.pageX : e.touches[0].pageX;
+        }
+
+        // Helper function to get current transform value from state
+        function getCurrentTransform() {
+            const state = carouselStates.get(containerIndex);
+            if (state) {
+                return state.manualPosition !== null ? state.manualPosition : state.currentPosition;
+            }
+            // Fallback: read from DOM
+            const track = container.querySelector('.carousel-track');
+            if (!track) return 0;
+            const transform = track.style.transform || 'translateX(0px)';
+            const match = transform.match(/translateX\(([^)]+)\)/);
+            return match ? parseFloat(match[1]) : 0;
+        }
+
+        // Helper function to set manual transform via state
+        function setManualTransform(value) {
+            const state = carouselStates.get(containerIndex);
+            if (state) {
+                state.manualPosition = value;
+            }
+        }
+
+        // Helper function to start drag/scroll
+        function startDrag(e) {
+            // Prevent default to avoid any browser drag behaviors
+            e.preventDefault();
+            e.stopPropagation();
+            
             isDown = true;
             container.style.cursor = 'grabbing';
-            startX = e.pageX - container.offsetLeft;
-            scrollLeft = container.scrollLeft;
-        });
+            startX = getEventX(e) - container.offsetLeft;
+            lastX = getEventX(e);
+            velocity = 0;
+            startTransform = getCurrentTransform();
+            
+            // Set dragging state
+            const state = carouselStates.get(containerIndex);
+            if (state) {
+                state.isDragging = true;
+                state.manualPosition = startTransform;
+                state.isPaused = true; // Also pause auto-scroll
+            }
+        }
 
-        container.addEventListener('mouseleave', () => {
+        // Helper function to end drag/scroll
+        function endDrag(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
             isDown = false;
             container.style.cursor = 'grab';
-        });
+            
+            // Clear dragging state and smoothly transition to auto-scroll
+            const state = carouselStates.get(containerIndex);
+            if (state) {
+                state.isDragging = false;
+                
+                // Apply momentum if there was significant velocity
+                if (Math.abs(velocity) > 2 && state.manualPosition !== null) {
+                    const momentumDistance = velocity * 20; // Adjust momentum effect
+                    state.manualPosition += momentumDistance;
+                }
+                
+                // Update the auto-scroll position to match final manual position
+                if (state.manualPosition !== null) {
+                    state.currentPosition = state.manualPosition;
+                    state.manualPosition = null;
+                }
+                
+                // Reset velocity
+                velocity = 0;
+                
+                // Resume auto-scroll after a brief pause
+                setTimeout(() => {
+                    if (state && !state.isDragging) {
+                        state.isPaused = false;
+                    }
+                }, 100); // Shorter delay for smoother experience
+            }
+        }
 
-        container.addEventListener('mouseup', () => {
-            isDown = false;
-            container.style.cursor = 'grab';
-        });
-
-        container.addEventListener('mousemove', (e) => {
+        // Helper function to handle drag/scroll movement
+        function handleMove(e) {
             if (!isDown) return;
             e.preventDefault();
-            const x = e.pageX - container.offsetLeft;
-            const walk = (x - startX) * 2;
-            container.scrollLeft = scrollLeft - walk;
+            e.stopPropagation();
+            
+            const currentX = getEventX(e);
+            const x = currentX - container.offsetLeft;
+            const walk = (x - startX) * 1.5; // Adjust sensitivity
+            const newTransform = startTransform + walk;
+            
+            // Calculate velocity for momentum
+            velocity = currentX - lastX;
+            lastX = currentX;
+            
+            setManualTransform(newTransform);
+        }
+
+        // Mouse events with explicit event handling
+        container.addEventListener('mousedown', (e) => {
+            // Only handle left mouse button
+            if (e.button !== 0) return;
+            startDrag(e);
+        }, { passive: false });
+
+        container.addEventListener('mouseleave', endDrag, { passive: false });
+        container.addEventListener('mouseup', endDrag, { passive: false });
+        
+        container.addEventListener('mousemove', handleMove, { passive: false });
+
+        // Global mouseup to catch drags that end outside the container
+        document.addEventListener('mouseup', (e) => {
+            if (isDown) {
+                endDrag(e);
+            }
+        }, { passive: false });
+
+        // Touch events for mobile support
+        container.addEventListener('touchstart', startDrag, { passive: false });
+        container.addEventListener('touchend', endDrag, { passive: false });
+        container.addEventListener('touchmove', handleMove, { passive: false });
+
+        // Prevent text selection and context menu during drag
+        container.addEventListener('selectstart', (e) => {
+            if (isDown) e.preventDefault();
+        });
+        
+        container.addEventListener('contextmenu', (e) => {
+            if (isDown) e.preventDefault();
+        });
+
+        // Prevent drag on child elements from interfering
+        container.addEventListener('dragstart', (e) => {
+            e.preventDefault();
         });
     });
 }
@@ -47,7 +171,7 @@ function initSmoothScroll() {
 function initCarousels() {
     const carousels = document.querySelectorAll('.scrollable-container');
     
-    carousels.forEach(carousel => {
+    carousels.forEach((carousel, carouselIndex) => {
         const track = carousel.querySelector('.carousel-track');
         if (!track) return; // Skip if track doesn't exist
         
@@ -67,6 +191,18 @@ function initCarousels() {
         const scrollSpeed = 0.5; // Reduced speed for smoother animation
         let animationId;
         let isPaused = false;
+        let isDragging = false;
+        let manualPosition = null;
+        
+        // Store state for this carousel
+        const carouselState = {
+            currentPosition: 0,
+            isPaused: false,
+            isDragging: false,
+            manualPosition: null,
+            track: track
+        };
+        carouselStates.set(carouselIndex, carouselState);
         
         // Calculate itemSetWidth only once initially
         const originalLinks = Array.from(links);
@@ -76,21 +212,26 @@ function initCarousels() {
         if (itemSetWidth === 0) return;
 
         function animate() {
-            if (!isPaused) {
-                currentPosition -= scrollSpeed;
+            const state = carouselStates.get(carouselIndex);
+            
+            // Use manual position if dragging, otherwise auto-animate
+            if (state.isDragging && state.manualPosition !== null) {
+                track.style.transform = `translateX(${state.manualPosition}px)`;
+            } else if (!state.isPaused && !state.isDragging) {
+                state.currentPosition -= scrollSpeed;
                 
                 // FIX: Use Math.floor to handle fractional pixel values and ensure precise reset
-                if (Math.abs(currentPosition) >= itemSetWidth) {
+                if (Math.abs(state.currentPosition) >= itemSetWidth) {
                     // Reset to exact itemSetWidth multiple to prevent drift
-                    currentPosition = currentPosition % itemSetWidth;
+                    state.currentPosition = state.currentPosition % itemSetWidth;
                     
                     // If we ended up with a negative remainder, adjust to maintain proper position
-                    if (currentPosition < 0) {
-                        currentPosition += itemSetWidth;
+                    if (state.currentPosition < 0) {
+                        state.currentPosition += itemSetWidth;
                     }
                 }
                 
-                track.style.transform = `translateX(${currentPosition}px)`;
+                track.style.transform = `translateX(${state.currentPosition}px)`;
             }
             animationId = requestAnimationFrame(animate);
         }
@@ -98,19 +239,46 @@ function initCarousels() {
         // Start animation
         animate();
 
-        // Pause on hover
+        // Pause on hover and touch (but only if not dragging)
         carousel.addEventListener('mouseenter', () => {
-            isPaused = true;
+            const state = carouselStates.get(carouselIndex);
+            if (state && !state.isDragging) {
+                state.isPaused = true;
+            }
         });
 
-        // Resume on mouse leave
+        // Resume on mouse leave (but not if dragging)
         carousel.addEventListener('mouseleave', () => {
-            isPaused = false;
+            const state = carouselStates.get(carouselIndex);
+            if (state && !state.isDragging) {
+                state.isPaused = false;
+            }
         });
+
+        // Pause on touch start (mobile)
+        carousel.addEventListener('touchstart', () => {
+            const state = carouselStates.get(carouselIndex);
+            if (state) {
+                state.isPaused = true;
+            }
+        }, { passive: true });
+
+        // Resume after touch end with delay (mobile)
+        carousel.addEventListener('touchend', () => {
+            setTimeout(() => {
+                const state = carouselStates.get(carouselIndex);
+                if (state && !state.isDragging) {
+                    state.isPaused = false;
+                }
+            }, 1000); // Resume after 1 second delay
+        }, { passive: true });
 
         // Handle visibility change
         document.addEventListener('visibilitychange', () => {
-            isPaused = document.hidden;
+            const state = carouselStates.get(carouselIndex);
+            if (state) {
+                state.isPaused = document.hidden;
+            }
         });
     });
 }
@@ -403,8 +571,6 @@ async function init() {
         // Performance: Track total initialization time
         const initStart = performance.now();
         
-        initSmoothScroll();
-        
         // Load composers and initialize carousels in the correct order
         const composers = await initComposersCarousel().catch(err => {
             console.error('Composers carousel error:', err);
@@ -412,6 +578,9 @@ async function init() {
         });
         
         await initFTVCarousel().catch(err => console.error('FTV carousel error:', err));
+        
+        // Initialize smooth scrolling AFTER content is loaded
+        initSmoothScroll();
         
         // Initialize carousels after dynamic content is loaded
         initCarousels();
