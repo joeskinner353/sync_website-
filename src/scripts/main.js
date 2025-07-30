@@ -55,7 +55,7 @@ function initCarousels() {
         if (links.length === 0) return; // Skip if no links exist yet
         
         // Clone enough items to ensure smooth scrolling
-        const itemsToClone = 3; // Clone more items for smoother transition
+        const itemsToClone = 8; // Increased clones for better infinite scroll, especially for catalogs with fewer items
         for (let i = 0; i < itemsToClone; i++) {
             links.forEach(link => {
                 const clone = link.cloneNode(true);
