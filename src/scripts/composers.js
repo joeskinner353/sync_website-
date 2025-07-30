@@ -37,19 +37,6 @@ export async function loadVisibleComposers(siteVersion = 'version_1') {
         error = null;
     }
 
-    // If still no results, fall back to all visible composers
-    if (!composers || composers.length === 0) {
-        console.log('No composers found with version filter, loading all visible composers...');
-        const { data: allVisible, error: allError } = await supabase
-            .from('composers')
-            .select('*')
-            .eq('is_visible', true)
-            .order('display_order')
-        
-        composers = allVisible;
-        error = allError;
-    }
-
     if (error) {
         console.error('Error loading composers:', error)
         return []

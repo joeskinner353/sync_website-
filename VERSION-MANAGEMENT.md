@@ -1,4 +1,7 @@
-# Version Management
+# Vers| Version | Name | Description | Status | Deployment URL | Branch |
+|---------|------|-------------|--------|----------------|---------|
+| version_1 | Default/Production | Current production version with enhanced features | 🟢 Active | concordpub-sync.netlify.app | main |
+| version_2 | Version 2 Site | Second version for additional composers | 🟡 Active | TBD | main_version2 |nagement
 
 This document tracks all versions of the Concord Music Publishing website and their deployment details.
 

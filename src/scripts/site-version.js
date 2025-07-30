@@ -5,9 +5,8 @@
 
 // Available site versions
 export const SITE_VERSIONS = {
-    VERSION_1: 'version_1',  // Main/primary site version
-    VERSION_4: 'version_4',  // Future version 4
-    VERSION_5: 'version_5'   // Future version 5
+    VERSION_1: 'version_1',  // Main/primary site version (main branch)
+    VERSION_2: 'version_2',  // Version 2 site (main_version2 branch)
 };
 
 // Default site version (main site)
@@ -21,11 +20,7 @@ export function getCurrentVersion() {
     // First, check hostname for version-specific deployments
     const hostname = window.location.hostname;
     
-    if (hostname.includes('concordpub-v4')) {
-        return SITE_VERSIONS.VERSION_4;
-    } else if (hostname.includes('concordpub-v5')) {
-        return SITE_VERSIONS.VERSION_5;
-    } else if (hostname.includes('concordpub-sync') || hostname.includes('netlify')) {
+    if (hostname.includes('concordpub-sync') || hostname.includes('netlify')) {
         // Primary deployment is version_1 (main site)
         return SITE_VERSIONS.VERSION_1;
     }
