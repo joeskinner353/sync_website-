@@ -5,13 +5,14 @@
 
 // Available site versions
 export const SITE_VERSIONS = {
-    VERSION_1: 'version_1',  // Main/primary site version
+    VERSION_1: 'version_1',  // Main/primary site version (main branch)
+    VERSION_2: 'version_2',  // Version 2 site (main_version2 branch)
     VERSION_4: 'version_4',  // Future version 4
     VERSION_5: 'version_5'   // Future version 5
 };
 
-// Default site version (main site)
-export const DEFAULT_VERSION = SITE_VERSIONS.VERSION_1;
+// Default site version (version 2 site)
+export const DEFAULT_VERSION = SITE_VERSIONS.VERSION_2;
 
 /**
  * Gets the current site version based on hostname, URL parameters, or localStorage

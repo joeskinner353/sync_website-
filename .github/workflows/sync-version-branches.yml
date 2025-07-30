@@ -11,7 +11,8 @@ jobs:
     
     strategy:
       matrix:
-        version-branch: [v3-deployment, v4-deployment, v5-deployment]
+        # Sync main to version-specific branches
+        version-branch: [main_version2]
         
     steps:
     - name: Checkout main branch
@@ -30,23 +31,26 @@ jobs:
         # Fetch all branches
         git fetch origin
         
-        # Checkout the version branch
+        # Checkout the version branch (create if doesn't exist)
         git checkout -B ${{ matrix.version-branch }} origin/${{ matrix.version-branch }} || git checkout -b ${{ matrix.version-branch }}
         
-        # Merge main into version branch, keeping version-specific files
-        git merge origin/main --no-edit --strategy-option=ours || {
+        # Merge main into version branch, preserving version-specific files
+        git merge origin/main --no-edit || {
           echo "Merge conflict detected, resolving..."
           
-          # Reset site-version.js to version-specific content
-          VERSION_NUMBER=$(echo ${{ matrix.version-branch }} | grep -o 'v[0-9]*')
-          echo "const SITE_VERSION = '$VERSION_NUMBER';" > src/scripts/site-version.js
-          echo "export { SITE_VERSION };" >> src/scripts/site-version.js
+          # Update site-version.js for version_2 branch
+          if [[ "${{ matrix.version-branch }}" == "main_version2" ]]; then
+            # Update the default version to version_2
+            sed -i 's/VERSION_1: '\''version_1'\''/VERSION_2: '\''version_2'\''/g' src/scripts/site-version.js
+            sed -i 's/DEFAULT_VERSION = SITE_VERSIONS.VERSION_1/DEFAULT_VERSION = SITE_VERSIONS.VERSION_2/g' src/scripts/site-version.js
+            sed -i 's/Primary deployment is version_1/Primary deployment is version_2/g' src/scripts/site-version.js
+          fi
           
-          # Add the resolved file
+          # Add the resolved files
           git add src/scripts/site-version.js
           
           # Complete the merge
-          git commit -m "Auto-sync from main: preserve $VERSION_NUMBER site version"
+          git commit -m "Auto-sync from main: configure for ${{ matrix.version-branch }}"
         }
         
         # Push the updated branch
