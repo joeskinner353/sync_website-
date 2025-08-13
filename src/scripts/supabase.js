@@ -24,7 +24,10 @@ export async function loadFTVImages() {
             { filename: 'taskmaster.png', name: 'Taskmaster' },
             { filename: 'unforgotten.png', name: 'Unforgotten' },
             // Updated to use underscore in filename
-            { filename: 'loverman.png', name: 'Mr Loverman' }
+            { filename: 'loverman.png', name: 'Mr Loverman' },
+            { filename: 'frankenstein.png', name: 'The Frankenstein Chronicles' },
+            { filename: 'pb falcon.png', name: 'The Peanut Butter Falcon' },
+            { filename: 'Altered Carbon.png', name: 'Altered Carbon' }
         ];
         
         // Generate URLs for all images
