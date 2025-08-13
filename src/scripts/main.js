@@ -12,7 +12,7 @@ const carouselStates = new Map();
 
 // Initialize smooth scrolling for image containers with touch and mouse support
 function initSmoothScroll() {
-    const containers = document.querySelectorAll('.scrollable-container');
+    const containers = document.querySelectorAll('.scrollable-container:not(.CatalogImages)');
     
     containers.forEach((container, containerIndex) => {
         let isDown = false;
@@ -169,7 +169,7 @@ function initSmoothScroll() {
 
 // Initialize carousel animations
 function initCarousels() {
-    const carousels = document.querySelectorAll('.scrollable-container');
+    const carousels = document.querySelectorAll('.scrollable-container:not(.CatalogImages)');
     
     carousels.forEach((carousel, carouselIndex) => {
         const track = carousel.querySelector('.carousel-track');
@@ -618,7 +618,7 @@ document.addEventListener('visibilitychange', () => {
     // Pause animations when page is not visible to save resources
     const isVisible = document.visibilityState === 'visible';
     
-    const carousels = document.querySelectorAll('.scrollable-container');
+    const carousels = document.querySelectorAll('.scrollable-container:not(.CatalogImages)');
     carousels.forEach(carousel => {
         const track = carousel.querySelector('.carousel-track');
         if (track) {
