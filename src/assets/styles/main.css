@@ -90,7 +90,7 @@ footer {
     flex-direction: column;
     justify-content: center;
     color: white !important;
-    font-size: 50px;
+    font-size: 75px;
     font-family: 'CircularXX', Arial, sans-serif;
     font-weight: 900;
     padding-right: 20px;
@@ -100,7 +100,7 @@ footer {
     position: absolute;
     text-align: right;
     color: white !important;
-    font-size: 40px;
+    font-size: 60px;
     font-family: 'CircularXX', Arial, sans-serif;
     font-weight: 900;
     right: 0; /* Change from left: 0 to right: 0 */
@@ -115,12 +115,12 @@ footer {
 
 .scrollable-container {
     display: flex;
-    overflow: hidden;
+    overflow: visible;
     position: relative;
     width: 100%;
     background: black;
     gap: 0;
-    padding: 0;
+    padding: 10px 0;
     cursor: grab;
     /* Touch support for mobile devices */
     touch-action: pan-x;
@@ -142,7 +142,7 @@ footer {
 
 .carousel-track {
     display: flex;
-    gap: 0;
+    gap: 10px;
     position: absolute;
     left: 0;
     top: 0;
@@ -160,10 +160,20 @@ footer {
 }
 
 .carousel-track img {
-    height: 166px;
-    width: auto;
-    object-fit: contain;
+    height: 250px;
+    width: 250px;
+    object-fit: cover;
+    object-position: center;
     pointer-events: none;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.05);
+    display: block;
+    box-sizing: border-box;
+    transition: transform 0.3s ease;
+}
+
+.carousel-link:hover img {
+    transform: scale(1.05);
 }
 
 .composer-name-overlay {
@@ -174,13 +184,13 @@ footer {
     bottom: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);
+    background: transparent;
     display: flex;
     justify-content: center;
     align-items: center;
     color: white !important;
     font-family: 'CircularXX', Arial, sans-serif;
-    font-size: 18px;
+    font-size: 20px;
     opacity: 0;
     transition: opacity 0.3s ease;
     text-align: center;
@@ -188,6 +198,9 @@ footer {
     word-wrap: break-word;
     overflow-wrap: break-word;
     line-height: 1.2;
+    border-radius: 8px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    z-index: 10;
 }
 
 .carousel-link:hover .composer-name-overlay {
@@ -200,14 +213,14 @@ footer {
     transition: opacity 0.3s ease;
 }
 
-/* Remove existing hover effect since we're auto-scrolling */
-.scrollable-container img:hover {
-    transform: none;
-}
-
 /* Specific positioning for each section */
 .Catalogs {
     top: 232px;
+    right: auto; /* Override the right alignment from section-title */
+    left: 0; /* Position on the left */
+    padding-right: 0; /* Remove right padding */
+    padding-left: 20px; /* Add left padding */
+    text-align: left; /* Align text to the left */
 }
 
 .CatalogImages {
@@ -215,13 +228,31 @@ footer {
     position: absolute;
     left: 0;
     width: 100%;
-    height: 206px;
+    height: 310px;
+    cursor: default;
+    user-select: auto;
+}
+
+.CatalogImages .carousel-track {
+    position: static;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+    transform: none !important;
+    transition: none !important;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 0 20px;
 }
 
 /* Fix for the view-toggle-container positioning */
 .view-toggle-container {
     position: absolute;
-    top: 570px;
+    top: 660px;
     left: 0;
     width: 100%;
     padding: 0 20px;
@@ -232,7 +263,7 @@ footer {
 }
 
 .Writers {
-    top: 570px;
+    top: 660px;
     right: auto; /* Override the right alignment from section-title */
     left: 0; /* Position on the left */
     padding-right: 0; /* Remove right padding */
@@ -240,42 +271,60 @@ footer {
 }
 
 .WritersImages {
-    top: 660px;
+    top: 750px;
     position: absolute;
     left: 0;
     width: 100%;
-    height: 206px;
+    height: 310px;
 }
 
 .Ftv {
-    top: 908px;
+    top: 1090px;
+    right: auto; /* Override the right alignment from section-title */
+    left: 0; /* Position on the left */
+    padding-right: 0; /* Remove right padding */
+    padding-left: 20px; /* Add left padding */
+    text-align: left; /* Align text to the left */
 }
 
 .FtvImages {
-    top: 998px;
+    top: 1180px;
     position: absolute;
     left: 0;
     width: 100%;
-    height: 206px;
+    height: 310px;
 }
 
 .FtvImages .carousel-track img {
-    height: 166px;
-    width: 300px; /* Set a fixed width */
-    object-fit: cover; /* Ensure images cover the area without distortion */
-    margin: 0; /* Remove the horizontal margin to eliminate spacing */
+    height: 250px;
+    width: 250px;
+    object-fit: cover;
+    object-position: center;
+    margin: 0;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.05);
+    display: block;
+    box-sizing: border-box;
+    transition: transform 0.3s ease;
+}
+
+.FtvImages .carousel-link:hover img {
+    transform: scale(1.05);
 }
 
 .FtvImages .carousel-track {
-    gap: 0; /* Ensure no gap between items in the FTV section */
+    gap: 10px;
 }
 
 .FtvImages .composer-name-overlay {
-    background: rgba(0, 0, 0, 0.7);
+    background: transparent;
     color: white !important;
     font-family: 'CircularXX', Arial, sans-serif;
-    font-size: 18px;
+    font-size: 20px;
     text-transform: capitalize; /* Capitalize the image names */
+    border-radius: 8px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    z-index: 10;
 }
 
 /* Responsive Design for Mobile and Tablet */
@@ -288,6 +337,35 @@ footer {
     .Desktop1 {
         padding: 0 15px;
     }
+    
+    .section-title {
+        font-size: 45px;
+    }
+    
+    .carousel-track img,
+    .FtvImages .carousel-track img {
+        height: 200px;
+        width: 200px;
+        object-fit: cover;
+        object-position: center;
+    }
+    
+    .CatalogImages,
+    .WritersImages,
+    .FtvImages {
+        height: 260px;
+    }
+    
+    .CatalogImages .carousel-track {
+        gap: 10px;
+        padding: 0 15px;
+        justify-content: flex-start;
+    }
+    
+    .composer-name-overlay,
+    .FtvImages .composer-name-overlay {
+        font-size: 16px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -298,5 +376,42 @@ footer {
     
     .Desktop1 {
         padding: 0 10px;
+    }
+    
+    .section-title {
+        font-size: 35px;
+    }
+    
+    .carousel-track img,
+    .FtvImages .carousel-track img {
+        height: 150px;
+        width: 150px;
+        object-fit: cover;
+        object-position: center;
+    }
+    
+    .CatalogImages,
+    .WritersImages,
+    .FtvImages {
+        height: 210px;
+    }
+    
+    .CatalogImages .carousel-track {
+        gap: 10px;
+        padding: 0 10px;
+        justify-content: flex-start;
+    }
+    
+    .composer-name-overlay,
+    .FtvImages .composer-name-overlay {
+        font-size: 14px;
+    }
+    
+    .carousel-track {
+        gap: 10px;
+    }
+    
+    .FtvImages .carousel-track {
+        gap: 10px;
     }
 }
