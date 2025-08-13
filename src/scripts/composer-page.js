@@ -377,15 +377,18 @@ function populateComposerData(composer) {
                     const videoContainer = document.createElement('div');
                     videoContainer.className = 'video-container';
                     videoContainer.dataset.videoUrl = url;
+                    videoContainer.dataset.embedUrl = embedUrl; // Store the embed URL for restoration
                     videoContainer.dataset.index = index;
                     
                     // Set unified allow attribute that works for both YouTube and Vimeo
                     const allowAttribute = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen";
                     
                     // Create iframe using document fragment for reliable DOM parsing
+                    // Only load the first video initially to prevent multiple videos playing
+                    const iframeSrc = index === 0 ? embedUrl : 'about:blank';
                     const fragment = document.createRange().createContextualFragment(`
                         <iframe 
-                            src="${embedUrl}" 
+                            src="${iframeSrc}" 
                             frameborder="0" 
                             allow="${allowAttribute}" 
                             loading="lazy"
@@ -416,6 +419,24 @@ function populateComposerData(composer) {
                     if (!videoTrack) return;
                     const offset = -currentIndex * 100;
                     videoTrack.style.transform = `translateX(${offset}%)`;
+                    
+                    // Stop/pause all videos except the current one
+                    const videoContainers = videoTrack.querySelectorAll('.video-container');
+                    videoContainers.forEach((container, index) => {
+                        const iframe = container.querySelector('iframe');
+                        if (iframe) {
+                            if (index === currentIndex) {
+                                // Restore the video source for the active video
+                                const embedUrl = container.dataset.embedUrl;
+                                if (embedUrl && iframe.src !== embedUrl) {
+                                    iframe.src = embedUrl;
+                                }
+                            } else {
+                                // Stop/pause non-active videos by removing their source
+                                iframe.src = 'about:blank';
+                            }
+                        }
+                    });
                     
                     // Update indicator dots
                     const dots = videoIndicator.querySelectorAll('.video-dot');
