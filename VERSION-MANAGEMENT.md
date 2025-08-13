@@ -25,11 +25,15 @@ This document tracks all versions of the Concord Music Publishing website and th
 ### version_1 - Default/Production
 - **Current Status**: Active production version
 - **Features**: 
-  - Single video carousel with navigation arrows
+  - Single video carousel with navigation arrows and automatic playback control
+  - Video player bug fix preventing multiple simultaneous video playback
+  - Enhanced FTV carousel with 8 content images
+  - Square-format background collage with fixed viewport sizing
   - Improved spacing and layout with consistent margins
   - Cleaner container styling with transparent backgrounds
   - Hover animations for navigation elements
   - PDF generation for composer profiles
+  - Cache-busting for updated FTV images
 - **Deployment**: Main branch deploys to primary Netlify URL
 - **Database Filter**: `site_version` containing `'version_1'`
 
@@ -98,4 +102,4 @@ Database Content:
 
 ---
 
-*Last Updated: July 30, 2025*
+*Last Updated: August 13, 2025*
