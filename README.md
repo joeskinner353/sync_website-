@@ -56,6 +56,34 @@ For detailed version information, see [VERSION-MANAGEMENT.md](VERSION-MANAGEMENT
 - **Fallback Strategy**: Comprehensive font stack with system font fallbacks
 - **Browser Compatibility**: Support for WOFF and WOFF2 formats
 
+## Recent Fixes (August 2025)
+
+### Video Player Bug Fix ✅ COMPLETED
+- **Issue**: When navigating between videos using prev/next buttons, previous video continued playing in background
+- **Solution**: Modified `updateVideoPosition()` function in `composer-page.js` to stop inactive videos
+- **Implementation**: 
+  - Sets `iframe.src = 'about:blank'` for non-active videos to stop playback
+  - Restores proper embed URL only for the currently active video
+  - Prevents multiple videos from playing simultaneously
+- **Result**: Only one video plays at a time, improving user experience and performance
+
+### FTV Carousel Content Updates ✅ COMPLETED
+- **New Images Added**:
+  - The Frankenstein Chronicles (`frankenstein.png`)
+  - The Peanut Butter Falcon (`pb falcon.png`)
+  - Altered Carbon (`Altered Carbon.png`)
+- **Updated Images**:
+  - Unforgotten image replaced with new version (with cache-busting)
+- **Total FTV Images**: Now 8 carousel images
+- **Cache Management**: Added cache-busting for updated images to ensure fresh content loads
+
+### FTV Background Collage Improvements ✅ COMPLETED
+- **Square Image Format**: Updated background collage to use square aspect ratios
+- **Fixed Sizing**: Changed from percentage-based to viewport width units (`vw`) for consistent square proportions
+- **Enhanced Layout**: Added positioning for 8 background images with artistic rotation and scatter effects
+- **Image Updates**: Updated all background image URLs to match current FTV carousel content
+- **Visual Consistency**: Maintains artistic collage effect while ensuring uniform square shapes
+
 ## Recent Fixes (June 2025)
 
 ### Font Loading System Fixes ✅ COMPLETED
@@ -176,4 +204,4 @@ The application uses Supabase with the following schema for composers:
 
 ## Last Updated
 
-June 10, 2025 - ✅ Writers carousel loading issue resolved (CSP fix completed)
+August 13, 2025 - ✅ Video player bug fixes, FTV carousel content updates, and background collage improvements completed

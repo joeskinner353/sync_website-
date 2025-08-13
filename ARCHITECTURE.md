@@ -94,6 +94,9 @@ Two types of scrolling mechanisms are implemented:
 - Visual process flow with SVG arrow indicators
 - Consistent branding with main site while maintaining a focused presentation
 - Fallback image handling if database content isn't available
+- **Current FTV Content** (8 images): Catastrophe, Night Manager, Taskmaster, Unforgotten, Mr Loverman, The Frankenstein Chronicles, The Peanut Butter Falcon, Altered Carbon
+- **Background Collage**: Square-format images with fixed viewport sizing for consistent proportions
+- **Cache Management**: Cache-busting implementation for updated images
 
 #### View Toggle System
 - Toggle between carousel view and grid view for writers section
@@ -113,6 +116,8 @@ Two types of scrolling mechanisms are implemented:
 - Responsive video sizing with consistent dimensions
 - Dynamic video loading from composer data
 - Smooth transitions between videos
+- **Video Playback Control**: Automatic stopping of inactive videos to prevent multiple simultaneous playback
+- **Performance Optimization**: Only active video loads content, inactive videos set to `about:blank`
 
 ### 3. Database Integration
 
