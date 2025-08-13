@@ -20,11 +20,11 @@ export async function loadFTVImages() {
         // Define the known images, including Mr Loverman with underscore in filename
         const knownImages = [
             { filename: 'catastrophe.jpg', name: 'Catastrophe' },
-            { filename: 'night_manager.jpg', name: 'Night Manager' }, 
-            { filename: 'taskmaster.jpg', name: 'Taskmaster' },
-            { filename: 'unforgotten.jpeg', name: 'Unforgotten' },
+            { filename: 'night_manager.png', name: 'Night Manager' }, 
+            { filename: 'taskmaster.png', name: 'Taskmaster' },
+            { filename: 'unforgotten.png', name: 'Unforgotten' },
             // Updated to use underscore in filename
-            { filename: 'mr_loverman.jpg', name: 'Mr Loverman' }
+            { filename: 'loverman.png', name: 'Mr Loverman' }
         ];
         
         // Generate URLs for all images
