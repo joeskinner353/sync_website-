@@ -40,8 +40,14 @@ export async function loadFTVImages() {
             
             console.log(`Generated URL for ${img.name}:`, data.publicUrl);
             
+            // Add cache-busting parameter for unforgotten image to ensure new version loads
+            let finalUrl = data.publicUrl;
+            if (img.filename === 'unforgotten.png') {
+                finalUrl = `${data.publicUrl}?v=${Date.now()}`;
+            }
+            
             return {
-                url: data.publicUrl,
+                url: finalUrl,
                 name: img.name
             };
         });
