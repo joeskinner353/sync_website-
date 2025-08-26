@@ -50,6 +50,15 @@ function initSmoothScroll() {
 
         // Helper function to start drag/scroll
         function startDrag(e) {
+            // Check if the target is a link or inside a link
+            const target = e.target;
+            const isLink = target.closest('a');
+            
+            // If clicking on a link, allow normal behavior
+            if (isLink) {
+                return;
+            }
+            
             // Prevent default to avoid any browser drag behaviors
             e.preventDefault();
             e.stopPropagation();
@@ -72,6 +81,8 @@ function initSmoothScroll() {
 
         // Helper function to end drag/scroll
         function endDrag(e) {
+            if (!isDown) return; // Don't process if drag wasn't started
+            
             if (e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -111,7 +122,7 @@ function initSmoothScroll() {
 
         // Helper function to handle drag/scroll movement
         function handleMove(e) {
-            if (!isDown) return;
+            if (!isDown) return; // Don't process if drag wasn't started
             e.preventDefault();
             e.stopPropagation();
             
