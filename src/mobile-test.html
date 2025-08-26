@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Detection Test | Concord Music Publishing</title>
+    <link rel="stylesheet" href="assets/styles/main.css">
+    <style>
+        .test-container {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            background: #F4A461;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'CircularXX', Arial, sans-serif;
+        }
+        
+        .test-result {
+            background: white;
+            color: black;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 10px 0;
+            text-align: center;
+            width: 100%;
+            max-width: 600px;
+        }
+        
+        .detection-info {
+            background: rgba(255, 255, 255, 0.9);
+            color: black;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            text-align: left;
+            font-size: 14px;
+        }
+        
+        .test-links {
+            margin-top: 30px;
+        }
+        
+        .test-links a {
+            display: inline-block;
+            background: white;
+            color: black;
+            padding: 12px 24px;
+            margin: 5px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        
+        .test-links a:hover {
+            background: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Mobile Detection Test</h1>
+        
+        <div class="test-result">
+            <h2>Detection Results</h2>
+            <div id="detection-results">Loading...</div>
+        </div>
+        
+        <div class="detection-info">
+            <h3>Technical Details</h3>
+            <div id="technical-details">Loading...</div>
+        </div>
+        
+        <div class="test-links">
+            <h3>Test Links</h3>
+            <a href="composer.html?slug=test-composer">Test Composer Page (Desktop)</a>
+            <a href="composer-mobile.html?slug=test-composer">Test Composer Page (Mobile)</a>
+            <a href="index.html">Back to Home</a>
+        </div>
+    </div>
+    
+    <script type="module">
+        import { MobileDetection } from './scripts/mobile-detection.js';
+        
+        function runDetectionTest() {
+            const resultsContainer = document.getElementById('detection-results');
+            const detailsContainer = document.getElementById('technical-details');
+            
+            const isMobile = MobileDetection.isMobileDevice();
+            const isTablet = MobileDetection.isTablet();
+            
+            // Display results
+            resultsContainer.innerHTML = `
+                <p><strong>Is Mobile Device:</strong> ${isMobile ? '✅ YES' : '❌ NO'}</p>
+                <p><strong>Is Tablet:</strong> ${isTablet ? '✅ YES' : '❌ NO'}</p>
+                <p><strong>Device Type:</strong> ${isTablet ? 'Tablet' : (isMobile ? 'Phone' : 'Desktop')}</p>
+                <p><strong>Should Redirect:</strong> ${isMobile && !isTablet ? '✅ YES' : '❌ NO'}</p>
+            `;
+            
+            // Display technical details
+            detailsContainer.innerHTML = `
+                <p><strong>User Agent:</strong> ${navigator.userAgent}</p>
+                <p><strong>Screen Size:</strong> ${window.innerWidth} x ${window.innerHeight}</p>
+                <p><strong>Touch Capable:</strong> ${'ontouchstart' in window ? 'YES' : 'NO'}</p>
+                <p><strong>Max Touch Points:</strong> ${navigator.maxTouchPoints || 'Not supported'}</p>
+                <p><strong>Body Classes:</strong> ${document.body.className || 'None'}</p>
+                <p><strong>Viewport Units:</strong> --vh = ${getComputedStyle(document.documentElement).getPropertyValue('--vh')}</p>
+            `;
+        }
+        
+        // Run test when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            // Give mobile detection time to initialize
+            setTimeout(runDetectionTest, 100);
+        });
+        
+        // Also run test on resize to show dynamic behavior
+        window.addEventListener('resize', () => {
+            setTimeout(runDetectionTest, 100);
+        });
+    </script>
+</body>
+</html>
