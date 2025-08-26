@@ -131,6 +131,21 @@ footer {
     transform: translateX(-10px);
 }
 
+.writers-title {
+    font-size: 60px;
+    font-family: 'CircularXX', Arial, sans-serif;
+    font-weight: 700;
+    margin: 0;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    position: absolute;
+    color: white !important;
+}
+
+.writers-title:hover {
+    transform: translateX(10px);
+}
+
 .scrollable-container {
     display: flex;
     overflow: visible;
@@ -366,6 +381,10 @@ footer {
         font-size: 45px;
     }
     
+    .writers-title {
+        font-size: 45px !important;
+    }
+    
     .carousel-track img,
     .FtvImages .carousel-track img {
         height: 200px;
@@ -404,6 +423,10 @@ footer {
     
     .section-title {
         font-size: 35px;
+    }
+    
+    .writers-title {
+        font-size: 35px !important;
     }
     
     .carousel-track img,
