@@ -8,6 +8,19 @@
     font-display: swap;
 }
 
+/* Override mobile device restrictions for links */
+.mobile-composer-container a,
+.mobile-composer-container a *,
+#social-links a,
+#social-links a * {
+    -webkit-user-select: auto !important;
+    user-select: auto !important;
+    touch-action: auto !important;
+    -webkit-touch-callout: default !important;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1) !important;
+    pointer-events: auto !important;
+}
+
 /* CSS Custom Properties for mobile viewport */
 :root {
     --vh: 1vh; /* Will be set by JavaScript for mobile browsers */
@@ -117,6 +130,13 @@ body.mobile-composer {
     border-radius: 50%;
     transition: all 0.3s ease;
     text-decoration: none;
+    /* Ensure proper touch behavior */
+    -webkit-user-select: auto !important;
+    user-select: auto !important;
+    touch-action: auto !important;
+    -webkit-touch-callout: default !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
 }
 
 /* Social Links Hover Effects */
