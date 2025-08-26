@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://lycmyaohsycrdergwpmq.supabase.co https://cdn.jsdelivr.net; frame-src 'self' https://player.vimeo.com https://www.youtube-nocookie.com https://concord-music-publishing.disco.ac https://embed.disco.ac; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
+    <title id="page-title">Composer | Concord Music Publishing</title>
+    
+    <!-- Essential DNS prefetch and preconnect for Disco embed -->
+    <link rel="dns-prefetch" href="//concord-music-publishing.disco.ac">
+    <link rel="preconnect" href="https://concord-music-publishing.disco.ac" crossorigin>
+    <link rel="dns-prefetch" href="//embed.disco.ac">
+    <link rel="preconnect" href="https://embed.disco.ac" crossorigin>
+    
+    <!-- Video platform optimizations -->
+    <link rel="dns-prefetch" href="//player.vimeo.com">
+    <link rel="preconnect" href="https://player.vimeo.com" crossorigin>
+    <link rel="dns-prefetch" href="//www.youtube-nocookie.com">
+    <link rel="preconnect" href="https://www.youtube-nocookie.com" crossorigin>
+    
+    <!-- Font preloading -->
+    <link rel="preload" href="assets/fonts/CircularXXSub-Black.woff" as="font" type="font/woff" crossorigin>
+    
+    <link rel="stylesheet" href="assets/styles/main.css">
+    <link rel="stylesheet" href="assets/styles/composer-mobile.css">
+    <link rel="icon" type="image/x-icon" href="assets/images/concord-C-icon-red.png">
+    
+    <!-- Desktop Detection Script -->
+    <script>
+    (function() {
+        const isDesktopDevice = () => {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+            const screenSize = window.innerWidth > 768;
+            const notTouchOnly = !('ontouchstart' in window) || window.innerWidth > 1024;
+            
+            // Return true if NOT mobile and screen is large enough
+            return !mobileRegex.test(userAgent) && screenSize && notTouchOnly;
+        };
+        
+        const redirectToDesktop = () => {
+            // Only redirect if we're on the mobile composer page
+            if (window.location.pathname.includes('mobile') || 
+                window.location.pathname.includes('composer-mobile')) {
+                
+                const urlParams = new URLSearchParams(window.location.search);
+                const composerSlug = urlParams.get('slug');
+                
+                if (composerSlug) {
+                    console.log('Desktop device detected, redirecting to desktop template');
+                    // Redirect to desktop version with same slug
+                    window.location.replace(`composer.html?slug=${composerSlug}`);
+                }
+            }
+        };
+        
+        // Check on page load
+        if (isDesktopDevice()) {
+            redirectToDesktop();
+        }
+        
+        // Also check on window resize (in case user resizes browser window)
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                if (isDesktopDevice() && window.innerWidth > 1024) {
+                    redirectToDesktop();
+                }
+            }, 250); // Debounce resize events
+        });
+    })();
+    </script>
+</head>
+<body class="mobile-composer"
+style="font-family: 'CircularXXSub', Arial, sans-serif !important; margin: 0; padding: 0;">
+    <!-- Navigation header -->
+    <div class="mobile-nav-header" style="position: fixed; top: 0; left: 0; right: 0; background: rgba(244, 164, 97, 0.95); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 100; backdrop-filter: blur(10px);">
+        <img src="assets/images/concord-C-icon-red.png" alt="Concord" style="height: 30px;">
+        <button onclick="history.back()" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 8px 12px; color: white; font-family: 'CircularXX', Arial, sans-serif; font-weight: 600;">← Back</button>
+    </div>
+
+    <div class="Frame5" style="width: 100%; min-height: 100vh; padding: 10px; justify-content: flex-start; align-items: center; display: flex; margin-top: 60px; background: #F4A461;">
+        <div class="ComposerMobileV1" style="flex: 1 1 0; min-height: 1500px; padding: 50px 6px; position: relative; background: #F4A461; flex-direction: column; justify-content: flex-start; align-items: center; gap: 19px; display: inline-flex; max-width: 432px; margin: 0 auto;">
+            
+            <!-- Composer Header -->
+            <div class="ComposerHeader" style="width: 100%; max-width: 250.53px; flex-direction: column; justify-content: flex-start; align-items: flex-start; display: inline-flex;">
+                <div id="composer-name" class="ComposerName" style="width: 100%; color: white; font-size: 30.68px; font-family: 'CircularXX', Arial, sans-serif; font-weight: 900; word-wrap: break-word; text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);">[composer name]</div>
+                
+                <!-- Social Links -->
+                <div id="social-links" class="Socials" style="width: 126.80px; height: 24.54px; position: relative; margin-top: 10px;">
+                    <!-- Social icons will be dynamically inserted here -->
+                </div>
+            </div>
+            
+            <!-- Composer Image -->
+            <div class="ComposerImage" style="align-self: stretch; height: 400px; background: #D9D9D9; border-radius: 8px; overflow: hidden; position: relative; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);">
+                <img id="composer-photo" style="width: 100%; height: 100%; object-fit: cover;" alt="">
+            </div>
+            
+            <!-- Composer Bio -->
+        <div id="composer_bio" class="ComposerBio" style="width: 390px; color: rgba(0, 0, 0, 0.60); font-size: 13px; font-family: CircularXXSub; font-weight: 100; line-height: 16px; background: rgba(0, 0, 0, 0.05); border-radius: 6px; padding: 19px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"></div>
+
+        <!-- DISCO Playlist Section - Simple approach -->
+        <div id="spotify-section" class="ComposerDisco" style="width: 390px; height: 260px; display: block;">
+            <div id="mobile-spotify-embed" style="width: 100%; height: 100%;"></div>
+        </div>            <!-- Composer Videos -->
+            <div id="video-section" class="ComposerVideos" style="width: 100%; max-width: 390px; height: 260px; background: rgba(0, 0, 0, 0.9); border-radius: 8px; overflow: hidden; position: relative; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);">
+                <iframe id="mobile-video-player" style="width: 100%; height: 100%; border: none;" frameborder="0" allowfullscreen></iframe>
+                
+                <!-- Video Navigation -->
+                <div id="mobile-video-nav" style="position: absolute; bottom: 10px; left: 0; right: 0; display: flex; justify-content: center; gap: 10px; align-items: center;">
+                    <button id="prev-video" style="background: rgba(244, 164, 97, 0.9); color: white; border: none; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);">‹</button>
+                    <div id="video-indicators" style="display: flex; gap: 5px;"></div>
+                    <button id="next-video" style="background: rgba(244, 164, 97, 0.9); color: white; border: none; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);">›</button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+    <script type="module" src="scripts/composer-mobile.js"></script>
+</body>
+</html>

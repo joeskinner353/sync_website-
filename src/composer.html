@@ -394,6 +394,52 @@
             justify-content: center;
         }
     </style>
+    
+    <!-- Mobile Detection Script -->
+    <script>
+    (function() {
+        const isMobileDevice = () => {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+            const screenSize = window.innerWidth <= 768;
+            const touchCapable = 'ontouchstart' in window;
+            
+            return mobileRegex.test(userAgent) || (screenSize && touchCapable);
+        };
+        
+        const redirectToMobile = () => {
+            // Only redirect if we're on the desktop composer page
+            if (window.location.pathname.includes('composer.html') && 
+                !window.location.pathname.includes('mobile')) {
+                
+                const urlParams = new URLSearchParams(window.location.search);
+                const composerSlug = urlParams.get('slug');
+                
+                if (composerSlug) {
+                    console.log('Mobile device detected, redirecting to mobile template');
+                    // Redirect to mobile version with same slug
+                    window.location.replace(`composer-mobile.html?slug=${composerSlug}`);
+                }
+            }
+        };
+        
+        // Check on page load
+        if (isMobileDevice()) {
+            redirectToMobile();
+        }
+        
+        // Also check on window resize (in case user rotates device)
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                if (isMobileDevice() && window.innerWidth <= 768) {
+                    redirectToMobile();
+                }
+            }, 250); // Debounce resize events
+        });
+    })();
+    </script>
 </head>
 <body>
     <div class="navigation">
@@ -470,6 +516,9 @@
         </div>
     </div>
 
+    <!-- Mobile Detection (must load first) -->
+    <script type="module" src="scripts/mobile-detection.js"></script>
+    
     <script type="module" src="scripts/composer-page.js"></script>
     <!-- PDF Generation Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
