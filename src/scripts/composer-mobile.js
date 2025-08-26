@@ -202,9 +202,16 @@ class MobileComposerPage {
             `;
         }
         
-        // Add hover effects with CSS
+        // Add hover effects and touch handling with CSS
         const style = document.createElement('style');
         style.textContent = `
+            .SocialIcons {
+                touch-action: auto !important;
+                pointer-events: auto !important;
+                -webkit-user-select: auto !important;
+                user-select: auto !important;
+                -webkit-touch-callout: default !important;
+            }
             .SocialIcons:hover {
                 transform: scale(1.1) !important;
                 box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
@@ -212,10 +219,43 @@ class MobileComposerPage {
             .SocialIcons:active {
                 transform: scale(0.95) !important;
             }
+            /* Ensure social links are clickable */
+            #social-links a {
+                touch-action: auto !important;
+                pointer-events: auto !important;
+                -webkit-user-select: auto !important;
+                user-select: auto !important;
+                -webkit-touch-callout: default !important;
+            }
         `;
         document.head.appendChild(style);
         
         socialContainer.innerHTML = socialHtml;
+        
+        // Add event listeners to prevent drag interference
+        const socialLinks = socialContainer.querySelectorAll('a');
+        socialLinks.forEach(link => {
+            // Prevent parent drag events from interfering with link clicks
+            link.addEventListener('touchstart', (e) => {
+                e.stopPropagation();
+            }, { passive: false });
+            
+            link.addEventListener('touchend', (e) => {
+                e.stopPropagation();
+            }, { passive: false });
+            
+            link.addEventListener('touchmove', (e) => {
+                e.stopPropagation();
+            }, { passive: false });
+            
+            link.addEventListener('click', (e) => {
+                e.stopPropagation();
+                // Ensure the link opens properly
+                if (link.href && link.target === '_blank') {
+                    window.open(link.href, '_blank', 'noopener,noreferrer');
+                }
+            });
+        });
     }
     
     renderMobileVideos(composer) {
