@@ -138,10 +138,9 @@ footer {
     margin: 0;
     transition: transform 0.3s ease;
     cursor: pointer;
-    position: absolute;
+    position: relative;
     color: white !important;
-    padding-left: 20px; /* Add padding similar to section-title padding-right */
-    padding-bottom: 20px; /* Add padding under the element */
+    margin-bottom: 20px; /* Add margin under the element for visible spacing */
 }
 
 .writers-title:hover {
