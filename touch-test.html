@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Touch Test - Mobile Links</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        .test-container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-link {
+            display: inline-block;
+            padding: 12px 20px;
+            margin: 10px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.2s ease;
+        }
+        .test-link:hover {
+            background: #0056b3;
+        }
+        .social-test {
+            width: 50px;
+            height: 50px;
+            background: #1db954;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Touch Test</h1>
+        <p>Test mobile touch interactions:</p>
+        
+        <a href="https://google.com" target="_blank" class="test-link" id="test-link-1">
+            Test Link 1 (Google)
+        </a>
+        
+        <a href="https://spotify.com" target="_blank" class="social-test" id="social-test-1">
+            S
+        </a>
+        
+        <a href="https://instagram.com" target="_blank" class="social-test" id="social-test-2">
+            I
+        </a>
+        
+        <div class="log" id="log">
+            Touch events will be logged here...
+        </div>
+    </div>
+
+    <script>
+        const log = document.getElementById('log');
+        
+        function logEvent(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            log.innerHTML += `[${timestamp}] ${message}<br>`;
+            log.scrollTop = log.scrollHeight;
+        }
+        
+        // Test all links
+        document.querySelectorAll('a').forEach((link, index) => {
+            const linkId = link.id || `link-${index}`;
+            
+            link.addEventListener('touchstart', (e) => {
+                logEvent(`${linkId}: touchstart`);
+            });
+            
+            link.addEventListener('touchend', (e) => {
+                logEvent(`${linkId}: touchend`);
+            });
+            
+            link.addEventListener('click', (e) => {
+                logEvent(`${linkId}: click - URL: ${link.href}`);
+            });
+            
+            link.addEventListener('touchcancel', (e) => {
+                logEvent(`${linkId}: touchcancel`);
+            });
+        });
+        
+        logEvent('Touch test initialized');
+    </script>
+</body>
+</html>
