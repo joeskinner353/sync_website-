@@ -140,6 +140,8 @@ footer {
     cursor: pointer;
     position: absolute;
     color: white !important;
+    padding-left: 20px; /* Add padding similar to section-title padding-right */
+    padding-bottom: 20px; /* Add padding under the element */
 }
 
 .writers-title:hover {
