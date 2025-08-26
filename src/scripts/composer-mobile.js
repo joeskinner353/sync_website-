@@ -135,9 +135,13 @@ class MobileComposerPage {
             if (bio && bio.trim()) {
                 bioContent.innerHTML = bio;
                 bioContent.style.color = 'rgba(0, 0, 0, 0.80)';
+                bioContent.style.background = 'rgba(0, 0, 0, 0.05)';
+                bioContent.style.fontWeight = '100';
             } else {
                 bioContent.innerHTML = 'No biography available at this time.';
-                bioContent.style.color = 'rgba(0, 0, 0, 0.50)';
+                bioContent.style.color = 'rgba(0, 0, 0, 0.60)';
+                bioContent.style.background = 'rgba(0, 0, 0, 0.05)';
+                bioContent.style.fontWeight = '100';
             }
         }
     }
@@ -151,26 +155,29 @@ class MobileComposerPage {
         socialContainer.innerHTML = '';
         let socialHtml = '';
         
-        // Spotify
+        // Spotify - Simplified and optimized
         if (composer.spotify_url && composer.spotify_url.trim()) {
             socialHtml += `
                 <a href="${composer.spotify_url}" target="_blank" rel="noopener noreferrer" style="position: absolute; left: 0px; top: 0px;">
-                    <div class="SocialIcons" style="width: 24.54px; height: 24.54px; cursor: pointer;">
-                        <svg width="24.54" height="24.54" viewBox="0 0 48 48" fill="#1ED760">
-                            <path d="M23.9266 0C10.7126 0 0 10.7123 0 23.9263C0 37.1409 10.7126 47.8523 23.9266 47.8523C37.142 47.8523 47.8534 37.1409 47.8534 23.9263C47.8534 10.7131 37.142 0.00114285 23.9263 0.00114285L23.9266 0ZM34.8991 34.5086C34.4706 35.2114 33.5506 35.4343 32.8477 35.0029C27.23 31.5714 20.158 30.7943 11.8294 32.6971C11.0269 32.88 10.2269 32.3771 10.044 31.5743C9.86029 30.7714 10.3611 29.9714 11.1657 29.7886C20.28 27.7054 28.098 28.6029 34.4049 32.4571C35.1077 32.8886 35.3306 33.8057 34.8991 34.5086Z"/>
+                    <div class="SocialIcons" style="width: 24.54px; height: 24.54px; cursor: pointer; border-radius: 50%; background: #1DB954; display: flex; align-items: center; justify-content: center; transition: transform 0.2s ease, box-shadow 0.2s ease;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="white" style="margin-top: 1px;">
+                            <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.32 11.28-1.08 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.559.3z"/>
                         </svg>
                     </div>
                 </a>
             `;
         }
         
-        // Instagram
+        // Instagram - Cleaner gradient design
         if (composer.instagram_url && composer.instagram_url.trim()) {
             socialHtml += `
                 <a href="${composer.instagram_url}" target="_blank" rel="noopener noreferrer" style="position: absolute; left: 51.13px; top: 0px;">
-                    <div class="SocialIcons" style="width: 24.54px; height: 24.54px; cursor: pointer;">
-                        <svg width="24.54" height="24.54" viewBox="0 0 48 48" fill="#000100">
-                            <path d="M24 4.32187C30.4125 4.32187 31.1719 4.35 33.6938 4.4625C36.0375 4.56562 37.3031 4.95938 38.1469 5.2875C39.2625 5.71875 40.0688 6.24375 40.9031 7.07812C41.7469 7.92188 42.2625 8.71875 42.6938 9.83438C43.0219 10.6781 43.4156 11.9531 43.5188 14.2875C43.6313 16.8187 43.6594 17.5781 43.6594 23.9813C43.6594 30.3938 43.6313 31.1531 43.5188 33.675C43.4156 36.0188 43.0219 37.2844 42.6938 38.1281C42.2625 39.2438 41.7375 40.05 40.9031 40.8844C40.0594 41.7281 39.2625 42.2438 38.1469 42.675C37.3031 43.0031 36.0281 43.3969 33.6938 43.5C31.1625 43.6125 30.4031 43.6406 24 43.6406C17.5875 43.6406 16.8281 43.6125 14.3063 43.5C11.9625 43.3969 10.6969 43.0031 9.85313 42.675C8.7375 42.2438 7.93125 41.7188 7.09688 40.8844C6.25313 40.0406 5.7375 39.2438 5.30625 38.1281C4.97813 37.2844 4.58438 36.0094 4.48125 33.675C4.36875 31.1438 4.34063 30.3844 4.34063 23.9813C4.34063 17.5688 4.36875 16.8094 4.48125 14.2875C4.58438 11.9437 4.97813 10.6781 5.30625 9.83438C5.7375 8.71875 6.2625 7.9125 7.09688 7.07812C7.94063 6.23438 8.7375 5.71875 9.85313 5.2875C10.6969 4.95938 11.9719 4.56562 14.3063 4.4625C16.8281 4.35 17.5875 4.32187 24 4.32187ZM24 11.6719C17.1938 11.6719 11.6719 17.1938 11.6719 24C11.6719 30.8062 17.1938 36.3281 24 36.3281C30.8062 36.3281 36.3281 30.8062 36.3281 24C36.3281 17.1938 30.8062 11.6719 24 11.6719ZM24 31.9969C19.5844 31.9969 16.0031 28.4156 16.0031 24C16.0031 19.5844 19.5844 16.0031 24 16.0031C28.4156 16.0031 31.9969 19.5844 31.9969 24C31.9969 28.4156 28.4156 31.9969 24 31.9969Z"/>
+                    <div class="SocialIcons" style="width: 24.54px; height: 24.54px; cursor: pointer; border-radius: 50%; background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); display: flex; align-items: center; justify-content: center; transition: transform 0.2s ease, box-shadow 0.2s ease;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="white" stroke-width="2" fill="none"/>
+                            <path d="m7 12 3 3 7-7" stroke="none" fill="none"/>
+                            <circle cx="12" cy="12" r="3" stroke="white" stroke-width="2" fill="none"/>
+                            <circle cx="17.5" cy="6.5" r="1.5" fill="white"/>
                         </svg>
                     </div>
                 </a>
@@ -191,6 +198,19 @@ class MobileComposerPage {
                 </a>
             `;
         }
+        
+        // Add hover effects with CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            .SocialIcons:hover {
+                transform: scale(1.1) !important;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+            }
+            .SocialIcons:active {
+                transform: scale(0.95) !important;
+            }
+        `;
+        document.head.appendChild(style);
         
         socialContainer.innerHTML = socialHtml;
     }
@@ -350,8 +370,8 @@ class MobileComposerPage {
         
         let indicatorsHTML = '';
         for (let i = 0; i < this.videos.length; i++) {
-            const active = i === this.currentVideoIndex ? 'background: white;' : 'background: rgba(255,255,255,0.5);';
-            indicatorsHTML += `<div style="width: 8px; height: 8px; border-radius: 50%; ${active} cursor: pointer; transition: all 0.3s ease;" data-index="${i}"></div>`;
+            const active = i === this.currentVideoIndex ? 'background: #F4A461;' : 'background: rgba(244, 164, 97, 0.5);';
+            indicatorsHTML += `<div style="width: 8px; height: 8px; border-radius: 50%; ${active} cursor: pointer; transition: all 0.3s ease; border: 1px solid rgba(255, 255, 255, 0.3);" data-index="${i}"></div>`;
         }
         
         indicatorsContainer.innerHTML = indicatorsHTML;
