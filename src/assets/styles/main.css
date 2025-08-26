@@ -373,6 +373,11 @@ footer {
         padding-right: 15px;
     }
     
+    .ConcordCIconRed1 {
+        width: 220px;
+        height: 220px;
+    }
+    
     .Desktop1 {
         padding: 0 15px;
     }
@@ -415,6 +420,11 @@ footer {
     .ConcordMusicPublishing {
         font-size: 24px;
         padding-right: 10px;
+    }
+    
+    .ConcordCIconRed1 {
+        width: 180px;
+        height: 180px;
     }
     
     .Desktop1 {
