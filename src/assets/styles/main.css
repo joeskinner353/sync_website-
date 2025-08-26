@@ -175,6 +175,12 @@ footer {
     cursor: pointer;
     text-decoration: none;
     position: relative;
+    /* Ensure links are clickable on mobile */
+    touch-action: auto !important;
+    pointer-events: auto !important;
+    -webkit-user-select: auto !important;
+    user-select: auto !important;
+    -webkit-touch-callout: default !important;
 }
 
 .carousel-track img {
