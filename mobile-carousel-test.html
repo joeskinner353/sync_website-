@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Carousel Link Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        
+        .test-container {
+            max-width: 100vw;
+            background: black;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .scrollable-container {
+            display: flex;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            background: black;
+            gap: 10px;
+            padding: 10px 0;
+            cursor: grab;
+            touch-action: pan-x;
+            -webkit-overflow-scrolling: touch;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        
+        .scrollable-container:active {
+            cursor: grabbing;
+        }
+        
+        .carousel-track {
+            display: flex;
+            gap: 10px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            transition: transform 0.1s ease-out;
+        }
+        
+        .carousel-link {
+            display: block;
+            height: 100%;
+            cursor: pointer;
+            text-decoration: none;
+            position: relative;
+            /* Mobile link fixes */
+            touch-action: auto !important;
+            pointer-events: auto !important;
+            -webkit-user-select: auto !important;
+            user-select: auto !important;
+            -webkit-touch-callout: default !important;
+        }
+        
+        .carousel-link img {
+            height: 150px;
+            width: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            background: #333;
+        }
+        
+        .composer-name-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: white;
+            padding: 10px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .log {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+        }
+        
+        .controls {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .control-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <h2>Mobile Carousel Link Test</h2>
+        <p>This tests whether links work in a draggable carousel on mobile devices.</p>
+        <button class="control-btn" onclick="clearLog()">Clear Log</button>
+        <button class="control-btn" onclick="testLinks()">Test All Links</button>
+    </div>
+    
+    <div class="test-container">
+        <div class="scrollable-container" id="test-carousel">
+            <div class="carousel-track" id="carousel-track">
+                <a href="https://google.com" target="_blank" class="carousel-link" data-name="Google">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgZmlsbD0iIzRjYWY1MCIvPjx0ZXh0IHg9Ijc1IiB5PSI4MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjIwIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+R29vZ2xlPC90ZXh0Pjwvc3ZnPg==" alt="Google">
+                    <div class="composer-name-overlay">Google</div>
+                </a>
+                
+                <a href="https://github.com" target="_blank" class="carousel-link" data-name="GitHub">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgZmlsbD0iIzI0MjkyZSIvPjx0ZXh0IHg9Ijc1IiB5PSI4MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjIwIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+R2l0SHViPC90ZXh0Pjwvc3ZnPg==" alt="GitHub">
+                    <div class="composer-name-overlay">GitHub</div>
+                </a>
+                
+                <a href="https://stackoverflow.com" target="_blank" class="carousel-link" data-name="Stack Overflow">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgZmlsbD0iI2ZmNjkwMCIvPjx0ZXh0IHg9Ijc1IiB5PSI4MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE4IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+U3RhY2tPdmVyZmxvdzwvdGV4dD48L3N2Zz4=" alt="Stack Overflow">
+                    <div class="composer-name-overlay">Stack Overflow</div>
+                </a>
+                
+                <a href="https://youtube.com" target="_blank" class="carousel-link" data-name="YouTube">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgZmlsbD0iI2ZmMDAwMCIvPjx0ZXh0IHg9Ijc1IiB5PSI4MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjIwIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+WW91VHViZTwvdGV4dD48L3N2Zz4=" alt="YouTube">
+                    <div class="composer-name-overlay">YouTube</div>
+                </a>
+                
+                <a href="https://twitter.com" target="_blank" class="carousel-link" data-name="Twitter">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgZmlsbD0iIzFkYTFmMiIvPjx0ZXh0IHg9Ijc1IiB5PSI4MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjIwIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+VHdpdHRlcjwvdGV4dD48L3N2Zz4=" alt="Twitter">
+                    <div class="composer-name-overlay">Twitter</div>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="log" id="log">
+        <strong>Event Log:</strong><br>
+        Test initialized. Try dragging the carousel and clicking on the links.<br>
+    </div>
+
+    <script>
+        const log = document.getElementById('log');
+        const container = document.querySelector('.scrollable-container');
+        const track = document.querySelector('.carousel-track');
+        let isDown = false;
+        let startX, lastX, velocity = 0, startTransform = 0;
+        
+        function logEvent(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            log.innerHTML += `[${timestamp}] ${message}<br>`;
+            log.scrollTop = log.scrollHeight;
+        }
+        
+        function clearLog() {
+            log.innerHTML = '<strong>Event Log:</strong><br>Log cleared.<br>';
+        }
+        
+        function testLinks() {
+            logEvent('Testing all links programmatically...');
+            document.querySelectorAll('.carousel-link').forEach((link, i) => {
+                logEvent(`Link ${i + 1}: ${link.getAttribute('data-name')} -> ${link.href}`);
+            });
+        }
+        
+        function getEventX(e) {
+            return e.type.includes('touch') ? e.touches[0]?.clientX || e.changedTouches[0]?.clientX : e.clientX;
+        }
+        
+        function getCurrentTransform() {
+            const style = window.getComputedStyle(track);
+            const matrix = style.transform;
+            const match = matrix.match(/matrix.*\((.+)\)/);
+            return match ? parseFloat(match[1].split(', ')[4]) : 0;
+        }
+        
+        // Modified startDrag function that allows clicks on links
+        function startDrag(e) {
+            // Check if the target is a link or inside a link
+            const target = e.target;
+            const isLink = target.closest('a');
+            
+            // If clicking on a link, allow normal behavior
+            if (isLink) {
+                logEvent(`Click on link detected: ${isLink.getAttribute('data-name')}`);
+                return;
+            }
+            
+            logEvent('Drag started on non-link area');
+            e.preventDefault();
+            e.stopPropagation();
+            
+            isDown = true;
+            container.style.cursor = 'grabbing';
+            startX = getEventX(e) - container.offsetLeft;
+            lastX = getEventX(e);
+            velocity = 0;
+            startTransform = getCurrentTransform();
+        }
+        
+        function endDrag(e) {
+            if (!isDown) return;
+            
+            logEvent('Drag ended');
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            isDown = false;
+            container.style.cursor = 'grab';
+        }
+        
+        function handleMove(e) {
+            if (!isDown) return;
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const currentX = getEventX(e);
+            const x = currentX - container.offsetLeft;
+            const walk = (x - startX) * 1.5;
+            const newTransform = startTransform + walk;
+            
+            track.style.transform = `translateX(${newTransform}px)`;
+            
+            velocity = currentX - lastX;
+            lastX = currentX;
+        }
+        
+        // Event listeners
+        container.addEventListener('mousedown', startDrag, { passive: false });
+        container.addEventListener('mouseleave', endDrag, { passive: false });
+        container.addEventListener('mouseup', endDrag, { passive: false });
+        container.addEventListener('mousemove', handleMove, { passive: false });
+        
+        container.addEventListener('touchstart', startDrag, { passive: false });
+        container.addEventListener('touchend', endDrag, { passive: false });
+        container.addEventListener('touchmove', handleMove, { passive: false });
+        
+        // Log link clicks
+        document.querySelectorAll('.carousel-link').forEach((link, index) => {
+            link.addEventListener('click', (e) => {
+                const name = link.getAttribute('data-name');
+                logEvent(`🎯 LINK CLICKED: ${name} - URL: ${link.href}`);
+                
+                // Allow the link to work normally
+                // Don't prevent default here
+            });
+        });
+        
+        logEvent('Mobile carousel link test initialized');
+    </script>
+</body>
+</html>
