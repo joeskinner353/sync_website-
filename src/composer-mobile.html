@@ -25,7 +25,8 @@
     <link rel="stylesheet" href="assets/styles/composer-mobile.css">
     <link rel="icon" type="image/x-icon" href="assets/images/concord-C-icon-red.png">
 </head>
-<body>
+<body class="mobile-composer"
+style="font-family: 'CircularXXSub', Arial, sans-serif !important; margin: 0; padding: 0;">
     <!-- Navigation header -->
     <div class="mobile-nav-header" style="position: fixed; top: 0; left: 0; right: 0; background: rgba(244, 164, 97, 0.95); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 100; backdrop-filter: blur(10px);">
         <img src="assets/images/concord-C-icon-red.png" alt="Concord" style="height: 30px;">
@@ -51,14 +52,12 @@
             </div>
             
             <!-- Composer Bio -->
-            <div id="composer-bio" class="ComposerBio" style="align-self: stretch; min-height: 100px; max-height: 300px; overflow-y: auto; background: rgba(0, 0, 0, 0.05); padding: 20px; border-radius: 8px; color: rgba(0, 0, 0, 0.80); font-size: 18px; font-family: 'CircularXX', Arial, sans-serif; font-weight: 100; word-wrap: break-word; line-height: 1.6; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); border: 1px solid rgba(0, 0, 0, 0.1);">[composer bio]</div>
-            
-            <!-- Composer Disco/Spotify -->
-            <div id="spotify-section" class="ComposerDisco" style="width: 100%; max-width: 390px; height: 260px; background: rgba(255, 255, 255, 0.1); border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
-                <div id="mobile-spotify-embed" style="width: 100%; height: 100%;"></div>
-            </div>
-            
-            <!-- Composer Videos -->
+        <div id="composer_bio" class="ComposerBio" style="width: 390px; color: rgba(0, 0, 0, 0.60); font-size: 13px; font-family: CircularXXSub; font-weight: 100; line-height: 16px; background: rgba(0, 0, 0, 0.05); border-radius: 6px; padding: 19px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"></div>
+
+        <!-- DISCO Playlist Section - Simple approach -->
+        <div id="spotify-section" class="ComposerDisco" style="width: 390px; height: 260px; display: block;">
+            <div id="mobile-spotify-embed" style="width: 100%; height: 100%;"></div>
+        </div>            <!-- Composer Videos -->
             <div id="video-section" class="ComposerVideos" style="width: 100%; max-width: 390px; height: 260px; background: rgba(0, 0, 0, 0.9); border-radius: 8px; overflow: hidden; position: relative; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);">
                 <iframe id="mobile-video-player" style="width: 100%; height: 100%; border: none;" frameborder="0" allowfullscreen></iframe>
                 

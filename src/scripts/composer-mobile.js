@@ -110,6 +110,7 @@ class MobileComposerPage {
             }
             
             // Render bio
+            console.log('Rendering bio:', composer.bio ? 'exists' : 'missing');
             this.renderMobileBio(composer.bio);
             
             // Render social links
@@ -119,6 +120,7 @@ class MobileComposerPage {
             this.renderMobileVideos(composer);
             
             // Render Spotify integration
+            console.log('Rendering DISCO playlist:', composer.disco_playlist ? 'exists' : 'missing');
             this.renderMobileSpotify(composer.disco_playlist);
             
             console.log('Mobile composer rendered successfully');
@@ -130,7 +132,8 @@ class MobileComposerPage {
     }
     
     renderMobileBio(bio) {
-        const bioContent = document.getElementById('composer-bio');
+        const bioContent = document.getElementById('composer_bio');
+        
         if (bioContent) {
             if (bio && bio.trim()) {
                 bioContent.innerHTML = bio;
@@ -328,15 +331,93 @@ class MobileComposerPage {
         const spotifySection = document.getElementById('spotify-section');
         const spotifyEmbed = document.getElementById('mobile-spotify-embed');
         
-        if (!spotifySection || !spotifyEmbed) return;
+        if (!spotifySection || !spotifyEmbed) {
+            console.error('DISCO elements not found');
+            return;
+        }
         
         if (!discoPlaylist || !discoPlaylist.trim()) {
+            console.log('No playlist data, hiding section');
             spotifySection.style.display = 'none';
             return;
         }
         
+        console.log('DISCO: Processing playlist for mobile...');
+        console.log('DISCO playlist data length:', discoPlaylist.length);
+        
+        // Add mobile-specific parameters to DISCO embed
+        let mobileOptimizedEmbed = discoPlaylist;
+        
+        // If it's an iframe embed, add mobile parameters
+        if (discoPlaylist.includes('<iframe')) {
+            console.log('DISCO: Optimizing iframe embed for mobile');
+            mobileOptimizedEmbed = discoPlaylist
+                // Add mobile detection parameter
+                .replace(/src="([^"]+)"/, 'src="$1&mobile=true"')
+                // Add responsive width/height
+                .replace(/width="[\d%]+"/, 'width="100%"')
+                .replace(/height="[\d%]+"/, 'height="100%"')
+                // Add mobile-friendly attributes
+                .replace('<iframe', '<iframe allow="autoplay; encrypted-media" loading="lazy"');
+        }
+        
+        // If it's a script-based embed, add mobile detection
+        if (discoPlaylist.includes('<script')) {
+            console.log('DISCO: Optimizing script embed for mobile');
+            // Add mobile detection to script embeds
+            const scriptContent = discoPlaylist.replace(
+                /(<script[^>]*>)/,
+                '$1\nwindow.discoMobile = true;\n'
+            );
+            mobileOptimizedEmbed = scriptContent;
+        }
+        
+        // Show the section
         spotifySection.style.display = 'block';
-        spotifyEmbed.innerHTML = discoPlaylist;
+        
+        // Insert the mobile-optimized embed
+        spotifyEmbed.innerHTML = mobileOptimizedEmbed;
+        
+        console.log('DISCO: Mobile-optimized embed inserted');
+        
+        // Additional mobile optimization after embed loads
+        setTimeout(() => {
+            this.optimizeDiscoForMobile(spotifyEmbed);
+        }, 1000);
+    }
+    
+    optimizeDiscoForMobile(embedContainer) {
+        // Find any iframes created by DISCO
+        const iframes = embedContainer.querySelectorAll('iframe');
+        console.log(`DISCO: Found ${iframes.length} iframes for mobile optimization`);
+        
+        iframes.forEach((iframe, index) => {
+            console.log(`DISCO: Optimizing iframe ${index + 1}`);
+            
+            // Add mobile-specific parameters to iframe src
+            const currentSrc = iframe.src;
+            if (currentSrc && !currentSrc.includes('mobile=true')) {
+                const separator = currentSrc.includes('?') ? '&' : '?';
+                iframe.src = `${currentSrc}${separator}mobile=true&responsive=1&theme=mobile`;
+            }
+            
+            // Ensure iframe is responsive
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+            iframe.style.border = 'none';
+            iframe.style.borderRadius = '8px';
+            
+            // Add mobile-friendly attributes
+            iframe.setAttribute('allowfullscreen', 'true');
+            iframe.setAttribute('allow', 'autoplay; encrypted-media');
+        });
+        
+        // Handle script-based embeds
+        const scripts = embedContainer.querySelectorAll('script');
+        if (scripts.length > 0) {
+            console.log('DISCO: Found script-based embed, setting mobile context');
+            window.discoMobileContext = true;
+        }
     }
     
     setupVideoNavigation() {
