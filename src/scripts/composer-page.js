@@ -208,23 +208,12 @@ async function loadComposerData() {
         }
         
         console.log('Using fallback composer data (not filtered by version)');
-        // IMMEDIATE: Start disco preload as soon as fallback data is available
-        if (fallbackComposer.disco_playlist) {
-            preloadDiscoIframe(fallbackComposer);
-        }
         populateComposerData(fallbackComposer);
         return;
     }
 
-    // IMMEDIATE: Start disco preload as soon as primary data is available
-    if (composer.disco_playlist) {
-        preloadDiscoIframe(composer);
-    }
     populateComposerData(composer);
 }
-
-// Global disco preload strategy - start as early as possible
-let discoPreloadData = null;
 
 // Register service worker for aggressive disco caching
 async function registerDiscoCacheWorker() {
@@ -238,88 +227,33 @@ async function registerDiscoCacheWorker() {
     }
 }
 
-// Preload disco content immediately when composer data is fetched
-function preloadDiscoIframe(composer) {
-    if (!composer.disco_playlist) return;
-    
-    try {
-        // Parse the disco HTML to extract iframe URL
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = composer.disco_playlist;
-        const iframe = tempDiv.querySelector('iframe');
-        
-        if (iframe && iframe.src) {
-            console.log('🎵 Disco iframe preloading started');
-            
-            // Simple, aggressive preload strategy - just start loading in background
-            const preloadIframe = document.createElement('iframe');
-            
-            // Use original URL without modifications to avoid breaking Disco
-            preloadIframe.src = iframe.src;
-            preloadIframe.style.cssText = `
-                position: absolute;
-                left: -9999px;
-                top: -9999px;
-                width: 1200px;
-                height: 300px;
-                opacity: 0;
-                pointer-events: none;
-                border: none;
-                visibility: hidden;
-            `;
-            
-            // Minimal attributes for fastest loading
-            preloadIframe.setAttribute('loading', 'eager');
-            preloadIframe.setAttribute('fetchpriority', 'high');
-            preloadIframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-forms');
-            
-            // Store the preload data
-            discoPreloadData = {
-                iframe: preloadIframe,
-                originalSrc: iframe.src,
-                loadStart: performance.now(),
-                contentReady: true // Assume ready immediately for fastest display
-            };
-            
-            // Add to DOM to start loading immediately
-            document.body.appendChild(preloadIframe);
-            
-            // Simple load monitoring without complex checks
-            preloadIframe.onload = () => {
-                const preloadTime = performance.now() - discoPreloadData.loadStart;
-                console.log(`🎵 Disco iframe preloaded in ${preloadTime.toFixed(2)}ms`);
-                discoPreloadData.contentReady = true;
-            };
-        }
-    } catch (err) {
-        console.error('Error preloading disco iframe:', err);
-    }
-}
-
 // Function to populate composer data in the UI
 function populateComposerData(composer) {
     // Clear any existing disco content first
     const discoSection = document.querySelector('.ComposerDisco');
     if (discoSection) {
         discoSection.innerHTML = '';
+        // Ensure section is visible during loading
+        discoSection.style.display = 'flex';
     }
     
     // Simple disco loading - show loading placeholder then load content
     if (discoSection && composer.disco_playlist) {
-        console.log('🎵 Starting disco loading for:', composer.name);
-        // Show loading placeholder immediately after clearing
-        setTimeout(() => {
-            showDiscoLoadingPlaceholder(discoSection, composer);
-        }, 50);
+        console.log('🎵 Starting disco loading with placeholder for:', composer.name);
         
-        // Load content after delay to show loading bar animation (50ms + 800ms animation + buffer)
+        // Show loading placeholder in correct position
+        showDiscoLoadingPlaceholder(discoSection, composer);
+        
+        // Load content after a brief delay to show loading bar
         setTimeout(() => {
-            console.log('🎵 Loading disco content after delay');
+            console.log('🎵 Loading disco content after placeholder');
             loadSimpleDiscoContent(composer);
-        }, 1050);
+        }, 1000);
     } else if (discoSection) {
         discoSection.style.display = 'none';
-        console.log('🎵 No disco playlist found, hiding section');
+        console.log('🎵 No disco playlist, hiding section');
+    } else {
+        console.log('🎵 No disco section found in DOM');
     }
 
     // Continue with other content after disco is initiated
@@ -534,11 +468,15 @@ function setupDiscoIntersectionObserver(discoSection, composer) {
 
 // Show adaptive loading placeholder that responds to actual load time
 function showDiscoLoadingPlaceholder(discoSection, composer) {
+    console.log('🎵 Creating loading placeholder for:', composer.name);
+    
     const placeholderHtml = `
         <div class="disco-loading-placeholder" style="
             width: 100%;
+            max-width: 800px;
             height: 300px;
-            background: transparent;
+            background: rgba(255, 255, 255, 0.98);
+            border: 3px solid #333;
             border-radius: 12px;
             display: flex;
             flex-direction: column;
@@ -546,6 +484,7 @@ function showDiscoLoadingPlaceholder(discoSection, composer) {
             align-items: center;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         ">
             <div style="
                 color: #000;
@@ -558,18 +497,18 @@ function showDiscoLoadingPlaceholder(discoSection, composer) {
             ">Loading ${composer.name}'s playlist...</div>
             
             <div style="
-                width: 60%;
-                max-width: 300px;
-                height: 4px;
-                background: rgba(0,0,0,0.1);
-                border-radius: 2px;
+                width: 80%;
+                max-width: 350px;
+                height: 8px;
+                background: rgba(0,0,0,0.2);
+                border-radius: 4px;
                 overflow: hidden;
                 position: relative;
             ">
                 <div class="adaptive-loading-bar" style="
                     height: 100%;
-                    background: linear-gradient(90deg, #000 0%, #333 50%, #000 100%);
-                    border-radius: 2px;
+                    background: linear-gradient(90deg, #007acc 0%, #0099ff 50%, #007acc 100%);
+                    border-radius: 4px;
                     width: 0%;
                     animation: adaptiveLoading 0.8s ease-out forwards;
                     transform-origin: left;
@@ -610,7 +549,7 @@ function showDiscoLoadingPlaceholder(discoSection, composer) {
     `;
     
     discoSection.innerHTML = placeholderHtml;
-    console.log('🎵 Adaptive loading placeholder shown - will be replaced when content ready');
+    console.log('🎵 Loading placeholder displayed for:', composer.name);
 }
 
 // Use preloaded disco iframe with visible loading feedback
@@ -1144,22 +1083,10 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('🚀 Composer page loading started');
     
     // Register service worker for disco caching (non-blocking)
-    registerDiscoCacheWorker();
+    // registerDiscoCacheWorker(); // Commented out - file doesn't exist
     
     loadComposerData().then(() => {
-        const loadTime = performance.now() - perfStart;
-        console.log(`✅ Composer page loaded in ${loadTime.toFixed(2)}ms`);
-        
-        // Track specific loading metrics
-        if (performance.getEntriesByType) {
-            const entries = performance.getEntriesByType('navigation')[0];
-            if (entries) {
-                console.log(`📊 Page Performance Metrics:
-                    - DOM Content Loaded: ${entries.domContentLoadedEventEnd - entries.domContentLoadedEventStart}ms
-                    - Page Load Complete: ${entries.loadEventEnd - entries.loadEventStart}ms
-                    - Total Page Load: ${entries.loadEventEnd - entries.fetchStart}ms`);
-            }
-        }
+        console.log('✅ Composer page loaded');
     });
     
     initPdfDownload();
