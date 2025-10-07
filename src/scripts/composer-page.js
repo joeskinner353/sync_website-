@@ -830,7 +830,7 @@ function initPdfDownload() {
             publishingText.style.justifyContent = 'center';
             publishingText.style.color = 'white';
             publishingText.style.fontSize = '30px';
-            publishingText.style.fontFamily = 'CircularXX TT';
+            publishingText.style.fontFamily = 'CircularXX';
             publishingText.style.fontWeight = '900';
             publishingText.style.wordWrap = 'break-word';
             contentContainer.appendChild(publishingText);
@@ -846,7 +846,7 @@ function initPdfDownload() {
             nameElement.style.position = 'absolute';
             nameElement.style.color = 'black';
             nameElement.style.fontSize = '30px';
-            nameElement.style.fontFamily = 'CircularXX TT';
+            nameElement.style.fontFamily = 'CircularXX';
             nameElement.style.fontWeight = '900';
             nameElement.style.wordWrap = 'break-word';
             contentContainer.appendChild(nameElement);
@@ -864,7 +864,7 @@ function initPdfDownload() {
                 bioContent.style.position = 'absolute';
                 bioContent.style.color = 'rgba(0, 0, 0, 0.80)';
                 bioContent.style.fontSize = '13.5px'; // Reduced by 10% from original 15px
-                bioContent.style.fontFamily = 'CircularXX TT';
+                bioContent.style.fontFamily = 'CircularXX';
                 bioContent.style.fontWeight = '500'; // Reduced from 900 to 500
                 bioContent.style.wordWrap = 'break-word';
                 contentContainer.appendChild(bioContent);
@@ -987,7 +987,7 @@ function initPdfDownload() {
             dateElement.style.right = '31px';
             dateElement.style.fontSize = '10px';
             dateElement.style.color = 'rgba(0, 0, 0, 0.60)';
-            dateElement.style.fontFamily = 'CircularXX TT';
+            dateElement.style.fontFamily = 'CircularXX';
             dateElement.textContent = `Generated: ${new Date().toLocaleDateString()}`;
             contentContainer.appendChild(dateElement);
             
@@ -998,7 +998,7 @@ function initPdfDownload() {
             copyrightElement.style.left = '31px';
             copyrightElement.style.fontSize = '10px';
             copyrightElement.style.color = 'rgba(0, 0, 0, 0.60)';
-            copyrightElement.style.fontFamily = 'CircularXX TT';
+            copyrightElement.style.fontFamily = 'CircularXX';
             copyrightElement.textContent = `© ${new Date().getFullYear()} Concord Music Publishing`;
             contentContainer.appendChild(copyrightElement);
             

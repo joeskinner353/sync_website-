@@ -6,36 +6,18 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://lycmyaohsycrdergwpmq.supabase.co https://cdn.jsdelivr.net; frame-src 'self' https://player.vimeo.com https://www.youtube-nocookie.com https://concord-music-publishing.disco.ac https://embed.disco.ac; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
     <title>Composer Profile | Concord Music Publishing</title>
     
-    <!-- Essential DNS prefetch and preconnect for Disco embed -->
+    <!-- Essential DNS prefetch and preconnect for external services -->
     <link rel="dns-prefetch" href="//concord-music-publishing.disco.ac">
     <link rel="preconnect" href="https://concord-music-publishing.disco.ac" crossorigin>
     <link rel="dns-prefetch" href="//embed.disco.ac">
     <link rel="preconnect" href="https://embed.disco.ac" crossorigin>
-    
-    <!-- Video platform optimizations -->
     <link rel="dns-prefetch" href="//player.vimeo.com">
     <link rel="preconnect" href="https://player.vimeo.com" crossorigin>
     <link rel="dns-prefetch" href="//www.youtube-nocookie.com">
     <link rel="preconnect" href="https://www.youtube-nocookie.com" crossorigin>
     
-    <!-- Early script loading with high priority -->
-    <link rel="modulepreload" href="scripts/composer-page.js">
-    
-    <!-- Fix font preload with immediate use -->
+    <!-- Preload critical font -->
     <link rel="preload" href="assets/fonts/CircularXXSub-Black.woff" as="font" type="font/woff" crossorigin>
-    <style>
-        /* Immediately use the preloaded font to prevent warning */
-        @font-face {
-            font-family: 'CircularXX';
-            src: url('assets/fonts/CircularXXSub-Black.woff') format('woff');
-            font-weight: 900;
-            font-display: swap;
-        }
-    </style>
-    
-    <!-- Reduce priority for non-critical resources -->
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" as="script" importance="low">
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" as="script" importance="low">
     
     <link rel="stylesheet" href="assets/styles/main.css">
     <link rel="icon" type="image/x-icon" href="assets/images/concord-C-icon-red.png">
