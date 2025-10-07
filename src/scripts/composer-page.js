@@ -298,22 +298,28 @@ function preloadDiscoIframe(composer) {
 
 // Function to populate composer data in the UI
 function populateComposerData(composer) {
-    // PERFORMANCE CRITICAL: Show disco placeholder immediately, load content after render
+    // Clear any existing disco content first
     const discoSection = document.querySelector('.ComposerDisco');
+    if (discoSection) {
+        discoSection.innerHTML = '';
+    }
+    
+    // Simple disco loading - show loading placeholder then load content
     if (discoSection && composer.disco_playlist) {
-        // Show immediate loading placeholder with composer info
-        showDiscoLoadingPlaceholder(discoSection, composer);
+        console.log('🎵 Starting disco loading for:', composer.name);
+        // Show loading placeholder immediately after clearing
+        setTimeout(() => {
+            showDiscoLoadingPlaceholder(discoSection, composer);
+        }, 50);
         
-        // Use requestAnimationFrame to ensure placeholder renders before replacement
-        requestAnimationFrame(() => {
-            if (discoPreloadData) {
-                loadDiscoContentFromPreload(discoSection, composer);
-            } else {
-                loadDiscoContent(discoSection, composer);
-            }
-        });
+        // Load content after delay to show loading bar animation (50ms + 800ms animation + buffer)
+        setTimeout(() => {
+            console.log('🎵 Loading disco content after delay');
+            loadSimpleDiscoContent(composer);
+        }, 1050);
     } else if (discoSection) {
         discoSection.style.display = 'none';
+        console.log('🎵 No disco playlist found, hiding section');
     }
 
     // Continue with other content after disco is initiated
@@ -775,6 +781,41 @@ function loadDiscoContent(discoSection, composer) {
             </div>
         `;
     }
+}
+
+// Simple disco content loading function
+function loadSimpleDiscoContent(composer) {
+    const discoSection = document.querySelector('.ComposerDisco');
+    if (!discoSection || !composer.disco_playlist) return;
+    
+    // Extract iframe from the disco HTML
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = composer.disco_playlist;
+    const iframe = tempDiv.querySelector('iframe');
+    
+    if (!iframe) return;
+    
+    // Apply the same styling as the original complex loading system
+    iframe.style.cssText = `
+        border-radius: 12px;
+        opacity: 1;
+        display: block;
+        width: 100%;
+        min-height: 300px;
+        border: none;
+        contain: layout style;
+        transform: translateZ(0);
+        will-change: auto;
+        position: static;
+        left: auto;
+        top: auto;
+        visibility: visible;
+    `;
+    iframe.setAttribute('title', `${composer.name}'s Playlist`);
+    
+    // Replace the loading placeholder with the actual disco content
+    discoSection.innerHTML = '';
+    discoSection.appendChild(iframe);
 }
 
 // Initialize PDF download functionality
