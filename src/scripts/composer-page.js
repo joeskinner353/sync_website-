@@ -237,23 +237,15 @@ function populateComposerData(composer) {
         discoSection.style.display = 'flex';
     }
     
-    // Simple disco loading - show loading placeholder then load content
+    // Simple disco loading - show loading placeholder then load content with smooth transition
     if (discoSection && composer.disco_playlist) {
-        console.log('🎵 Starting disco loading with placeholder for:', composer.name);
-        
         // Show loading placeholder in correct position
         showDiscoLoadingPlaceholder(discoSection, composer);
         
-        // Load content after a brief delay to show loading bar
-        setTimeout(() => {
-            console.log('🎵 Loading disco content after placeholder');
-            loadSimpleDiscoContent(composer);
-        }, 1000);
+        // Start loading the iframe immediately while showing the loading bar
+        loadSimpleDiscoContentWithTransition(composer);
     } else if (discoSection) {
         discoSection.style.display = 'none';
-        console.log('🎵 No disco playlist, hiding section');
-    } else {
-        console.log('🎵 No disco section found in DOM');
     }
 
     // Continue with other content after disco is initiated
@@ -450,26 +442,8 @@ function populateComposerData(composer) {
 }
 
 // Simplified intersection observer for disco priority loading
-function setupDiscoIntersectionObserver(discoSection, composer) {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                // Disco section is visible - just log for now
-                console.log('🎵 Disco section visible');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, {
-        threshold: [0.1]
-    });
-    
-    observer.observe(discoSection);
-}
-
 // Show adaptive loading placeholder that responds to actual load time
 function showDiscoLoadingPlaceholder(discoSection, composer) {
-    console.log('🎵 Creating loading placeholder for:', composer.name);
-    
     const placeholderHtml = `
         <div class="disco-loading-placeholder" style="
             width: 100%;
@@ -549,7 +523,6 @@ function showDiscoLoadingPlaceholder(discoSection, composer) {
     `;
     
     discoSection.innerHTML = placeholderHtml;
-    console.log('🎵 Loading placeholder displayed for:', composer.name);
 }
 
 // Use preloaded disco iframe with visible loading feedback
@@ -722,8 +695,8 @@ function loadDiscoContent(discoSection, composer) {
     }
 }
 
-// Simple disco content loading function
-function loadSimpleDiscoContent(composer) {
+// Simple disco content loading function with smooth transition
+function loadSimpleDiscoContentWithTransition(composer) {
     const discoSection = document.querySelector('.ComposerDisco');
     if (!discoSection || !composer.disco_playlist) return;
     
@@ -734,27 +707,89 @@ function loadSimpleDiscoContent(composer) {
     
     if (!iframe) return;
     
-    // Apply the same styling as the original complex loading system
+    // Apply styling but keep iframe hidden initially - maintain correct positioning
     iframe.style.cssText = `
-        border-radius: 12px;
-        opacity: 1;
-        display: block;
         width: 100%;
-        min-height: 300px;
-        border: none;
-        contain: layout style;
+        height: 100%;
+        max-height: calc(100vh - 200px);
+        min-height: 600px;
+        margin: 0 auto;
+        display: block;
+        max-width: 100%;
+        overflow: auto;
         transform: translateZ(0);
-        will-change: auto;
+        border-radius: 12px;
+        border: none;
+        opacity: 0;
+        visibility: hidden;
         position: static;
-        left: auto;
-        top: auto;
-        visibility: visible;
+        transition: opacity 0.3s ease-in-out;
+        contain: layout style;
     `;
     iframe.setAttribute('title', `${composer.name}'s Playlist`);
     
-    // Replace the loading placeholder with the actual disco content
-    discoSection.innerHTML = '';
+    // Add iframe to the section (hidden initially)
     discoSection.appendChild(iframe);
+    
+    // Function to complete the transition
+    const completeTransition = () => {
+        const loadingPlaceholder = discoSection.querySelector('.disco-loading-placeholder');
+        
+        // Fade out loading placeholder and fade in iframe
+        if (loadingPlaceholder) {
+            loadingPlaceholder.style.transition = 'opacity 0.3s ease-in-out';
+            loadingPlaceholder.style.opacity = '0';
+            
+            setTimeout(() => {
+                if (loadingPlaceholder.parentNode) {
+                    loadingPlaceholder.remove();
+                }
+            }, 300);
+        }
+        
+        // Show the iframe (position already static)
+        iframe.style.visibility = 'visible';
+        iframe.style.opacity = '1';
+    };
+    
+    // Wait for either iframe load or minimum loading bar duration (whichever is longer)
+    let iframeLoaded = false;
+    let minTimeElapsed = false;
+    
+    const tryComplete = () => {
+        if (iframeLoaded && minTimeElapsed) {
+            completeTransition();
+        }
+    };
+    
+    // Listen for iframe load
+    iframe.onload = () => {
+        console.log('🎵 Disco iframe loaded');
+        iframeLoaded = true;
+        tryComplete();
+    };
+    
+    // Fallback timeout in case iframe doesn't fire onload
+    iframe.onerror = () => {
+        console.log('🎵 Disco iframe load error, showing anyway');
+        iframeLoaded = true;
+        tryComplete();
+    };
+    
+    // Ensure minimum loading bar visibility (800ms to match animation)
+    setTimeout(() => {
+        minTimeElapsed = true;
+        tryComplete();
+    }, 800);
+    
+    // Additional fallback timeout
+    setTimeout(() => {
+        if (!iframeLoaded) {
+            console.log('🎵 Disco iframe timeout, showing anyway');
+            iframeLoaded = true;
+            tryComplete();
+        }
+    }, 3000);
 }
 
 // Initialize PDF download functionality
