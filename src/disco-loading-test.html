@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Disco Loading Test</title>
+    <style>
+        body { 
+            font-family: 'CircularXX', Arial, sans-serif; 
+            padding: 20px; 
+            background: #F4A461;
+        }
+        .test-container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+        }
+        .test-section { 
+            margin: 20px 0; 
+            padding: 20px; 
+            background: white; 
+            border-radius: 8px; 
+        }
+        .ComposerDisco { 
+            width: 100%; 
+            height: 300px; 
+            border: 2px solid #ccc; 
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        button { 
+            padding: 10px 20px; 
+            margin: 10px; 
+            border: none; 
+            border-radius: 5px; 
+            background: #000; 
+            color: white; 
+            cursor: pointer; 
+        }
+        button:hover { background: #333; }
+        .log { 
+            background: #f5f5f5; 
+            padding: 10px; 
+            border-radius: 5px; 
+            margin: 10px 0; 
+            font-family: monospace; 
+            font-size: 12px; 
+            max-height: 300px; 
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Disco Loading Test</h1>
+        
+        <div class="test-section">
+            <h2>Test Disco Loading</h2>
+            <button onclick="testLoading()">Test Loading Bar</button>
+            <button onclick="testWithFakePlaylist()">Test with Fake Playlist</button>
+            <button onclick="clearLog()">Clear Log</button>
+            
+            <div class="ComposerDisco" id="disco-test"></div>
+            
+            <div class="log" id="test-log"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import the functions we need to test
+        
+        function log(message) {
+            const logDiv = document.getElementById('test-log');
+            const timestamp = new Date().toLocaleTimeString();
+            logDiv.innerHTML += `[${timestamp}] ${message}<br>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(message);
+        }
+        
+        // Mock composer data for testing
+        const testComposer = {
+            name: "Test Composer",
+            disco_playlist: `
+                <iframe 
+                    src="https://embed.disco.ac/p/some-test-playlist" 
+                    frameborder="0" 
+                    scrolling="no" 
+                    width="100%" 
+                    height="300">
+                </iframe>
+            `
+        };
+        
+        const fakeComposer = {
+            name: "Fake Composer",
+            disco_playlist: `
+                <div style="
+                    width: 100%; 
+                    height: 300px; 
+                    background: #000; 
+                    color: white; 
+                    display: flex; 
+                    align-items: center; 
+                    justify-content: center;
+                    border-radius: 12px;
+                ">
+                    🎵 Fake Playlist for Testing 🎵
+                </div>
+            `
+        };
+        
+        window.testLoading = function() {
+            log('🧪 Starting loading test...');
+            const discoSection = document.getElementById('disco-test');
+            
+            if (!discoSection) {
+                log('❌ Disco section not found');
+                return;
+            }
+            
+            log('✅ Disco section found, clearing content');
+            discoSection.innerHTML = '';
+            
+            log('🎵 Would show loading placeholder here');
+            discoSection.innerHTML = `
+                <div style="
+                    width: 100%;
+                    height: 300px;
+                    background: linear-gradient(135deg, #F4A461 0%, #E09654 100%);
+                    border-radius: 12px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    animation: backgroundPulse 3s ease-in-out infinite;
+                ">
+                    <div style="
+                        width: 56px;
+                        height: 56px;
+                        background: #000;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin-bottom: 20px;
+                        animation: spin 2s linear infinite;
+                    ">
+                        <div style="
+                            width: 24px;
+                            height: 24px;
+                            background: #fff;
+                            border-radius: 50%;
+                        "></div>
+                    </div>
+                    <div style="color: #000; font-weight: bold; margin-bottom: 20px;">
+                        Loading Test Composer's playlist...
+                    </div>
+                    <div style="
+                        width: 80%;
+                        height: 8px;
+                        background: rgba(0,0,0,0.2);
+                        border-radius: 4px;
+                        overflow: hidden;
+                    ">
+                        <div style="
+                            height: 100%;
+                            background: #000;
+                            border-radius: 4px;
+                            width: 0%;
+                            animation: loadingBar 3s ease-out forwards;
+                        "></div>
+                    </div>
+                </div>
+                <style>
+                    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+                    @keyframes loadingBar { 0% { width: 0%; } 100% { width: 100%; } }
+                    @keyframes backgroundPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.9; } }
+                </style>
+            `;
+            
+            log('⏱️ Loading bar should be visible for 3 seconds...');
+            
+            setTimeout(() => {
+                log('✅ Loading complete - would replace with actual content');
+                discoSection.innerHTML = `
+                    <div style="
+                        width: 100%; 
+                        height: 300px; 
+                        background: #333; 
+                        color: white; 
+                        display: flex; 
+                        align-items: center; 
+                        justify-content: center;
+                        border-radius: 12px;
+                    ">
+                        🎵 Disco Playlist Would Load Here 🎵
+                    </div>
+                `;
+            }, 3000);
+        };
+        
+        window.testWithFakePlaylist = function() {
+            log('🧪 Testing with fake playlist...');
+            const discoSection = document.getElementById('disco-test');
+            
+            // Simulate the actual loading process
+            discoSection.innerHTML = '';
+            log('🎵 Showing loading placeholder');
+            
+            // Show loading bar
+            testLoading();
+            
+            // After 3 seconds, show the fake playlist
+            setTimeout(() => {
+                log('🎵 Loading fake playlist content');
+                discoSection.innerHTML = fakeComposer.disco_playlist;
+                log('✅ Fake playlist loaded successfully');
+            }, 3000);
+        };
+        
+        window.clearLog = function() {
+            document.getElementById('test-log').innerHTML = '';
+        };
+        
+        log('🧪 Disco Loading Test Ready');
+        log('Click "Test Loading Bar" to see the loading animation');
+        log('Click "Test with Fake Playlist" to simulate full process');
+    </script>
+</body>
+</html>
