@@ -4,222 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://lycmyaohsycrdergwpmq.supabase.co https://cdn.jsdelivr.net; frame-src 'self' https://player.vimeo.com https://www.youtube-nocookie.com https://concord-music-publishing.disco.ac; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
-    <title>Concord Music Publishing</title>
+    <title>Concord Music Publishing - Roster</title>
     <!-- Preload critical font -->
     <link rel="preload" href="assets/fonts/CircularXXSub-Black.woff" as="font" type="font/woff" crossorigin>
     <link rel="stylesheet" href="assets/styles/main.css">
-    <style>
-        .nav-container {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 20px;
-        }
-        
-        .nav-link {
-            color: black;
-            text-decoration: none;
-            font-family: 'CircularXX', Arial, sans-serif;
-            font-size: 16px;
-            font-weight: 500;
-            transition: opacity 0.2s ease;
-        }
-        
-        .nav-link:hover {
-            opacity: 0.8;
-        }
-        
-        /* View toggle styling */
-        .view-toggle-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 0 20px;
-        }
-        
-        /* Logo link styling with dynamic button effect */
-        .logo-link {
-            display: inline-block;
-            width: 285px;
-            height: 285px;
-            position: absolute;
-            left: 0;
-            top: 0;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .logo-link:hover {
-            transform: scale(1.05);
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-        }
-        
-        .logo-link:active {
-            transform: scale(0.98);
-            transition: transform 0.1s ease;
-        }
-        
-        .logo-link img {
-            width: 100%;
-            height: 100%;
-            transition: all 0.3s ease;
-        }
-        
-        .view-toggle {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .toggle-button {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease, transform 0.3s ease;
-        }
-        
-        .toggle-button:hover {
-            background: rgba(255, 255, 255, 0.4);
-            transform: translateX(10px);
-        }
-        
-        .toggle-button.active {
-            background: black;
-            color: white;
-        }
-        
-        .toggle-button svg {
-            width: 20px;
-            height: 20px;
-        }
-        
-        /* Writers grid styling */
-        .writers-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 30px;
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-            display: none; /* Hidden by default */
-        }
-        
-        .writers-grid .grid-item {
-            position: relative;
-            overflow: hidden;
-            border-radius: 8px;
-            aspect-ratio: 1/1;
-        }
-        
-        .writers-grid img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-        
-        .writers-grid .grid-item:hover img {
-            transform: scale(1.05);
-        }
-        
-        .writers-grid .composer-name-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 10px;
-            font-family: 'CircularXX', Arial, sans-serif;
-        }
-    </style>
+    <link rel="stylesheet" href="assets/styles/grid.css">
+    <link rel="icon" type="image/x-icon" href="assets/images/concord-C-icon-red.png">
 </head>
 <body>
-    <div data-layer="Desktop - 1" class="Desktop1">
-        <a href="https://concord.com/music-publishing/" target="_blank" rel="noopener noreferrer" class="logo-link">
-            <img data-layer="concord-C-icon-red 1" class="ConcordCIconRed1" src="assets/images/concord-C-icon-red.png" alt="Concord C Icon">
-        </a>
-        <div data-layer="concord music publishing" class="ConcordMusicPublishing">concord music publishing</div>
+    <div class="grid-container">
+        <header class="header">
+            <div class="logo-container">
+                <img class="logo" src="assets/images/concord-C-icon-red.png" alt="Concord C Icon">
+                <div class="title">concord music publishing - roster</div>
+            </div>
+        </header>
         
-        <div data-layer="catalogs" class="Catalogs section-title">catalogs</div>
-        <div data-layer="catalog_images" class="CatalogImages scrollable-container">
-            <div class="carousel-track">
-                <a href="https://concord-music-publishing.disco.ac/cat/1505512982" class="carousel-link" target="_blank" rel="noopener noreferrer">
-                    <img src="assets/images/concord-C-icon-red-white.png" alt="Concord Music Publishing">
-                    <div class="composer-name-overlay">Concord Music Publishing</div>
-                </a>
-                <a href="https://represents.boosey.com/" class="carousel-link" target="_blank" rel="noopener noreferrer">
-                    <img src="assets/images/boosey_logo.png" alt="Boosey & Hawkes">
-                    <div class="composer-name-overlay">Boosey & Hawkes</div>
-                </a>
-                <a href="https://pulsesync.disco.ac/cat/1168791475" class="carousel-link" target="_blank" rel="noopener noreferrer">
-                    <img src="assets/images/pulse.png" alt="Pulse Music Group">
-                    <div class="composer-name-overlay">Pulse Music Group</div>
-                </a>
-                <a href="https://concord-music-publishing.disco.ac/cat/6233" class="carousel-link" target="_blank" rel="noopener noreferrer">
-                    <img src="assets/images/RnH.png" alt="Rodgers & Hammerstein">
-                    <div class="composer-name-overlay">Rodgers & Hammerstein</div>
-                </a>
-                <a href="https://concord-music-publishing.disco.ac/cat/900884433" class="carousel-link" target="_blank" rel="noopener noreferrer">
-                    <img src="assets/images/fania.png" alt="Fania">
-                    <div class="composer-name-overlay">Fania</div>
-                </a>
-            </div>
-        </div>
-
-        <!-- Writers section with title and view toggle -->
-        <div class="view-toggle-container">
-            <a href="composer_grid.html" style="text-decoration: none; color: inherit;">
-                    <div data-layer="writers" class="writers-title">roster</div>
-            </a>
-            <div class="view-toggle">
-                <button class="toggle-button carousel-view active" aria-label="Carousel View">
-                    <svg viewBox="0 0 24 24" width="24" height="24">
-                        <rect x="2" y="4" width="20" height="2" fill="currentColor"/>
-                        <rect x="2" y="11" width="20" height="2" fill="currentColor"/>
-                        <rect x="2" y="18" width="20" height="2" fill="currentColor"/>
-                    </svg>
-                </button>
-                <a href="composer_grid.html" class="toggle-button grid-view" aria-label="Grid View">
-                    <svg viewBox="0 0 24 24" width="24" height="24">
-                        <rect x="3" y="3" width="7" height="7" fill="currentColor"/>
-                        <rect x="14" y="3" width="7" height="7" fill="currentColor"/>
-                        <rect x="3" y="14" width="7" height="7" fill="currentColor"/>
-                        <rect x="14" y="14" width="7" height="7" fill="currentColor"/>
-                    </svg>
-                </a>
-            </div>
+        <div class="filter-controls">
+            <button class="filter-button active" data-filter="all">All</button>
+            <button class="filter-button" data-filter="artist">Artists</button>
+            <button class="filter-button" data-filter="producer">Producers</button>
+            <button class="filter-button" data-filter="songwriter">Songwriters</button>
         </div>
         
-        <div data-layer="writers_images" class="WritersImages scrollable-container">
-            <div class="carousel-track">
-                <!-- Composer images will be loaded dynamically -->
-            </div>
-        </div>
-        
-        <!-- Writers Grid View (hidden by default) -->
-        <div class="writers-grid">
+        <div class="composer-grid">
             <!-- Grid items will be dynamically inserted here -->
-        </div>
-
-        <a href="ftv.html" style="text-decoration: none; color: inherit;">
-            <div data-layer="ftv" class="Ftv section-title">ftv</div>
-        </a>
-        <div data-layer="ftv_images" class="FtvImages scrollable-container">
-            <div class="carousel-track">
-                <!-- FTV images will be loaded dynamically -->
-            </div>
+            <div class="loading">Loading composers...</div>
         </div>
     </div>
-    <script type="module" src="scripts/main.js"></script>
+    
+    <script type="module" src="scripts/composer-grid.js"></script>
 </body>
 </html>
