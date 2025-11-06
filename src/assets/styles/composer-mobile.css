@@ -2,8 +2,8 @@
 
 /* Font face declaration for mobile */
 @font-face {
-    font-family: 'CircularXXSub';
-    src: url('../fonts/CircularXXSub-Black.woff') format('woff');
+    font-family: 'CircularXX';
+    src: url('../fonts/CircularXX-Black.woff') format('woff');
     font-weight: 100 900;
     font-display: swap;
 }
@@ -34,12 +34,12 @@
     background: #F4A461;
     min-height: 100vh;
     min-height: calc(var(--vh, 1vh) * 100); /* Use custom property for mobile browsers */
-    font-family: 'CircularXXSub', Arial, sans-serif !important; /* Force font family */
+    font-family: 'CircularXX', Arial, sans-serif !important; /* Force font family */
 }
 
 /* Override any conflicting body styles for mobile */
 body.mobile-composer {
-    font-family: 'CircularXXSub', Arial, sans-serif !important;
+    font-family: 'CircularXX', Arial, sans-serif !important;
     background: #F4A461 !important;
 }
 
@@ -68,7 +68,7 @@ body.mobile-composer {
     font-size: 16px;
     color: #333;
     cursor: pointer;
-    font-family: 'CircularXXSub', Arial, sans-serif;
+    font-family: 'CircularXX', Arial, sans-serif;
     font-weight: 600;
     padding: 8px 12px;
     border-radius: 6px;
@@ -103,7 +103,7 @@ body.mobile-composer {
 
 .mobile-composer-name {
     font-size: 2.2rem;
-    font-family: 'CircularXXSub', Arial, sans-serif;
+    font-family: 'CircularXX', Arial, sans-serif;
     font-weight: 900;
     color: white;
     margin-bottom: 20px;
@@ -244,7 +244,7 @@ body.mobile-composer {
     padding: 18px 20px;
     text-align: left;
     font-size: 16px;
-    font-family: 'CircularXXSub', Arial, sans-serif;
+    font-family: 'CircularXX', Arial, sans-serif;
     font-weight: 600;
     cursor: pointer;
     border-radius: 12px;
@@ -274,7 +274,7 @@ body.mobile-composer {
     overflow: hidden;
     transition: all 0.4s ease;
     border-radius: 0 0 12px 12px;
-    font-family: 'CircularXXSub', Arial, sans-serif;
+    font-family: 'CircularXX', Arial, sans-serif;
     line-height: 1.6;
     color: #333;
 }
@@ -296,7 +296,7 @@ body.mobile-composer {
 /* Mobile section titles */
 .mobile-section-title {
     font-size: 1.5rem;
-    font-family: 'CircularXXSub', Arial, sans-serif;
+    font-family: 'CircularXX', Arial, sans-serif;
     font-weight: 700;
     color: white;
     margin-bottom: 15px;
@@ -435,14 +435,14 @@ body.mobile-composer {
     align-items: center;
     padding: 40px 20px;
     color: white;
-    font-family: 'CircularXXSub', Arial, sans-serif;
+    font-family: 'CircularXX', Arial, sans-serif;
 }
 
 .mobile-error {
     text-align: center;
     padding: 40px 20px;
     color: white;
-    font-family: 'CircularXXSub', Arial, sans-serif;
+    font-family: 'CircularXX', Arial, sans-serif;
 }
 
 /* Smooth scroll behavior */

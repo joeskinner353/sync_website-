@@ -8,7 +8,7 @@
 }
 
 @font-face {
-    font-family: 'CircularXXSub';
+    font-family: 'CircularXX';
     src: url('../fonts/CircularXXSub-Black.woff') format('woff');
     font-weight: 100 900; /* Support multiple weights */
     font-display: swap;
@@ -16,7 +16,7 @@
 
 body {
     background-color: black;
-    font-family: 'CircularXXSub', Arial, sans-serif;
+    font-family: 'CircularXX', Arial, sans-serif;
     color: white !important;
     line-height: 1.6;
     margin: 0;

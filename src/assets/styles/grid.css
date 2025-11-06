@@ -6,6 +6,7 @@
 /* Force all text to be white, overriding any browser or dark mode defaults */
 * {
     color: white !important;
+    font-family: 'CircularXX', Arial, sans-serif; /* Ensure all elements use CircularXX */
 }
 
 /* Override for elements that should keep their original appearance */
