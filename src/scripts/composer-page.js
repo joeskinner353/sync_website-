@@ -240,7 +240,7 @@ function populateComposerData(composer) {
 
     // Continue with other content after disco is initiated
     document.querySelector('.ComposerName').textContent = composer.name;
-    document.querySelector('.ComposerBio').textContent = composer.bio;
+    document.querySelector('.ComposerBio').innerHTML = composer.bio;
 
     // Update social links
     const spotifyIcon = document.querySelector('a[href] svg path[fill="#1ED760"]')?.closest('a');
